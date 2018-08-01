@@ -1266,10 +1266,10 @@ Wire Wire Line
 Wire Wire Line
 	-2350 5550 -2300 5550
 $Comp
-L MCU_Module:Arduino_Nano_v3.x A?
+L MCU_Module:Arduino_Nano_v3.x A1
 U 1 1 5B672321
 P 2100 2250
-F 0 "A?" H 2100 1164 50  0000 C CNN
+F 0 "A1" H 2100 1164 50  0000 C CNN
 F 1 "Arduino_Nano_v3.x" H 2100 1073 50  0000 C CNN
 F 2 "Module:Arduino_Nano" H 2250 1300 50  0001 L CNN
 F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 2100 1250 50  0001 C CNN
@@ -1277,10 +1277,10 @@ F 3 "http://www.mouser.com/pdfdocs/Gravitech_Arduino_Nano3_0.pdf" H 2100 1250 50
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0101
 U 1 1 5B67284E
 P 2150 3550
-F 0 "#PWR?" H 2150 3300 50  0001 C CNN
+F 0 "#PWR0101" H 2150 3300 50  0001 C CNN
 F 1 "GND" H 2155 3377 50  0000 C CNN
 F 2 "" H 2150 3550 50  0001 C CNN
 F 3 "" H 2150 3550 50  0001 C CNN
@@ -1299,10 +1299,10 @@ Wire Wire Line
 Wire Wire Line
 	2400 1250 2400 1100
 $Comp
-L power:+3V3 #PWR?
+L power:+3V3 #PWR0102
 U 1 1 5B6A5A5B
 P 2100 1100
-F 0 "#PWR?" H 2100 950 50  0001 C CNN
+F 0 "#PWR0102" H 2100 950 50  0001 C CNN
 F 1 "+3V3" H 2115 1273 50  0000 C CNN
 F 2 "" H 2100 1100 50  0001 C CNN
 F 3 "" H 2100 1100 50  0001 C CNN
@@ -1310,10 +1310,10 @@ F 3 "" H 2100 1100 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+5V #PWR?
+L power:+5V #PWR0103
 U 1 1 5B6A5B31
 P 2400 1100
-F 0 "#PWR?" H 2400 950 50  0001 C CNN
+F 0 "#PWR0103" H 2400 950 50  0001 C CNN
 F 1 "+5V" H 2415 1273 50  0000 C CNN
 F 2 "" H 2400 1100 50  0001 C CNN
 F 3 "" H 2400 1100 50  0001 C CNN
@@ -1334,17 +1334,6 @@ Wire Notes Line
 	10350 3550 3400 3550
 Wire Notes Line
 	3400 3550 3400 600 
-$Comp
-L ArduinoSpecAn-rescue:SMA J1
-U 1 1 5B70300F
-P 6000 950
-F 0 "J1" H 5762 897 60  0000 R CNN
-F 1 "SMA" H 5762 791 60  0000 R CNN
-F 2 "" H 6000 950 60  0000 C CNN
-F 3 "" H 6000 950 60  0000 C CNN
-	1    6000 950 
-	-1   0    0    -1  
-$EndComp
 Text Label 2850 2250 2    60   ~ 0
 A0
 Wire Wire Line
@@ -1362,10 +1351,10 @@ Connection ~ -8750 -650
 Wire Wire Line
 	-8750 -650 -8650 -650
 $Comp
-L power:GND #PWR?
+L power:GND #PWR0104
 U 1 1 5B7475F9
 P 9350 1500
-F 0 "#PWR?" H 9350 1250 50  0001 C CNN
+F 0 "#PWR0104" H 9350 1250 50  0001 C CNN
 F 1 "GND" H 9350 1350 50  0000 C CNN
 F 2 "" H 9350 1500 60  0000 C CNN
 F 3 "" H 9350 1500 60  0000 C CNN
@@ -1376,4 +1365,15 @@ Wire Wire Line
 	9350 1350 9350 1500
 Text Label -8750 -1250 0    60   ~ 0
 5V
+$Comp
+L ArduinoSpecAn-rescue:SMA J1
+U 1 1 5B7B44E1
+P 6000 950
+F 0 "J1" H 5750 850 60  0000 C CNN
+F 1 "SMA" H 6000 1150 60  0000 C CNN
+F 2 "footprints:SMA_Edgemount" H 6000 950 60  0001 C CNN
+F 3 "" H 6000 950 60  0000 C CNN
+	1    6000 950 
+	-1   0    0    -1  
+$EndComp
 $EndSCHEMATC
