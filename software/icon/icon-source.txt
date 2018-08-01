@@ -1,0 +1,5 @@
+Ubuntu Humanity
+https://launchpad.net/humanity
+License: GPLv3, see copyright-humanity
+
+Others are designed by the team, based on this icons

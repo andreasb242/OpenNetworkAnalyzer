@@ -97,21 +97,36 @@ class AnalyzerFrame(object):
 		# Icons need to be kept, else the garbage collactor deletes them
 		self.icons = []
 
-		self.addToolButton("exit.png", "dB/div +", lambda p=self: AnalyzerFrame.buttonDBDivInc(p))
-		self.addToolButton("exit.png", "dB/div -", lambda p=self: AnalyzerFrame.buttonDBDivDec(p))
-		self.addToolButton("exit.png", "Ref Lvl +10", lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p))
-		self.addToolButton("exit.png", "Ref Lvl -10", lambda p=self: AnalyzerFrame.buttonRefLevelDecTen(p))
-		self.addToolButton("exit.png", "Ref Lvl +1", lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p))
-		self.addToolButton("exit.png", "Ref Lvl -1", lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p))
-		self.addToolButton("exit.png", "+ Samples", lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
-		self.addToolButton("exit.png", "- Samples", lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
-		self.addToolButton("exit.png", "Set Freqs", lambda p=self: AnalyzerFrame.buttonSetFreqs(p))
-		self.addToolButton("exit.png", "Calibrate", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
+		image = Image.open("icon/separator.png")
+		self.separatorIcon = ImageTk.PhotoImage(image)
+
+
+		self.addToolButton("zoom-out.png", "dB/div +", lambda p=self: AnalyzerFrame.buttonDBDivInc(p))
+		self.addToolButton("zoom-in.png", "dB/div -", lambda p=self: AnalyzerFrame.buttonDBDivDec(p))
+		self.addToolbarSpacer()
+		self.addToolButton("go-bottom.png", "Ref Lvl +10", lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p))
+		self.addToolButton("go-top.png", "Ref Lvl -10", lambda p=self: AnalyzerFrame.buttonRefLevelDecTen(p))
+		self.addToolButton("go-down.png", "Ref Lvl +1", lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p))
+		self.addToolButton("go-up.png", "Ref Lvl -1", lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p))
+		self.addToolbarSpacer()
+		self.addToolButton("sample-inc.png", "+ Samples", lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
+		self.addToolButton("sample-dec.png", "- Samples", lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
+		self.addToolbarSpacer()
+		self.addToolButton("frequency.png", "Set Frequencies", lambda p=self: AnalyzerFrame.buttonSetFreqs(p))
+		self.addToolButton("settings.png", "Settings", lambda p=self: AnalyzerFrame.buttonShowSettings(p))
+		self.addToolButton("calibrate.png", "Calibrate", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
+		self.addToolbarSpacer()
+		self.addToolButton("info.png", "About", lambda p=self: AnalyzerFrame.buttonShowAbout(p))
 		self.addToolButton("exit.png", "Quit Application", lambda p=self: AnalyzerFrame.windowClose(p))
 
 		self.toolbar.grid(column=0, row=0, sticky=(N, E, S, W))
-	
-	
+
+
+	def addToolbarSpacer(self):
+		spacer = Label(self.toolbar, text=' ', image=self.separatorIcon)
+		spacer.pack(side=LEFT, padx=2, pady=2)
+
+
 	def addToolButton(self, icon, tooltip, command):
 		image = Image.open("icon/" + icon)
 		icon = ImageTk.PhotoImage(image)
@@ -139,6 +154,16 @@ class AnalyzerFrame(object):
 
 	def windowClose(self):
 		self.root.destroy()
+
+
+	def buttonShowSettings(self):
+		## TODO !!!!!!!!!
+		pass
+
+
+	def buttonShowAbout(self):
+		## TODO !!!!!!!!!
+		pass
 
 
 	def buttonCalibrate(self):
