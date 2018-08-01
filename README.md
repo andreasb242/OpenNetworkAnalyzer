@@ -6,5 +6,5 @@ python3 main.py
 
 ## Installation
 ### Ubuntu
- sudo apt install python3-tk python3-numpy
+ sudo apt install python3-tk python3-numpy python3-serial
 

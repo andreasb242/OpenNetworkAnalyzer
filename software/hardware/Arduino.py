@@ -4,60 +4,43 @@
 
 
 from hardware import BaseHardware
-
-class Arduino(BaseHardware.BaseHardware):
-	def __init__(self, settings):
-		super().__init__(settings)
-
+from tkinter import messagebox
+import serial
 
 
 ## TODO !!!!!!!!
-
-
 SERIALPORT = "/dev/tty.usbmodem641" # For the Mac
 #SERIALPORT = "COM5"
 BAUD = 115200
 
-class SerialReader(object):
+class Arduino(BaseHardware.BaseHardware):
+	def __init__(self, settings, model):
+		super().__init__(settings, model)
 
-	def __init__(self):
 		self.adcValue = 0
 		global BAUD
 		global SERIALPORT
 
 		try:
 			self.serialPort = serial.Serial(SERIALPORT, BAUD, timeout=1)
-			thread = threading.Thread(target=self.run)
-			thread.daemon = True
-			thread.start()
 		except:
-			messagebox.showinfo("Oh no!","Serial comms aren't working.")
+			messagebox.showinfo("Serial Error", "Could not open serial Port «" + SERIALPORT + "»")
 
-	def run(self):
-		global resetSweep
-		global readings
-		global refReady
-		global measMode
 
-		self.n = 0
+	# Read a single value, return True to continue, False to stop
+	def readValue(self):
+		FTW = readings[self.n*2].astype(int).astype(str)+'\n'
+		self.serialPort.write(FTW.encode()) 						# Send frequency command
 
-		while True:
-			if resetSweep == TRUE:
-				resetSweep = FALSE
-				self.n = 0
+		self.serialPort.write('p\n'.encode())
+		self.adcValue = self.serialPort.readline().decode().strip()
 
-			FTW = readings[self.n*2].astype(int).astype(str)+'\n'
-			self.serialPort.write(FTW.encode()) 						# Send frequency command
+		if len(self.adcValue) != 0:
+			readings[self.n*2+1] = float(self.adcValue) * .5*0.0488 - 90.5 #0.0488 or 0.1953 - 83.998
 
-			self.serialPort.write('p\n'.encode())
-			self.adcValue = self.serialPort.readline().decode().strip()
 
-			if len(self.adcValue) != 0:
-				readings[self.n*2+1] = float(self.adcValue) * .5*0.0488 - 90.5 #0.0488 or 0.1953 - 83.998
-				self.n = self.n + 1
 
-			if self.n >= numSamplesList[numSamplesIndex]:
-				self.n = 0
-				if measMode == 2:
-					refReady = TRUE
-					print("REF READY!")
+
+
+
+

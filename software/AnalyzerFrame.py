@@ -4,18 +4,15 @@
 
 
 from tkinter import *
+from tkinter import simpledialog
+
 import OutputGraph
 import DataModel;
 
-# ================ Variable Definitions ===============================
+## TODO Remove
+from time import sleep
 
 
-
-
-
-
-
-resetSweep = FALSE
 refReady = FALSE
 
 
@@ -24,10 +21,13 @@ refReady = FALSE
 
 
 class AnalyzerFrame(object):
-	def __init__(self, settings):
+	def __init__(self, settings, hardware, model):
 		self.settings = settings
-		self.model = DataModel.DataModel()
+		self.hardware = hardware
+		self.model = model
 		self.initUi()
+
+		self.hardware.start(lambda p=self: AnalyzerFrame.updateData(p))		
 
 
 	def initUi(self):
@@ -77,6 +77,16 @@ class AnalyzerFrame(object):
 
 		b = ttk.Button(controlArea, text="Calibrate", width=10, command=lambda p=self: AnalyzerFrame.buttonCalibrate(p))
 		b.grid(column = 5, row = 0)
+
+
+	## Callback for data updates, this method can be called from any thread
+	def updateData(self):
+		self.root.after(0, lambda p=self: AnalyzerFrame.updateDataUiThread(p))
+
+
+	## Update the UI, this method should only be called in the UI Thread
+	def updateDataUiThread(self):
+		self.graph.makeTrace()
 
 
 	def run(self):
@@ -203,20 +213,5 @@ class AnalyzerFrame(object):
 		self.graph.updateGraph()
 
 
-
-
-
-
-
-
-
-
-# ================ Call main routines ===============================
-def Sweep():
-	while (True):
-		# UpdateGraph()
-		MakeTrace()
-		root.update_idletasks()
-		root.update()
 
 
