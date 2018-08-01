@@ -9,21 +9,14 @@ from PIL import Image, ImageTk
 
 import OutputGraph
 import DataModel;
+import SettingsDialog
+
 from CreateToolTip import CreateToolTip
 
 ## TODO Remove
 from time import sleep
 
-
 refReady = FALSE
-
-
-
-#style.map("Checkbox.Treeview",
-#fieldbackground=[("disabled", '#E6E6E6')],
-#foreground=[("disabled", 'gray40')],
-#background=[("disabled", '#E6E6E6')])
-
 
 class AnalyzerFrame(object):
 	def __init__(self, settings, hardware, model):
@@ -167,8 +160,9 @@ class AnalyzerFrame(object):
 
 
 	def buttonShowSettings(self):
-		## TODO !!!!!!!!!
-		pass
+		settingsDialog = SettingsDialog.SettingsDialog(self.settings)
+		settingsDialog.run()
+		## TODO restart hardware interface!
 
 
 	def buttonShowAbout(self):
