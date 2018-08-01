@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name ArduinoSpecAn-rescue)(type Legacy)(uri ${KIPRJMOD}/ArduinoSpecAn-rescue.lib)(options "")(descr ""))
+  (lib (name custom)(type Legacy)(uri /home/andreas/dev/OpenNetworkAnalyzer/layout/arduino-nano/custom.lib)(options "")(descr ""))
+)
