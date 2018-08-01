@@ -50,43 +50,6 @@ class AnalyzerFrame(object):
 
 		self.graph = OutputGraph.OutputGraph(graphArea, self.model)
 		self.graph.updateGraph()
-		
-		self.initButtonList()
-
-
-	def initButtonList(self):
-		controlArea = ttk.LabelFrame(self.window, text="Controls", borderwidth=10)
-		controlArea.grid(column=0, row=1, sticky=(N, E, S, W))
-
-		b = ttk.Button(controlArea, text="dB/div +", width=10, command=lambda p=self: AnalyzerFrame.buttonDBDivInc(p))
-		b.grid(column=0, row=0)
-
-		b = ttk.Button(controlArea, text="dB/div -", width=10, command=lambda p=self: AnalyzerFrame.buttonDBDivDec(p))
-		b.grid(column=0, row=1)
-
-		b = ttk.Button(controlArea, text="Ref Lvl +10", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p))
-		b.grid(column=1, row=0)
-
-		b = ttk.Button(controlArea, text="Ref Lvl -10", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelDecTen(p))
-		b.grid(column=1, row=1)
-
-		b = ttk.Button(controlArea, text="Ref Lvl +1", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p))
-		b.grid(column=2, row=0)
-
-		b = ttk.Button(controlArea, text="Ref Lvl -1", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p))
-		b.grid(column=2, row=1)
-
-		b = ttk.Button(controlArea, text="+ Samples", width=10, command=lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
-		b.grid(column=3, row=0)
-
-		b = ttk.Button(controlArea, text="- Samples", width=10, command=lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
-		b.grid(column=3, row=1)
-
-		b = ttk.Button(controlArea, text="Set Freqs", width=10, command=lambda p=self: AnalyzerFrame.buttonSetFreqs(p))
-		b.grid(column=4, row=0)
-
-		b = ttk.Button(controlArea, text="Calibrate", width=10, command=lambda p=self: AnalyzerFrame.buttonCalibrate(p))
-		b.grid(column=5, row=0)
 
 
 	## Init Toolbar Buttons
