@@ -1,0 +1,1212 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:myLib
+LIBS:ArduinoSpecAn-cache
+EELAYER 25 0
+EELAYER END
+$Descr A 11000 8500
+encoding utf-8
+Sheet 1 1
+Title "Arduino Scalar Network Analyzer Shield"
+Date "2015-12-23"
+Rev "1.0"
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L AD8307 U1
+U 1 1 567AEDE5
+P 2300 6700
+F 0 "U1" H 2500 6450 60  0000 C CNN
+F 1 "AD8307" H 2300 6950 60  0000 C CNN
+F 2 "SMD_Packages:SOIC-8-N" H 2300 6750 60  0001 C CNN
+F 3 "" H 2300 6750 60  0000 C CNN
+	1    2300 6700
+	1    0    0    -1  
+$EndComp
+$Comp
+L AD9851 U2
+U 1 1 567AF1E6
+P 3300 1600
+F 0 "U2" H 3650 850 60  0000 C CNN
+F 1 "AD9851" H 3300 2350 60  0000 C CNN
+F 2 "Housings_SSOP:SSOP-28_5.3x10.2mm_Pitch0.65mm" H 3300 1600 60  0001 C CNN
+F 3 "" H 3300 1600 60  0000 C CNN
+	1    3300 1600
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X08 P3
+U 1 1 567AF44C
+P 9500 2550
+F 0 "P3" H 9500 3000 50  0000 C CNN
+F 1 "CONN_01X08" V 9600 2550 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x08" H 9500 2550 60  0001 C CNN
+F 3 "" H 9500 2550 60  0000 C CNN
+	1    9500 2550
+	-1   0    0    -1  
+$EndComp
+$Comp
+L CONN_01X08 P1
+U 1 1 567AF565
+P 9150 1450
+F 0 "P1" H 9150 1900 50  0000 C CNN
+F 1 "CONN_01X08" V 9250 1450 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x08" H 9150 1450 60  0001 C CNN
+F 3 "" H 9150 1450 60  0000 C CNN
+	1    9150 1450
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X06 P2
+U 1 1 567AF5D9
+P 9150 2650
+F 0 "P2" H 9150 3000 50  0000 C CNN
+F 1 "CONN_01X06" V 9250 2650 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x06" H 9150 2650 60  0001 C CNN
+F 3 "" H 9150 2650 60  0000 C CNN
+	1    9150 2650
+	1    0    0    -1  
+$EndComp
+Text Label 8700 2400 0    60   ~ 0
+A0
+Text Label 8700 2500 0    60   ~ 0
+A1
+Text Label 8700 2600 0    60   ~ 0
+A2
+Text Label 8700 2800 0    60   ~ 0
+A4
+Text Label 8700 2900 0    60   ~ 0
+A5
+NoConn ~ 8950 1100
+$Comp
+L GND #PWR01
+U 1 1 567B1CC7
+P 8800 1650
+F 0 "#PWR01" H 8800 1400 50  0001 C CNN
+F 1 "GND" V 8800 1450 50  0000 C CNN
+F 2 "" H 8800 1650 60  0000 C CNN
+F 3 "" H 8800 1650 60  0000 C CNN
+	1    8800 1650
+	0    1    1    0   
+$EndComp
+Text Label 9950 2900 2    60   ~ 0
+RX
+Text Label 9950 2800 2    60   ~ 0
+TX
+Text Label 9950 2700 2    60   ~ 0
+2
+Text Label 9950 2600 2    60   ~ 0
+3
+Text Label 9950 2500 2    60   ~ 0
+4
+Text Label 9950 2400 2    60   ~ 0
+5
+Text Label 9950 2300 2    60   ~ 0
+6
+Text Label 9950 2200 2    60   ~ 0
+7
+Text Label 8700 1200 0    60   ~ 0
+IOREF
+Text Label 8700 1300 0    60   ~ 0
+RESET
+Text Label 8700 1400 0    60   ~ 0
+3V3
+Text Label 8700 1500 0    60   ~ 0
+5V
+Text Label 8700 1800 0    60   ~ 0
+Vin
+$Comp
+L C_Small C2
+U 1 1 567B2606
+P 1700 6300
+F 0 "C2" H 1710 6370 50  0000 L CNN
+F 1 "10uF" H 1710 6220 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 1700 6300 60  0001 C CNN
+F 3 "" H 1700 6300 60  0000 C CNN
+	1    1700 6300
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C4
+U 1 1 567B275A
+P 2900 6300
+F 0 "C4" H 2910 6370 50  0000 L CNN
+F 1 "10uF" H 2910 6220 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 2900 6300 60  0001 C CNN
+F 3 "" H 2900 6300 60  0000 C CNN
+	1    2900 6300
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R2
+U 1 1 567B27BA
+P 2300 6000
+F 0 "R2" V 2400 5950 50  0000 L CNN
+F 1 "51" V 2200 5950 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 2300 6000 60  0001 C CNN
+F 3 "" H 2300 6000 60  0000 C CNN
+	1    2300 6000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L GND #PWR02
+U 1 1 567B2AA5
+P 1200 6250
+F 0 "#PWR02" H 1200 6000 50  0001 C CNN
+F 1 "GND" H 1200 6100 50  0000 C CNN
+F 2 "" H 1200 6250 60  0000 C CNN
+F 3 "" H 1200 6250 60  0000 C CNN
+	1    1200 6250
+	1    0    0    -1  
+$EndComp
+$Comp
+L SMA J1
+U 1 1 567B2CEE
+P 3500 6000
+F 0 "J1" H 3300 5900 60  0000 C CNN
+F 1 "SMA" H 3500 6200 60  0000 C CNN
+F 2 "footprints:SMA_Edgemount" H 3500 6000 60  0001 C CNN
+F 3 "" H 3500 6000 60  0000 C CNN
+	1    3500 6000
+	-1   0    0    -1  
+$EndComp
+$Comp
+L GND #PWR03
+U 1 1 567B2DB3
+P 3500 6450
+F 0 "#PWR03" H 3500 6200 50  0001 C CNN
+F 1 "GND" H 3500 6300 50  0000 C CNN
+F 2 "" H 3500 6450 60  0000 C CNN
+F 3 "" H 3500 6450 60  0000 C CNN
+	1    3500 6450
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R3
+U 1 1 567B2F06
+P 3250 6750
+F 0 "R3" V 3350 6700 50  0000 L CNN
+F 1 "4R7" V 3150 6700 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 3250 6750 60  0001 C CNN
+F 3 "" H 3250 6750 60  0000 C CNN
+	1    3250 6750
+	0    -1   -1   0   
+$EndComp
+NoConn ~ 2750 6850
+NoConn ~ 1850 6750
+$Comp
+L GND #PWR04
+U 1 1 567B32D9
+P 1750 7100
+F 0 "#PWR04" H 1750 6850 50  0001 C CNN
+F 1 "GND" H 1750 6950 50  0000 C CNN
+F 2 "" H 1750 7100 60  0000 C CNN
+F 3 "" H 1750 7100 60  0000 C CNN
+	1    1750 7100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9700 2900 9950 2900
+Wire Wire Line
+	9700 2800 9950 2800
+Wire Wire Line
+	9700 2700 9950 2700
+Wire Wire Line
+	9700 2600 9950 2600
+Wire Wire Line
+	9700 2500 9950 2500
+Wire Wire Line
+	9700 2400 9950 2400
+Wire Wire Line
+	9700 2300 9950 2300
+Wire Wire Line
+	9700 2200 9950 2200
+Wire Wire Line
+	8950 1200 8700 1200
+Wire Wire Line
+	8950 1300 8700 1300
+Wire Wire Line
+	8950 1400 8700 1400
+Wire Wire Line
+	8950 1500 8700 1500
+Wire Wire Line
+	8950 1800 8700 1800
+Wire Wire Line
+	8950 2400 8700 2400
+Wire Wire Line
+	8950 2500 8700 2500
+Wire Wire Line
+	8950 2600 8700 2600
+Wire Wire Line
+	8950 2700 8700 2700
+Wire Wire Line
+	8400 2800 8950 2800
+Wire Wire Line
+	8150 2900 8950 2900
+Wire Wire Line
+	8950 1600 8800 1600
+Wire Wire Line
+	8800 1600 8800 1700
+Wire Wire Line
+	8800 1700 8950 1700
+Connection ~ 8800 1650
+Wire Wire Line
+	1700 6200 1700 6000
+Wire Wire Line
+	1200 6000 2200 6000
+Wire Wire Line
+	2400 6000 3300 6000
+Wire Wire Line
+	2900 6000 2900 6200
+Wire Wire Line
+	1700 6400 1700 6550
+Wire Wire Line
+	1700 6550 1850 6550
+Wire Wire Line
+	2750 6550 2900 6550
+Wire Wire Line
+	2900 6550 2900 6400
+Wire Wire Line
+	1200 6250 1200 6000
+Connection ~ 1700 6000
+Connection ~ 2900 6000
+Text Label 2900 6000 0    60   ~ 0
+Input
+Wire Wire Line
+	3350 6750 3500 6750
+Text Label 3500 6750 0    60   ~ 0
+5V
+Text Label 1300 6850 0    60   ~ 0
+Vmag
+Text Label 5300 5550 0    60   ~ 0
+Vmag
+Text Label 6150 5300 2    60   ~ 0
+5V
+$Comp
+L GND #PWR05
+U 1 1 567B5123
+P 6150 6100
+F 0 "#PWR05" H 6150 5850 50  0001 C CNN
+F 1 "GND" H 6150 5950 50  0000 C CNN
+F 2 "" H 6150 6100 60  0000 C CNN
+F 3 "" H 6150 6100 60  0000 C CNN
+	1    6150 6100
+	1    0    0    -1  
+$EndComp
+$Comp
+L LM7301 U3
+U 1 1 567B52F9
+P 6150 5700
+F 0 "U3" H 6400 5450 60  0000 C CNN
+F 1 "LM7301" H 6450 5900 60  0000 C CNN
+F 2 "Housings_SOT-23_SOT-143_TSOT-6:SOT-23-5" H 6150 5650 60  0001 C CNN
+F 3 "" H 6150 5650 60  0000 C CNN
+	1    6150 5700
+	1    0    0    -1  
+$EndComp
+$Comp
+L KC5032A X1
+U 1 1 567B611F
+P 1350 1700
+F 0 "X1" H 1500 1550 60  0000 C CNN
+F 1 "KC5032A" H 1350 1850 60  0000 C CNN
+F 2 "footprints:KC5032A-CM_SMD_Crystal" H 1350 1700 60  0001 C CNN
+F 3 "" H 1350 1700 60  0000 C CNN
+	1    1350 1700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	950  1650 850  1650
+Wire Wire Line
+	850  1650 850  1450
+Wire Wire Line
+	600  1450 1850 1450
+Wire Wire Line
+	1850 1300 1850 1650
+Wire Wire Line
+	1850 1650 1750 1650
+Connection ~ 1850 1450
+Text Label 1850 1300 0    60   ~ 0
+5V
+$Comp
+L GND #PWR06
+U 1 1 567B632A
+P 900 2000
+F 0 "#PWR06" H 900 1750 50  0001 C CNN
+F 1 "GND" H 900 1850 50  0000 C CNN
+F 2 "" H 900 2000 60  0000 C CNN
+F 3 "" H 900 2000 60  0000 C CNN
+	1    900  2000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	900  1750 900  2000
+Wire Wire Line
+	900  1750 950  1750
+$Comp
+L C_Small C1
+U 1 1 567B63B5
+P 600 1750
+F 0 "C1" H 610 1820 50  0000 L CNN
+F 1 ".01uF" H 610 1670 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 600 1750 60  0001 C CNN
+F 3 "" H 600 1750 60  0000 C CNN
+	1    600  1750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	600  1650 600  1450
+Connection ~ 850  1450
+Wire Wire Line
+	600  1850 600  1950
+Wire Wire Line
+	600  1950 900  1950
+Connection ~ 900  1950
+Wire Wire Line
+	1750 1750 2700 1750
+Wire Wire Line
+	3900 1250 4100 1250
+Text Label 4100 1250 2    60   ~ 0
+SDA
+Wire Wire Line
+	2700 1550 2300 1550
+Text Label 2300 1550 0    60   ~ 0
+SCL
+Wire Wire Line
+	2700 1650 2300 1650
+Text Label 2300 1650 0    60   ~ 0
+SLD
+NoConn ~ 2700 2150
+NoConn ~ 2700 2250
+NoConn ~ 3900 2050
+$Comp
+L GND #PWR07
+U 1 1 567B700B
+P 4400 2600
+F 0 "#PWR07" H 4400 2350 50  0001 C CNN
+F 1 "GND" H 4400 2450 50  0000 C CNN
+F 2 "" H 4400 2600 60  0000 C CNN
+F 3 "" H 4400 2600 60  0000 C CNN
+	1    4400 2600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 950  4400 950 
+Wire Wire Line
+	4400 950  4400 2600
+Wire Wire Line
+	3900 2150 4400 2150
+Connection ~ 4400 2150
+Wire Wire Line
+	3900 2250 4400 2250
+Connection ~ 4400 2250
+Wire Wire Line
+	3900 1350 4400 1350
+Connection ~ 4400 1350
+Wire Wire Line
+	3900 1150 4400 1150
+Connection ~ 4400 1150
+Wire Wire Line
+	3900 1050 4400 1050
+Connection ~ 4400 1050
+Wire Wire Line
+	3900 1550 4400 1550
+Connection ~ 4400 1550
+Wire Wire Line
+	3900 1850 4400 1850
+Connection ~ 4400 1850
+$Comp
+L R_Small R9
+U 1 1 567B73DA
+P 4750 2150
+F 0 "R9" H 4780 2170 50  0000 L CNN
+F 1 "50" H 4780 2110 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 4750 2150 60  0001 C CNN
+F 3 "" H 4750 2150 60  0000 C CNN
+	1    4750 2150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 1750 4750 1750
+Wire Wire Line
+	4750 1750 4750 2050
+Wire Wire Line
+	4750 2250 4750 2500
+Wire Wire Line
+	4750 2500 4400 2500
+Connection ~ 4400 2500
+$Comp
+L C_Small C7
+U 1 1 567B75BC
+P 5600 1900
+F 0 "C7" H 5610 1970 50  0000 L CNN
+F 1 "10pF" H 5610 1820 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 5600 1900 60  0001 C CNN
+F 3 "" H 5600 1900 60  0000 C CNN
+	1    5600 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C8
+U 1 1 567B7631
+P 6000 1900
+F 0 "C8" H 6010 1970 50  0000 L CNN
+F 1 "39pF" H 6010 1820 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 6000 1900 60  0001 C CNN
+F 3 "" H 6000 1900 60  0000 C CNN
+	1    6000 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C9
+U 1 1 567B7691
+P 6400 1900
+F 0 "C9" H 6410 1970 50  0000 L CNN
+F 1 "39pF" H 6410 1820 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 6400 1900 60  0001 C CNN
+F 3 "" H 6400 1900 60  0000 C CNN
+	1    6400 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C10
+U 1 1 567B76E7
+P 6800 1900
+F 0 "C10" H 6810 1970 50  0000 L CNN
+F 1 "10pF" H 6810 1820 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 6800 1900 60  0001 C CNN
+F 3 "" H 6800 1900 60  0000 C CNN
+	1    6800 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L L_Small L1
+U 1 1 567B781E
+P 5800 1650
+F 0 "L1" H 5830 1690 50  0000 L CNN
+F 1 "270nH" H 5830 1610 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 5800 1650 60  0001 C CNN
+F 3 "" H 5800 1650 60  0000 C CNN
+	1    5800 1650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L L_Small L2
+U 1 1 567B7A95
+P 6200 1650
+F 0 "L2" H 6230 1690 50  0000 L CNN
+F 1 "470nH" H 6230 1610 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 6200 1650 60  0001 C CNN
+F 3 "" H 6200 1650 60  0000 C CNN
+	1    6200 1650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L L_Small L3
+U 1 1 567B7C20
+P 6600 1650
+F 0 "L3" H 6630 1690 50  0000 L CNN
+F 1 "270nH" H 6630 1610 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 6600 1650 60  0001 C CNN
+F 3 "" H 6600 1650 60  0000 C CNN
+	1    6600 1650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R_Small R10
+U 1 1 567B7F0E
+P 5300 1900
+F 0 "R10" H 5330 1920 50  0000 L CNN
+F 1 "100" H 5330 1860 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 5300 1900 60  0001 C CNN
+F 3 "" H 5300 1900 60  0000 C CNN
+	1    5300 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R13
+U 1 1 567B7F96
+P 7100 1900
+F 0 "R13" H 7130 1920 50  0000 L CNN
+F 1 "100" H 7130 1860 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 7100 1900 60  0001 C CNN
+F 3 "" H 7100 1900 60  0000 C CNN
+	1    7100 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3900 1650 5700 1650
+Wire Wire Line
+	5300 1650 5300 1800
+Connection ~ 5300 1650
+Wire Wire Line
+	5900 1650 6100 1650
+Wire Wire Line
+	6300 1650 6500 1650
+Wire Wire Line
+	6700 1650 7300 1650
+Wire Wire Line
+	6800 1650 6800 1800
+Wire Wire Line
+	6400 1800 6400 1650
+Connection ~ 6400 1650
+Wire Wire Line
+	6000 1800 6000 1650
+Connection ~ 6000 1650
+Wire Wire Line
+	5600 1800 5600 1650
+Connection ~ 5600 1650
+Wire Wire Line
+	7100 1650 7100 1800
+Connection ~ 6800 1650
+Wire Wire Line
+	7100 2200 7100 2000
+Wire Wire Line
+	5300 2200 7100 2200
+Wire Wire Line
+	5300 2200 5300 2000
+Wire Wire Line
+	5600 2000 5600 2200
+Connection ~ 5600 2200
+Wire Wire Line
+	6000 2000 6000 2200
+Connection ~ 6000 2200
+Wire Wire Line
+	6400 2000 6400 2200
+Connection ~ 6400 2200
+Wire Wire Line
+	6800 2000 6800 2200
+Connection ~ 6800 2200
+$Comp
+L GND #PWR08
+U 1 1 567B904B
+P 6200 2300
+F 0 "#PWR08" H 6200 2050 50  0001 C CNN
+F 1 "GND" H 6200 2150 50  0000 C CNN
+F 2 "" H 6200 2300 60  0000 C CNN
+F 3 "" H 6200 2300 60  0000 C CNN
+	1    6200 2300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6200 2300 6200 2200
+Connection ~ 6200 2200
+Connection ~ 7100 1650
+Text Label 7300 1650 2    60   ~ 0
+RF
+$Comp
+L R_Small R1
+U 1 1 567B9D46
+P 1900 2500
+F 0 "R1" H 1930 2520 50  0000 L CNN
+F 1 "3k92" H 1930 2460 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 1900 2500 60  0001 C CNN
+F 3 "" H 1900 2500 60  0000 C CNN
+	1    1900 2500
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR09
+U 1 1 567B9E90
+P 1900 2700
+F 0 "#PWR09" H 1900 2450 50  0001 C CNN
+F 1 "GND" H 1900 2550 50  0000 C CNN
+F 2 "" H 1900 2700 60  0000 C CNN
+F 3 "" H 1900 2700 60  0000 C CNN
+	1    1900 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1900 2600 1900 2700
+Wire Wire Line
+	1900 2400 1900 2050
+Wire Wire Line
+	1900 2050 2700 2050
+$Comp
+L GND #PWR010
+U 1 1 567BA433
+P 2250 2700
+F 0 "#PWR010" H 2250 2450 50  0001 C CNN
+F 1 "GND" H 2250 2550 50  0000 C CNN
+F 2 "" H 2250 2700 60  0000 C CNN
+F 3 "" H 2250 2700 60  0000 C CNN
+	1    2250 2700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2250 1850 2700 1850
+Wire Wire Line
+	2250 950  2250 2700
+Wire Wire Line
+	2700 1350 2250 1350
+Connection ~ 2250 1850
+Wire Wire Line
+	2700 1050 2250 1050
+Connection ~ 2250 1350
+Wire Wire Line
+	2700 950  2250 950 
+Connection ~ 2250 1050
+Wire Wire Line
+	2600 1950 2700 1950
+Wire Wire Line
+	2600 600  2600 1950
+Wire Wire Line
+	2700 1450 2600 1450
+Connection ~ 2600 1450
+Wire Wire Line
+	2700 1250 2600 1250
+Connection ~ 2600 1250
+Wire Wire Line
+	2700 1150 2600 1150
+Connection ~ 2600 1150
+Text Label 2600 600  0    60   ~ 0
+5V
+Wire Wire Line
+	3900 1450 4250 1450
+Text Label 4250 1450 2    60   ~ 0
+5V
+Wire Wire Line
+	3900 1950 4250 1950
+Text Label 4250 1950 2    60   ~ 0
+5V
+Wire Wire Line
+	2750 6750 3150 6750
+Wire Wire Line
+	2750 6650 2850 6650
+Wire Wire Line
+	2850 6650 2850 6750
+Connection ~ 2850 6750
+$Comp
+L C_Small C11
+U 1 1 567C5D7E
+P 7950 4600
+F 0 "C11" H 7960 4670 50  0000 L CNN
+F 1 ".1uF" H 7960 4520 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 7950 4600 60  0001 C CNN
+F 3 "" H 7950 4600 60  0000 C CNN
+	1    7950 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C12
+U 1 1 567C6091
+P 8200 4600
+F 0 "C12" H 8210 4670 50  0000 L CNN
+F 1 ".1uF" H 8210 4520 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 8200 4600 60  0001 C CNN
+F 3 "" H 8200 4600 60  0000 C CNN
+	1    8200 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C13
+U 1 1 567C6113
+P 8450 4600
+F 0 "C13" H 8460 4670 50  0000 L CNN
+F 1 ".1uF" H 8460 4520 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 8450 4600 60  0001 C CNN
+F 3 "" H 8450 4600 60  0000 C CNN
+	1    8450 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C14
+U 1 1 567C619C
+P 8700 4600
+F 0 "C14" H 8710 4670 50  0000 L CNN
+F 1 ".1uF" H 8710 4520 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 8700 4600 60  0001 C CNN
+F 3 "" H 8700 4600 60  0000 C CNN
+	1    8700 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C15
+U 1 1 567C6228
+P 8950 4600
+F 0 "C15" H 8960 4670 50  0000 L CNN
+F 1 ".1uF" H 8960 4520 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 8950 4600 60  0001 C CNN
+F 3 "" H 8950 4600 60  0000 C CNN
+	1    8950 4600
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C5
+U 1 1 567C63EB
+P 2950 7050
+F 0 "C5" H 2960 7120 50  0000 L CNN
+F 1 ".1uF" H 2960 6970 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 2950 7050 60  0001 C CNN
+F 3 "" H 2950 7050 60  0000 C CNN
+	1    2950 7050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7950 4500 7950 4400
+Wire Wire Line
+	7950 4400 8950 4400
+Wire Wire Line
+	7950 4700 7950 4800
+Wire Wire Line
+	7950 4800 8950 4800
+Wire Wire Line
+	8200 4700 8200 4800
+Connection ~ 8200 4800
+Wire Wire Line
+	8450 4700 8450 4800
+Connection ~ 8450 4800
+Wire Wire Line
+	8700 4700 8700 4950
+Connection ~ 8700 4800
+Wire Wire Line
+	8200 4500 8200 4400
+Connection ~ 8200 4400
+Wire Wire Line
+	8450 4500 8450 4400
+Connection ~ 8450 4400
+Wire Wire Line
+	8700 4400 8700 4500
+Connection ~ 8700 4400
+$Comp
+L GND #PWR011
+U 1 1 567C76A2
+P 8700 4950
+F 0 "#PWR011" H 8700 4700 50  0001 C CNN
+F 1 "GND" H 8700 4800 50  0000 C CNN
+F 2 "" H 8700 4950 60  0000 C CNN
+F 3 "" H 8700 4950 60  0000 C CNN
+	1    8700 4950
+	1    0    0    -1  
+$EndComp
+Text Label 8950 4250 0    60   ~ 0
+5V
+Text Notes 9250 4800 0    60   ~ 0
+Decoupling Caps:\n\n- LM7301 x 1\n- AD9851 x 4
+Text Notes 5750 1300 0    60   ~ 0
+72MHz Butterworth LPF\nMatched to 100 Ohms
+Wire Wire Line
+	6150 6100 6150 6100
+Wire Wire Line
+	6750 5700 7150 5700
+Wire Wire Line
+	7000 5700 7000 6450
+Wire Wire Line
+	5550 5850 5550 6550
+Wire Wire Line
+	5550 5850 5650 5850
+Wire Wire Line
+	5300 5550 5650 5550
+Connection ~ 7000 5700
+Text Label 7150 5700 2    60   ~ 0
+A0
+Wire Wire Line
+	1850 6650 1750 6650
+Wire Wire Line
+	1750 6650 1750 7100
+Wire Wire Line
+	1300 6850 1850 6850
+Wire Wire Line
+	3350 6350 3350 6400
+Wire Wire Line
+	3350 6400 3650 6400
+Wire Wire Line
+	3650 6400 3650 6350
+Wire Wire Line
+	3450 6350 3450 6400
+Connection ~ 3450 6400
+Wire Wire Line
+	3550 6350 3550 6400
+Connection ~ 3550 6400
+Wire Wire Line
+	3500 6450 3500 6400
+Connection ~ 3500 6400
+NoConn ~ 8950 1200
+NoConn ~ 8950 1300
+NoConn ~ 8950 1400
+NoConn ~ 8950 1800
+NoConn ~ 9700 2200
+NoConn ~ 9700 2300
+NoConn ~ 9700 2400
+NoConn ~ 9700 2500
+NoConn ~ 9700 2600
+NoConn ~ 9700 2700
+NoConn ~ 9700 2800
+NoConn ~ 9700 2900
+NoConn ~ 8950 2900
+NoConn ~ 8950 2800
+NoConn ~ 8950 2700
+NoConn ~ 8950 2600
+NoConn ~ 8950 2500
+$Comp
+L R_Small R15
+U 1 1 567C1CD7
+P 8400 2600
+F 0 "R15" H 8430 2620 50  0000 L CNN
+F 1 "2k" H 8430 2560 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 8400 2600 60  0001 C CNN
+F 3 "" H 8400 2600 60  0000 C CNN
+	1    8400 2600
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R14
+U 1 1 567C1D6D
+P 8150 2600
+F 0 "R14" H 8180 2620 50  0000 L CNN
+F 1 "2k" H 8180 2560 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 8150 2600 60  0001 C CNN
+F 3 "" H 8150 2600 60  0000 C CNN
+	1    8150 2600
+	1    0    0    -1  
+$EndComp
+Text Label 8400 2250 2    60   ~ 0
+5V
+Wire Wire Line
+	2950 6950 2950 6750
+Connection ~ 2950 6750
+$Comp
+L GND #PWR012
+U 1 1 567C5089
+P 2950 7200
+F 0 "#PWR012" H 2950 6950 50  0001 C CNN
+F 1 "GND" H 2950 7050 50  0000 C CNN
+F 2 "" H 2950 7200 60  0000 C CNN
+F 3 "" H 2950 7200 60  0000 C CNN
+	1    2950 7200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2950 7200 2950 7150
+Wire Wire Line
+	8150 2900 8150 2700
+Wire Wire Line
+	8400 2700 8400 2800
+Wire Wire Line
+	8400 2250 8400 2500
+Wire Wire Line
+	8150 2500 8150 2400
+Wire Wire Line
+	8150 2400 8400 2400
+Connection ~ 8400 2400
+Text Label 8200 2900 0    60   ~ 0
+SCL
+Text Label 8400 2800 0    60   ~ 0
+SDA
+Text Label 8700 2700 0    60   ~ 0
+SLD
+$Comp
+L R_Small R12
+U 1 1 569C48EE
+P 6250 6450
+F 0 "R12" V 6350 6400 50  0000 L CNN
+F 1 "1k" V 6150 6400 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 6250 6450 60  0001 C CNN
+F 3 "" H 6250 6450 60  0000 C CNN
+	1    6250 6450
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R_Small R11
+U 1 1 569C497B
+P 5550 6650
+F 0 "R11" V 5650 6600 50  0000 L CNN
+F 1 "1k" V 5450 6600 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 5550 6650 60  0001 C CNN
+F 3 "" H 5550 6650 60  0000 C CNN
+	1    5550 6650
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6150 6450 5550 6450
+Connection ~ 5550 6450
+Wire Wire Line
+	7000 6450 6350 6450
+$Comp
+L GND #PWR013
+U 1 1 569C4E3C
+P 5550 6850
+F 0 "#PWR013" H 5550 6600 50  0001 C CNN
+F 1 "GND" H 5550 6700 50  0000 C CNN
+F 2 "" H 5550 6850 60  0000 C CNN
+F 3 "" H 5550 6850 60  0000 C CNN
+	1    5550 6850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5550 6750 5550 6850
+Wire Wire Line
+	8950 4800 8950 4700
+Wire Wire Line
+	8950 4250 8950 4500
+Connection ~ 8950 4400
+$Comp
+L MMBT3904 Q1
+U 1 1 569C5979
+P 3600 4100
+F 0 "Q1" H 3800 4175 50  0000 L CNN
+F 1 "MMBT3904" H 3800 4100 50  0000 L CNN
+F 2 "footprints:SOT-23" H 3800 4025 50  0001 L CIN
+F 3 "" H 3600 4100 50  0000 L CNN
+	1    3600 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L MMBT3904 Q2
+U 1 1 569C5AE9
+P 4300 3800
+F 0 "Q2" H 4500 3875 50  0000 L CNN
+F 1 "MMBT3904" H 4500 3800 50  0000 L CNN
+F 2 "footprints:SOT-23" H 4500 3725 50  0001 L CIN
+F 3 "" H 4300 3800 50  0000 L CNN
+	1    4300 3800
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R5
+U 1 1 569C5CEA
+P 3700 3550
+F 0 "R5" H 3730 3570 50  0000 L CNN
+F 1 "220" H 3730 3510 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 3700 3550 60  0001 C CNN
+F 3 "" H 3700 3550 60  0000 C CNN
+	1    3700 3550
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R7
+U 1 1 569C5E7A
+P 4400 5000
+F 0 "R7" H 4430 5020 50  0000 L CNN
+F 1 "220" H 4430 4960 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 4400 5000 60  0001 C CNN
+F 3 "" H 4400 5000 60  0000 C CNN
+	1    4400 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L POT Pot
+U 1 1 569C5F66
+P 2900 4100
+F 0 "Pot" H 2900 4000 50  0000 C CNN
+F 1 "1k" H 2900 4100 50  0000 C CNN
+F 2 "footprints:ST4ETB_Trim_Pot" H 2900 4100 60  0001 C CNN
+F 3 "" H 2900 4100 60  0000 C CNN
+	1    2900 4100
+	1    0    0    -1  
+$EndComp
+$Comp
+L C_Small C3
+U 1 1 569C622C
+P 2500 4100
+F 0 "C3" H 2510 4170 50  0000 L CNN
+F 1 "10uF" H 2510 4020 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 2500 4100 60  0001 C CNN
+F 3 "" H 2500 4100 60  0000 C CNN
+	1    2500 4100
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	2600 4100 2650 4100
+Wire Wire Line
+	2400 4100 2250 4100
+Text Label 2250 4100 2    60   ~ 0
+RF
+$Comp
+L R_Small R4
+U 1 1 569C72B0
+P 3350 5000
+F 0 "R4" H 3380 5020 50  0000 L CNN
+F 1 "100" H 3380 4960 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 3350 5000 60  0001 C CNN
+F 3 "" H 3350 5000 60  0000 C CNN
+	1    3350 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L R_Small R6
+U 1 1 569C7362
+P 3900 4650
+F 0 "R6" H 3930 4670 50  0000 L CNN
+F 1 "220" H 3930 4610 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 3900 4650 60  0001 C CNN
+F 3 "" H 3900 4650 60  0000 C CNN
+	1    3900 4650
+	0    -1   -1   0   
+$EndComp
+$Comp
+L R_Small R8
+U 1 1 569C7601
+P 4600 4250
+F 0 "R8" H 4630 4270 50  0000 L CNN
+F 1 "47" H 4630 4210 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 4600 4250 60  0001 C CNN
+F 3 "" H 4600 4250 60  0000 C CNN
+	1    4600 4250
+	0    -1   -1   0   
+$EndComp
+$Comp
+L C_Small C6
+U 1 1 569C7704
+P 4900 4250
+F 0 "C6" H 4910 4320 50  0000 L CNN
+F 1 "10uF" H 4910 4170 50  0000 L CNN
+F 2 "footprints:Custom_0805" H 4900 4250 60  0001 C CNN
+F 3 "" H 4900 4250 60  0000 C CNN
+	1    4900 4250
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3300 4100 3400 4100
+Wire Wire Line
+	3350 4100 3350 4900
+Connection ~ 3350 4100
+Wire Wire Line
+	3350 4650 3800 4650
+Connection ~ 3350 4650
+Wire Wire Line
+	4400 4000 4400 4900
+Wire Wire Line
+	3700 3650 3700 3900
+Wire Wire Line
+	3700 3450 3700 3350
+Wire Wire Line
+	3700 3350 4400 3350
+Wire Wire Line
+	4400 3350 4400 3600
+Wire Wire Line
+	4050 3350 4050 3200
+Connection ~ 4050 3350
+Text Label 4050 3200 0    60   ~ 0
+5V
+Wire Wire Line
+	3700 3800 4100 3800
+Connection ~ 3700 3800
+Wire Wire Line
+	4000 4650 4400 4650
+Connection ~ 4400 4650
+Wire Wire Line
+	4500 4250 4400 4250
+Connection ~ 4400 4250
+Wire Wire Line
+	4700 4250 4800 4250
+$Comp
+L GND #PWR014
+U 1 1 569C8DF9
+P 3700 4350
+F 0 "#PWR014" H 3700 4100 50  0001 C CNN
+F 1 "GND" H 3700 4200 50  0000 C CNN
+F 2 "" H 3700 4350 60  0000 C CNN
+F 3 "" H 3700 4350 60  0000 C CNN
+	1    3700 4350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3700 4350 3700 4300
+$Comp
+L SMA J2
+U 1 1 569C9F74
+P 5450 4250
+F 0 "J2" H 5200 4150 60  0000 C CNN
+F 1 "SMA" H 5450 4450 60  0000 C CNN
+F 2 "footprints:SMA_Edgemount" H 5450 4250 60  0001 C CNN
+F 3 "" H 5450 4250 60  0000 C CNN
+	1    5450 4250
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	5000 4250 5250 4250
+$Comp
+L GND #PWR015
+U 1 1 569CA262
+P 3350 5200
+F 0 "#PWR015" H 3350 4950 50  0001 C CNN
+F 1 "GND" H 3350 5050 50  0000 C CNN
+F 2 "" H 3350 5200 60  0000 C CNN
+F 3 "" H 3350 5200 60  0000 C CNN
+	1    3350 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR016
+U 1 1 569CA2F7
+P 4400 5200
+F 0 "#PWR016" H 4400 4950 50  0001 C CNN
+F 1 "GND" H 4400 5050 50  0000 C CNN
+F 2 "" H 4400 5200 60  0000 C CNN
+F 3 "" H 4400 5200 60  0000 C CNN
+	1    4400 5200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4400 5100 4400 5200
+Wire Wire Line
+	3350 5200 3350 5100
+$Comp
+L GND #PWR017
+U 1 1 569CA61D
+P 5450 4800
+F 0 "#PWR017" H 5450 4550 50  0001 C CNN
+F 1 "GND" H 5450 4650 50  0000 C CNN
+F 2 "" H 5450 4800 60  0000 C CNN
+F 3 "" H 5450 4800 60  0000 C CNN
+	1    5450 4800
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5300 4600 5300 4700
+Wire Wire Line
+	5300 4700 5600 4700
+Wire Wire Line
+	5600 4700 5600 4600
+Wire Wire Line
+	5400 4600 5400 4700
+Connection ~ 5400 4700
+Wire Wire Line
+	5500 4600 5500 4700
+Connection ~ 5500 4700
+Wire Wire Line
+	5450 4800 5450 4700
+Connection ~ 5450 4700
+Wire Wire Line
+	2900 3950 2900 3900
+Wire Wire Line
+	2900 3900 3300 3900
+Wire Wire Line
+	3300 3900 3300 4100
+NoConn ~ 3150 4100
+Text Notes 5750 4250 0    60   ~ 0
+50 Ohm output impedance.\nWill drive 0 dBm into 50 Ohm load.
+$EndSCHEMATC
