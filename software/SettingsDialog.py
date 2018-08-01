@@ -40,10 +40,9 @@ class SettingsDialog(object):
 			self.settings['hardware']['type'] = 'dummy';
 		if self.selectedType.current() == 1:
 			self.settings['hardware']['type'] = 'arduino';
-		
+
 		self.settings['settings']['version'] = '1';
 		self.root.destroy()
 
 	def run(self):
 		self.root.mainloop()
-

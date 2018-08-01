@@ -15,10 +15,6 @@ import DataModel;
 
 
 
-SERIALPORT = "/dev/tty.usbmodem641" # For the Mac
-#SERIALPORT = "COM5"
-BAUD = 115200
-
 resetSweep = FALSE
 refReady = FALSE
 
@@ -70,16 +66,16 @@ class AnalyzerFrame(object):
 		b = ttk.Button(controlArea, text="Ref Lvl -1", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p))
 		b.grid(column = 2, row = 1)
 
-		b = ttk.Button(controlArea, text="+ Samples", width=10)#, command=BIncSampSweep)
+		b = ttk.Button(controlArea, text="+ Samples", width=10, command=lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
 		b.grid(column = 3, row = 0)
 
-		b = ttk.Button(controlArea, text="- Samples", width=10)#, command=BDecSampSweep)
+		b = ttk.Button(controlArea, text="- Samples", width=10, command=lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
 		b.grid(column = 3, row = 1)
 
-		b = ttk.Button(controlArea, text="Set Freqs", width=10)#, command=BSetFreqs)
+		b = ttk.Button(controlArea, text="Set Freqs", width=10, command=lambda p=self: AnalyzerFrame.buttonSetFreqs(p))
 		b.grid(column = 4, row = 0)
 
-		b = ttk.Button(controlArea, text="Calibrate", width=10)#, command=BCalibrate)
+		b = ttk.Button(controlArea, text="Calibrate", width=10, command=lambda p=self: AnalyzerFrame.buttonCalibrate(p))
 		b.grid(column = 5, row = 0)
 
 
@@ -89,6 +85,68 @@ class AnalyzerFrame(object):
 
 	def windowClose(self):
 		self.root.destroy()
+
+
+	def buttonCalibrate(self):
+		measMode = 2
+		
+		SetupArrays()
+	
+		txt = "Creating reference!"
+		graph.create_text(graphWidth / 2 + graphLeftBuffer, graphTopBuffer + graphHeight / 2, text=txt, font=tkFont.Font(size=32), fill='Red')
+		self.root.update()
+		
+		## TODO Synchronisation!!!!
+		while refReady == FALSE:
+			sleep(.001)
+	
+		reference[::] = readings[::]
+	
+		refReady = FALSE
+		measMode = 1
+	
+		self.graph.updateGraph()
+
+
+	def buttonDecSampSweep(self):
+		if self.model.numSamplesIndex <= 0:
+			self.model.numSamplesIndex = 0
+		else:
+			self.model.numSamplesIndex = self.model.numSamplesIndex - 1
+
+		self.model.measMode = 0
+
+		self.model.setupArrays()
+		self.graph.updateGraph()
+
+
+	def buttonIncSampSweep(self):
+		if self.model.numSamplesIndex >= 5:
+			self.model.numSamplesIndex = 5
+		else:
+			self.model.numSamplesIndex = self.model.numSamplesIndex + 1
+
+		self.model.measMode = 0
+
+		self.model.setupArrays()
+		self.graph.updateGraph()
+
+
+	def buttonSetFreqs(self):
+		prompt = "Set the sweep starting frequency (MHz):"
+		retVal = simpledialog.askfloat("Set Start Frequency", prompt, parent=root, initialvalue=self.model.startFreq / 1000000, minvalue=0, maxvalue=72)
+		if retVal is not None:
+			startFreq = retVal * 1000000
+
+		prompt = "Set the sweep stopping frequency (MHz):"
+		retVal = simpledialog.askfloat("Set Stop Frequency", prompt, parent=root, initialvalue=self.model.stopFreq / 1000000, minvalue=0, maxvalue=72)
+		if retVal is not None:
+			self.model.stopFreq = retVal * 1000000
+
+		self.model.measMode = 0
+
+		self.model.setupArrays()
+		self.graph.updateGraph()
 
 
 	def buttonDBDivInc(self):
@@ -118,7 +176,7 @@ class AnalyzerFrame(object):
 		self.graph.updateGraph()
 
 
-	def buttonRrefLevelIncOne(self):
+	def buttonRefLevelIncOne(self):
 		self.model.refLevel = self.model.refLevel + 1
 
 		if self.model.refLevel >= 20:
@@ -127,7 +185,7 @@ class AnalyzerFrame(object):
 		self.graph.updateGraph()
 
 
-	def buttonRrefLevelDecTen(self):
+	def buttonRefLevelDecTen(self):
 		self.model.refLevel = self.model.refLevel - 10
 
 		if self.model.refLevel <= -60:
@@ -136,7 +194,7 @@ class AnalyzerFrame(object):
 		self.graph.updateGraph()
 
 
-	def buttonRrefLevelDecOne(self):
+	def buttonRefLevelDecOne(self):
 		self.model.refLevel = self.model.refLevel - 1
 
 		if self.model.refLevel <= -60:
@@ -153,181 +211,6 @@ class AnalyzerFrame(object):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
-
-
-def BSetFreqs():
-	prompt = "Set the sweep starting frequency (MHz):"
-	retVal = simpledialog.askfloat("Set Start Frequency", prompt, parent = root, initialvalue = self.model.startFreq / 1000000, minvalue=0, maxvalue=72)
-	if retVal is not None:
-		startFreq = retVal*1000000
-
-	prompt = "Set the sweep stopping frequency (MHz):"
-	retVal = simpledialog.askfloat("Set Stop Frequency", prompt, parent=root, initialvalue=self.model.stopFreq / 1000000, minvalue=0, maxvalue=72)
-	if retVal is not None:
-		self.model.stopFreq = retVal * 1000000
-
-	self.model.measMode = 0
-
-	SetupArrays()
-	UpdateGraph()
-
-		
-def BIncSampSweep():
-	global numSamplesIndex
-
-	if numSamplesIndex >= 5:
-		numSamplesIndex = 5
-	else:
-		numSamplesIndex = numSamplesIndex + 1
-
-	self.model.measMode = 0
-
-	SetupArrays()
-	UpdateGraph()
-
-		
-def BDecSampSweep():
-	global numSamplesIndex
-
-	if numSamplesIndex <= 0:
-		numSamplesIndex = 0
-	else:
-		numSamplesIndex = numSamplesIndex - 1
-
-	self.model.measMode = 0
-
-	SetupArrays()
-	UpdateGraph()
-
-
-def BCalibrate():
-	self.model.measMode = 2
-
-	SetupArrays()
-
-	txt = "Creating reference!"
-	graph.create_text(graphWidth/2 + graphLeftBuffer, graphTopBuffer + graphHeight/2, text = txt, font=tkFont.Font(size=32), fill='Red')
-	root.update()
-	while refReady == FALSE:
-		sleep(.001)
-
-	reference[::] = readings[::]
-
-	refReady = FALSE
-	self.model.measMode = 1
-
-	UpdateGraph()
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-# ================ Call main routines ===============================
-def Sweep():
-	while (True):
-		# UpdateGraph()
-		MakeTrace()
-		root.update_idletasks()
-		root.update()
-
-def BSetFreqs():
-	global startFreq
-	global stopFreq
-	global measMode
-	
-	prompt = "Set the sweep starting frequency (MHz):"
-	retVal = simpledialog.askfloat("Set Start Frequency", prompt, parent = root, initialvalue = startFreq/1000000, minvalue = 0, maxvalue = 72)
-	if retVal is not None:
-		startFreq = retVal*1000000
-		
-	prompt = "Set the sweep stopping frequency (MHz):"
-	retVal = simpledialog.askfloat("Set Stop Frequency", prompt, parent = root, initialvalue = stopFreq/1000000, minvalue = 0, maxvalue = 72)
-	if retVal is not None:
-		stopFreq = retVal*1000000
-	
-	measMode = 0
-	
-	SetupArrays()
-	UpdateGraph()
-		
-def BIncSampSweep():
-	global numSamplesIndex
-	global measMode
-	
-	if numSamplesIndex >= 5:
-		numSamplesIndex = 5
-	else:
-		numSamplesIndex = numSamplesIndex + 1
-	
-	measMode = 0
-	
-	SetupArrays()
-	UpdateGraph()
-		
-def BDecSampSweep():
-	global numSamplesIndex
-	global measMode
-	
-	if numSamplesIndex <= 0:
-		numSamplesIndex = 0
-	else:
-		numSamplesIndex = numSamplesIndex - 1
-	
-	measMode = 0
-	
-	SetupArrays()
-	UpdateGraph()
-	
-def BCalibrate():
-	global measMode
-	global refReady
-	global reference
-	global readings
-	
-	measMode = 2
-		
-	SetupArrays()
-	
-	txt = "Creating reference!"
-	graph.create_text(graphWidth/2 + graphLeftBuffer, graphTopBuffer + graphHeight/2, text = txt, font=tkFont.Font(size=32), fill='Red')
-	root.update()
-	while refReady == FALSE:
-		sleep(.001)
-	
-	reference[::] = readings[::]
-	
-	refReady = FALSE
-	measMode = 1
-	
-	UpdateGraph()
-	
 # ================ Call main routines ===============================
 def Sweep():
 	while (True):
