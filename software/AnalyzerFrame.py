@@ -75,7 +75,40 @@ class AnalyzerFrame(object):
 		self.addToolButton("sample-inc.png", "+ Samples", lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
 		self.addToolButton("sample-dec.png", "- Samples", lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
 		self.addToolbarSpacer()
-		self.addToolButton("frequency.png", "Set Frequencies", lambda p=self: AnalyzerFrame.buttonSetFreqs(p))
+		
+		self.frequency = Frame(self.toolbar, bd=1)
+
+		label = Label(self.frequency, text='Start sweep')
+		label.grid(column=0, row=0)
+		label = Label(self.frequency, text='End sweep')
+		label.grid(column=0, row=1)
+
+		label = Label(self.frequency, text='MHz')
+		label.grid(column=2, row=0)
+		label = Label(self.frequency, text='MHz')
+		label.grid(column=2, row=1)
+
+		self.txtStartFreqText = StringVar();
+		self.txtStartFreq = Entry(self.frequency, width=6, textvariable=self.txtStartFreqText)
+		self.txtStartFreq.grid(column=1, row=0)
+
+		self.txtEndFreqText = StringVar();
+		self.txtEndFreq = Entry(self.frequency, width=6, textvariable=self.txtEndFreqText)
+		self.txtEndFreq.grid(column=1, row=1)
+		self.loadFrequencies()
+
+		self.frequency.pack(side=LEFT, padx=2, pady=2)
+
+		image = Image.open("icon/apply-24.png")
+		icon = ImageTk.PhotoImage(image)
+		self.icons.append(icon)
+
+		button = Button(self.frequency, image=icon, relief=FLAT, command=lambda p=self: AnalyzerFrame.applyFrequencies(p))
+		button.grid(column=3, row=1)
+		CreateToolTip(button, "Apply sweep frequencies")
+
+		self.addToolbarSpacer()
+
 		self.addToolButton("settings.png", "Settings", lambda p=self: AnalyzerFrame.buttonShowSettings(p))
 		self.addToolButton("calibrate.png", "Calibrate", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
 		self.addToolbarSpacer()
@@ -99,6 +132,20 @@ class AnalyzerFrame(object):
 		button.pack(side=LEFT, padx=2, pady=2)
 
 		CreateToolTip(button, tooltip)
+
+
+	def applyFrequencies(self):
+		self.model.startFreq = float(self.txtStartFreq.get()) * 1000000
+		self.model.stopFreq = float(self.txtEndFreq.get()) * 1000000
+		self.model.measMode = 0
+		self.model.setupArrays()
+		self.graph.updateGraph()
+		self.loadFrequencies()
+
+
+	def loadFrequencies(self):
+		self.txtStartFreqText.set(str(self.model.startFreq / 1000000.0))
+		self.txtEndFreqText.set(str(self.model.stopFreq / 1000000.0))
 
 
 	## Callback for data updates, this method can be called from any thread
@@ -167,23 +214,6 @@ class AnalyzerFrame(object):
 			self.model.numSamplesIndex = 5
 		else:
 			self.model.numSamplesIndex = self.model.numSamplesIndex + 1
-
-		self.model.measMode = 0
-
-		self.model.setupArrays()
-		self.graph.updateGraph()
-
-
-	def buttonSetFreqs(self):
-		prompt = "Set the sweep starting frequency (MHz):"
-		retVal = simpledialog.askfloat("Set Start Frequency", prompt, parent=root, initialvalue=self.model.startFreq / 1000000, minvalue=0, maxvalue=72)
-		if retVal is not None:
-			startFreq = retVal * 1000000
-
-		prompt = "Set the sweep stopping frequency (MHz):"
-		retVal = simpledialog.askfloat("Set Stop Frequency", prompt, parent=root, initialvalue=self.model.stopFreq / 1000000, minvalue=0, maxvalue=72)
-		if retVal is not None:
-			self.model.stopFreq = retVal * 1000000
 
 		self.model.measMode = 0
 
