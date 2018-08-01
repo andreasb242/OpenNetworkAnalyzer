@@ -5,9 +5,11 @@
 
 from tkinter import *
 from tkinter import simpledialog
+from PIL import Image, ImageTk
 
 import OutputGraph
 import DataModel;
+from CreateToolTip import CreateToolTip
 
 ## TODO Remove
 from time import sleep
@@ -17,7 +19,10 @@ refReady = FALSE
 
 
 
-
+#style.map("Checkbox.Treeview",
+#fieldbackground=[("disabled", '#E6E6E6')],
+#foreground=[("disabled", 'gray40')],
+#background=[("disabled", '#E6E6E6')])
 
 
 class AnalyzerFrame(object):
@@ -32,51 +37,90 @@ class AnalyzerFrame(object):
 
 	def initUi(self):
 		self.root = Tk()
-		self.root.resizable(False, False)
 		self.root.title('Scalar Network Analyzer')
 
-		window = ttk.Frame(self.root, padding=5)
-		window.grid()
-		window.grid_columnconfigure(0, weight=1)
+		self.window = ttk.Frame(self.root, padding=5)
+		self.window.grid()
+		self.window.grid_columnconfigure(0, weight=1)
 
-		graphArea = ttk.Frame(window)
-		graphArea.grid(column=0, row=0)
+		self.initToolbar()
+
+		graphArea = ttk.Frame(self.window)
+		graphArea.grid(column=0, row=2)
 
 		self.graph = OutputGraph.OutputGraph(graphArea, self.model)
 		self.graph.updateGraph()
+		
+		self.initButtonList()
 
-		controlArea = ttk.LabelFrame(window, text="Controls", borderwidth=10)
-		controlArea.grid(column=0, row=1, sticky=(N,E,S,W))
+
+	def initButtonList(self):
+		controlArea = ttk.LabelFrame(self.window, text="Controls", borderwidth=10)
+		controlArea.grid(column=0, row=1, sticky=(N, E, S, W))
 
 		b = ttk.Button(controlArea, text="dB/div +", width=10, command=lambda p=self: AnalyzerFrame.buttonDBDivInc(p))
-		b.grid(column = 0, row = 0)
+		b.grid(column=0, row=0)
 
 		b = ttk.Button(controlArea, text="dB/div -", width=10, command=lambda p=self: AnalyzerFrame.buttonDBDivDec(p))
-		b.grid(column = 0, row = 1)
+		b.grid(column=0, row=1)
 
 		b = ttk.Button(controlArea, text="Ref Lvl +10", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p))
-		b.grid(column = 1, row = 0)
+		b.grid(column=1, row=0)
 
 		b = ttk.Button(controlArea, text="Ref Lvl -10", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelDecTen(p))
-		b.grid(column = 1, row = 1)
+		b.grid(column=1, row=1)
 
 		b = ttk.Button(controlArea, text="Ref Lvl +1", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p))
-		b.grid(column = 2, row = 0)
+		b.grid(column=2, row=0)
 
 		b = ttk.Button(controlArea, text="Ref Lvl -1", width=10, command=lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p))
-		b.grid(column = 2, row = 1)
+		b.grid(column=2, row=1)
 
 		b = ttk.Button(controlArea, text="+ Samples", width=10, command=lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
-		b.grid(column = 3, row = 0)
+		b.grid(column=3, row=0)
 
 		b = ttk.Button(controlArea, text="- Samples", width=10, command=lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
-		b.grid(column = 3, row = 1)
+		b.grid(column=3, row=1)
 
 		b = ttk.Button(controlArea, text="Set Freqs", width=10, command=lambda p=self: AnalyzerFrame.buttonSetFreqs(p))
-		b.grid(column = 4, row = 0)
+		b.grid(column=4, row=0)
 
 		b = ttk.Button(controlArea, text="Calibrate", width=10, command=lambda p=self: AnalyzerFrame.buttonCalibrate(p))
-		b.grid(column = 5, row = 0)
+		b.grid(column=5, row=0)
+
+
+	## Init Toolbar Buttons
+	def initToolbar(self):
+		self.toolbar = Frame(self.window, bd=1)
+		self.tbid = 0
+		
+		# Icons need to be kept, else the garbage collactor deletes them
+		self.icons = []
+
+		self.addToolButton("exit.png", "dB/div +", lambda p=self: AnalyzerFrame.buttonDBDivInc(p))
+		self.addToolButton("exit.png", "dB/div -", lambda p=self: AnalyzerFrame.buttonDBDivDec(p))
+		self.addToolButton("exit.png", "Ref Lvl +10", lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p))
+		self.addToolButton("exit.png", "Ref Lvl -10", lambda p=self: AnalyzerFrame.buttonRefLevelDecTen(p))
+		self.addToolButton("exit.png", "Ref Lvl +1", lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p))
+		self.addToolButton("exit.png", "Ref Lvl -1", lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p))
+		self.addToolButton("exit.png", "+ Samples", lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
+		self.addToolButton("exit.png", "- Samples", lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
+		self.addToolButton("exit.png", "Set Freqs", lambda p=self: AnalyzerFrame.buttonSetFreqs(p))
+		self.addToolButton("exit.png", "Calibrate", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
+		self.addToolButton("exit.png", "Quit Application", lambda p=self: AnalyzerFrame.windowClose(p))
+
+		self.toolbar.grid(column=0, row=0, sticky=(N, E, S, W))
+	
+	
+	def addToolButton(self, icon, tooltip, command):
+		image = Image.open("icon/" + icon)
+		icon = ImageTk.PhotoImage(image)
+		self.icons.append(icon)
+
+		button = Button(self.toolbar, image=icon, relief=FLAT, command=command)
+		button.pack(side=LEFT, padx=2, pady=2)
+
+		CreateToolTip(button, tooltip)
 
 
 	## Callback for data updates, this method can be called from any thread
