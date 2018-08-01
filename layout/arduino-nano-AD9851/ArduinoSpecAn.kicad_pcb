@@ -70,8 +70,8 @@
     (aux_axis_origin 0 0)
     (visible_elements FFFFFE7F)
     (pcbplotparams
-      (layerselection 0x010f0_80000007)
-      (usegerberextensions true)
+      (layerselection 0x01030_ffffffff)
+      (usegerberextensions false)
       (usegerberattributes false)
       (usegerberadvancedattributes false)
       (creategerberjobfile false)
@@ -87,7 +87,7 @@
       (psnegative false)
       (psa4output false)
       (plotreference true)
-      (plotvalue false)
+      (plotvalue true)
       (plotinvisibletext false)
       (padsonsilk false)
       (subtractmaskfromsilk false)
@@ -95,7 +95,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "/Users/cbkillion/Documents/KiCad Projects/ArduinoSpecAn/Gerbers2/"))
+      (outputdirectory "gerber"))
   )
 
   (net 0 "")

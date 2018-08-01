@@ -1,6 +1,6 @@
-update=Mit 01 Aug 2018 08:10:51 CEST
+update=Mit 01 Aug 2018 17:46:30 CEST
 version=1
-last_client=kicad
+last_client=pcbnew
 [cvpcb]
 version=1
 NetIExt=net
@@ -23,13 +23,13 @@ LibDir=
 version=1
 PageLayoutDescrFile=
 LastNetListRead=ArduinoSpecAn.net
-CopperLayerCount=4
+CopperLayerCount=2
 BoardThickness=1.6
 AllowMicroVias=0
 AllowBlindVias=0
 RequireCourtyardDefinitions=0
 ProhibitOverlappingCourtyards=1
-MinTrackWidth=0.2032
+MinTrackWidth=0.2
 MinViaDiameter=0.4
 MinViaDrill=0.3
 MinMicroViaDiameter=0.2
@@ -66,10 +66,4 @@ OthersTextUpright=1
 SolderMaskClearance=0.2
 SolderMaskMinWidth=0
 SolderPasteClearance=0
-SolderPasteRatio=0
-[pcbnew/Layer.In1.Cu]
-Name=In1.Cu
-Type=1
-[pcbnew/Layer.In2.Cu]
-Name=In2.Cu
-Type=1
+SolderPasteRatio=-0

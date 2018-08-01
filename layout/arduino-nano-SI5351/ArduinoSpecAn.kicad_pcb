@@ -18,8 +18,6 @@
 
   (layers
     (0 F.Cu signal)
-    (1 In1.Cu power)
-    (2 In2.Cu power)
     (31 B.Cu signal)
     (32 B.Adhes user)
     (33 F.Adhes user)
@@ -49,7 +47,7 @@
     (trace_clearance 0.1524)
     (zone_clearance 0.2032)
     (zone_45_only no)
-    (trace_min 0.2032)
+    (trace_min 0.2)
     (via_size 0.5)
     (via_drill 0.3)
     (via_min_size 0.4)
@@ -72,8 +70,8 @@
     (aux_axis_origin 0 0)
     (visible_elements FFFFFE7F)
     (pcbplotparams
-      (layerselection 0x010f0_80000007)
-      (usegerberextensions true)
+      (layerselection 0x01030_ffffffff)
+      (usegerberextensions false)
       (usegerberattributes false)
       (usegerberadvancedattributes false)
       (creategerberjobfile false)
@@ -89,7 +87,7 @@
       (psnegative false)
       (psa4output false)
       (plotreference true)
-      (plotvalue false)
+      (plotvalue true)
       (plotinvisibletext false)
       (padsonsilk false)
       (subtractmaskfromsilk false)
@@ -97,7 +95,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "/Users/cbkillion/Documents/KiCad Projects/ArduinoSpecAn/Gerbers2/"))
+      (outputdirectory "gerber"))
   )
 
   (net 0 "")

@@ -1,2 +1,10 @@
 # OpenNetworkAnalyzer
 Improved software for https://hackaday.io/project/10021-arduino-network-analyzer
+
+## Run
+python3 main.py
+
+## Installation
+### Ubuntu
+ sudo apt install python3-tk python3-numpy
+
