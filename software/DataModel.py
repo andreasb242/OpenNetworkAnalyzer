@@ -49,6 +49,10 @@ class DataModel(object):
 		maxV = -1000000
 
 		raw = True
+		
+		## TODO if self.measMode == 1:
+		##	use also self.reference!
+
 		for r in self.readings:
 			if raw == True:
 				raw = False

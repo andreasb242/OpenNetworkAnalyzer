@@ -44,8 +44,16 @@ class BaseHardware(object):
 	def registerEndListener(self, endListener):
 		self.endListener = endListener
 
+
+	# Initialize connection
+	def initConnection(self):
+		pass
+
+
 	# Thread method
 	def run(self):
+		self.initConnection()
+	
 		self.n = 0
 
 		while self.running:

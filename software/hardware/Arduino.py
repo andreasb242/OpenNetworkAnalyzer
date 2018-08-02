@@ -20,11 +20,19 @@ class Arduino(BaseHardware.BaseHardware):
 		self.serialPort = None
 		self.serialPort = serial.Serial(serialport, baud, timeout=1)
 
-		self.serialPort.write('i\n'.encode())
-		result = self.serialPort.readline().decode().strip()
+
+	# Initialize connection
+	def initConnection(self):
+		for i in range(0, 10):
+			self.serialPort.write('i\n'.encode())
+			result = self.serialPort.readline().decode().strip()
 		
-		## TODO Parse min / Max frequency, and check for error!
-		print('Arduino Hardware Info: ' + result)
+			## TODO Parse min / Max frequency, and check for error!
+			print('Arduino Hardware Info: ' + result)
+			
+			if len(result) > 0:
+				print('Arduino connected')
+				break
 
 
 	# Read a single value, return True to continue, False to stop
