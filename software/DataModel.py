@@ -44,3 +44,28 @@ class DataModel(object):
 		resetSweep = True
 
 
+	def getMinMaxValues(self):
+		minV = 1000000
+		maxV = -1000000
+
+		raw = True
+		for r in self.readings:
+			if raw == True:
+				raw = False
+				continue
+			else:
+				raw = True
+
+			if minV > r:
+				minV = r
+			
+			if maxV < r:
+				maxV = r
+
+		return minV, maxV
+
+
+
+
+
+

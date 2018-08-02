@@ -71,11 +71,17 @@ class AnalyzerFrame(object):
 		self.addToolButton("zoom-out.png", "dB/div +", lambda p=self: AnalyzerFrame.buttonDBDivInc(p))
 		self.addToolButton("zoom-in.png", "dB/div -", lambda p=self: AnalyzerFrame.buttonDBDivDec(p))
 		self.addToolbarSpacer()
-		self.addToolButton("go-bottom.png", "Ref Lvl +10", lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p))
-		self.addToolButton("go-top.png", "Ref Lvl -10", lambda p=self: AnalyzerFrame.buttonRefLevelDecTen(p))
-		self.addToolButton("go-down.png", "Ref Lvl +1", lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p))
-		self.addToolButton("go-up.png", "Ref Lvl -1", lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p))
+
+		self.addToolbarSubPanel()
+		self.addToolButton("go-top-24.png", "Ref Level -10", lambda p=self: AnalyzerFrame.buttonRefLevelDecTen(p), subpanel=True)
+		self.addToolButton("go-bottom-24.png", "Ref Level +10", lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p), subpanel=True)
+		self.addToolButton("go-up-24.png", "Ref Level -1", lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p), subpanel=True)
+		self.addToolButton("go-down-24.png", "Ref Level +1", lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p), subpanel=True)
+		
+		self.addToolButton("auto-vertical.png", "Auto Ref Level", lambda p=self: AnalyzerFrame.buttonRefLevelAuto(p))
+		
 		self.addToolbarSpacer()
+
 		self.addToolButton("sample-inc.png", "+ Samples", lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
 		self.addToolButton("sample-dec.png", "- Samples", lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
 		self.addToolbarSpacer()
@@ -200,7 +206,7 @@ class AnalyzerFrame(object):
 		
 		self.model.setupArrays()
 	
-		self.graph.addCenterInfoText('Creating reference!')
+		self.graph.addCenterInfoText('Calibration running...')
 		self.root.update()
 		
 		self.hardware.n = 0
@@ -280,6 +286,22 @@ class AnalyzerFrame(object):
 		self.graph.updateGraph()
 
 
+	def buttonRefLevelAuto(self):
+		minV, maxV = self.model.getMinMaxValues()
+		div = self.model.dBDivList[self.model.dBDivIndex]
+
+		#TODO Depending on size, needs to be calculated if resizeable!
+		divCount = 8
+		center = minV + (maxV - minV) / 2
+		
+		# Round to div position
+		pos = center // div * div
+
+		self.model.refLevel = pos + (divCount / 2 * div)
+	
+		self.graph.updateGraph()
+
+
 	def buttonRefLevelDecTen(self):
 		self.model.refLevel = self.model.refLevel - 10
 
@@ -296,6 +318,7 @@ class AnalyzerFrame(object):
 			self.model.refLevel = -60
 
 		self.graph.updateGraph()
+		print('self.model.refLevel=' + str(self.model.refLevel))
 
 
 
