@@ -20,12 +20,18 @@ class Startup(object):
 		self.settings = configparser.ConfigParser()
 		self.settings['settings'] = { 'version': '0' };
 		self.settings['hardware'] = {};
+		self.settings['view'] = { 'startFreq': '1000000', 'stopFreq': '72000000'};
 
 		self.model = DataModel.DataModel()
+
 
 	def readSettings(self):
 		print("Read settings")
 		self.settings.read('settings.ini')
+
+		self.model.startFreq = int(self.settings['view']['startFreq']);
+		self.model.stopFreq = int(self.settings['view']['stopFreq']);
+		self.model.setupArrays()
 		
 		if self.settings['settings']['version'] != '1':
 			print("First start with this version, show settings")

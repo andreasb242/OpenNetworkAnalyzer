@@ -132,9 +132,13 @@ class AnalyzerFrame(object):
 
 
 	def applyFrequencies(self):
-		self.model.startFreq = float(self.txtStartFreq.get()) * 1000000
-		self.model.stopFreq = float(self.txtEndFreq.get()) * 1000000
+		self.model.startFreq = int(float(self.txtStartFreq.get()) * 1000000)
+		self.model.stopFreq = int(float(self.txtEndFreq.get()) * 1000000)
 		self.model.measMode = 0
+		
+		self.settings['view']['startFreq'] = str(self.model.startFreq);
+		self.settings['view']['stopFreq'] = str(self.model.stopFreq);
+
 		self.model.setupArrays()
 		self.graph.updateGraph()
 		self.loadFrequencies()

@@ -20,20 +20,36 @@ class Arduino(BaseHardware.BaseHardware):
 		self.serialPort = None
 		self.serialPort = serial.Serial(serialport, baud, timeout=1)
 
+		self.serialPort.write('i\n'.encode())
+		result = self.serialPort.readline().decode().strip()
+		
+		## TODO Parse min / Max frequency, and check for error!
+		print('Arduino Hardware Info: ' + result)
+
 
 	# Read a single value, return True to continue, False to stop
 	def readValue(self):
 		if self.serialPort is None:
 			return
 
-		FTW = readings[self.n * 2].astype(int).astype(str) + '\n'
-
 		# Send frequency command
-		self.serialPort.write(FTW.encode())
-
-		self.serialPort.write('p\n'.encode())
+		freq = self.model.readings[self.n * 2].astype(int).astype(str)
+		command = 'f' + freq + '\n'
+		self.serialPort.write(command.encode())
+		result = self.serialPort.readline().decode().strip()
 		
-		self.adcValue = self.serialPort.readline().decode().strip()
+		if result[:2] != 'O:':
+			print('Error setting frequency to ' + freq + ', Error ' + result)
+			return
+
+		self.serialPort.write('r\n'.encode())
+		result = self.serialPort.readline().decode().strip()
+
+		if result[:2] != 'O:':
+			print('Error reading Value: ' + result)
+			return
+		
+		self.adcValue = result[2:]
 
 		if len(self.adcValue) != 0:
 			#0.0488 or 0.1953 - 83.998
