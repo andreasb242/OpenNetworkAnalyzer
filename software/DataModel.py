@@ -39,7 +39,7 @@ class DataModel(object):
 		self.trace = np.zeros(2 * self.numSamplesList[self.numSamplesIndex])
 	
 		if self.measMode == 2:
-			reference = np.zeros(2 * self.numSamplesList[self.numSamplesIndex])
+			self.reference = np.zeros(2 * self.numSamplesList[self.numSamplesIndex])
 	
 		resetSweep = True
 

@@ -51,6 +51,11 @@ class OutputGraph(object):
 		self.makeTrace()
 
 
+	## Add temporaray info text to center of the graph
+	def addCenterInfoText(self, text):
+		self.graph.create_text(graphWidth / 2 + graphLeftBuffer, graphTopBuffer + graphHeight / 2, text=text, font=tkFont.Font(size=32), fill='Red')
+
+
 	def makeGraph(self):
 		# Draw horizontal grid lines
 		i = 0
@@ -126,7 +131,8 @@ class OutputGraph(object):
 
 
 	def makeTrace(self):
-		if self.model.measMode == 0:
+		# Absoulute (0) or reference mesasure (2)
+		if self.model.measMode == 0 or self.model.measMode == 2:
 			self.model.trace[1::2] = graphTopBuffer + (self.model.refLevel - self.model.readings[1::2]) * (graphHeight / (self.model.vDiv * self.model.dBDivList[self.model.dBDivIndex]))
 			np.clip(self.model.trace[1::2], graphTopBuffer, graphTopBuffer + graphHeight, out=self.model.trace[1::2])
 
@@ -135,8 +141,9 @@ class OutputGraph(object):
 
 			tracePlot = self.model.trace.astype(int).tolist()
 
+		# Relative to calibration reference
 		if self.model.measMode == 1:
-			self.model.trace[1::2] = graphTopBuffer + (self.model.refLevel - self.model.readings[1::2] + reference[1::2]) * (graphHeight / (self.model.vDiv * self.model.dBDivList[self.model.dBDivIndex]))
+			self.model.trace[1::2] = graphTopBuffer + (self.model.refLevel - self.model.readings[1::2] + self.model.reference[1::2]) * (graphHeight / (self.model.vDiv * self.model.dBDivList[self.model.dBDivIndex]))
 			np.clip(self.model.trace[1::2], graphTopBuffer, graphTopBuffer+graphHeight, out=self.model.trace[1::2])
 
 			self.model.trace[::2] = graphLeftBuffer + (self.model.readings[::2] - self.model.startFreq) * (graphWidth / (self.model.stopFreq - self.model.startFreq))

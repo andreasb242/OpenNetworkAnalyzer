@@ -71,7 +71,7 @@ class Startup(object):
 		self.mainRoot.withdraw()
 
 		while self.initHardware() == False:
-			settingsDialog = SettingsDialog.SettingsDialog(self.settings)
+			settingsDialog = SettingsDialog.SettingsDialog(self.settings, None)
 			settingsDialog.run()
 			if settingsDialog.stored == False:
 				break

@@ -5,13 +5,17 @@
 
 from tkinter import *
 from tkinter import ttk
+from WinUtil import *
+
 
 class SettingsDialog(object):
-	def __init__(self, settings):
+	def __init__(self, settings, parent):
 		self.settings = settings;
 		self.stored = False
 
 		self.root = Tk()
+		# Show the window after it is centered
+		hideWindow(self.root)
 		self.root.resizable(False, False)
 		self.root.title('Settings')
 
@@ -33,8 +37,12 @@ class SettingsDialog(object):
 		self.selectedType.current(0)
 		self.selectedType.grid(column=0, row=1, columnspan=2)
 
+		centerWindowOnParent(self.root, parent)
+
+
 	def windowClose(self):
 		self.root.destroy()
+
 
 	def applyChanges(self):
 		self.stored = True
@@ -46,7 +54,10 @@ class SettingsDialog(object):
 		self.settings['settings']['version'] = '1';
 		self.root.destroy()
 
+
 	def run(self):
 		self.root.wait_window(self.window)
+
+
 
 

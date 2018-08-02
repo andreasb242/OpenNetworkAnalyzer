@@ -15,6 +15,8 @@ class BaseHardware(object):
 		
 		## Current reading index
 		self.n = 0
+		
+		self.endListener = None
 
 
 	def start(self, updateCallback):
@@ -35,7 +37,12 @@ class BaseHardware(object):
 
 	def stop(self):
 		self.running = False
-		
+
+
+	# Register a listener to get informed about the end, used for calibration
+	# Invoked only once
+	def registerEndListener(self, endListener):
+		self.endListener = endListener
 
 	# Thread method
 	def run(self):
@@ -60,11 +67,10 @@ class BaseHardware(object):
 			self.n = self.n + 1
 			if self.n >= self.model.numSamplesList[self.model.numSamplesIndex]:
 				self.n = 0
-				if self.model.measMode == 2:
-				## TODO !!!!!!!!!!!!!!!
-					refReady = TRUE
-					print("REF READY!")
-
+				
+				if self.endListener is not None:
+					self.endListener()
+					self.endListener = None
 
 
 
