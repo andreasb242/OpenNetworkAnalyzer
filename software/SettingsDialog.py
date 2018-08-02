@@ -9,6 +9,7 @@ from tkinter import ttk
 class SettingsDialog(object):
 	def __init__(self, settings):
 		self.settings = settings;
+		self.stored = False
 
 		self.root = Tk()
 		self.root.resizable(False, False)
@@ -36,6 +37,7 @@ class SettingsDialog(object):
 		self.root.destroy()
 
 	def applyChanges(self):
+		self.stored = True
 		if self.selectedType.current() == 0:
 			self.settings['hardware']['type'] = 'dummy';
 		if self.selectedType.current() == 1:
@@ -45,4 +47,6 @@ class SettingsDialog(object):
 		self.root.destroy()
 
 	def run(self):
-		self.root.mainloop()
+		self.root.wait_window(self.window)
+
+

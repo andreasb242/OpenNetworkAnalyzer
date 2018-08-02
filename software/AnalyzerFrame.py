@@ -19,18 +19,22 @@ from time import sleep
 refReady = FALSE
 
 class AnalyzerFrame(object):
-	def __init__(self, settings, hardware, model):
+	def __init__(self, settings, hardware, model, mainRoot):
 		self.settings = settings
 		self.hardware = hardware
 		self.model = model
+		self.mainRoot = mainRoot
+		self.restart = False
 		self.initUi()
 
 		self.hardware.start(lambda p=self: AnalyzerFrame.updateData(p))		
 
 
 	def initUi(self):
-		self.root = Tk()
+		self.root = Toplevel()
 		self.root.title('Scalar Network Analyzer')
+
+		self.root.protocol("WM_DELETE_WINDOW", lambda p=self: AnalyzerFrame.windowClose(p))
 
 		self.window = ttk.Frame(self.root, padding=5)
 		self.window.grid()
@@ -156,13 +160,19 @@ class AnalyzerFrame(object):
 
 
 	def windowClose(self):
+		self.hardware.stop()
 		self.root.destroy()
+		self.mainRoot.destroy()
+		print('Main window closed')
 
 
 	def buttonShowSettings(self):
 		settingsDialog = SettingsDialog.SettingsDialog(self.settings)
 		settingsDialog.run()
-		## TODO restart hardware interface!
+		if settingsDialog.stored == True:
+			print('Restart application to apply changes...')
+			self.restart = True
+			self.windowClose()
 
 
 	def buttonShowAbout(self):

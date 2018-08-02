@@ -4,14 +4,7 @@
 
 
 from hardware import BaseHardware
-from tkinter import messagebox
 import serial
-
-
-## TODO !!!!!!!! Not yet full implemented / Testd
-SERIALPORT = "/dev/tty.usbmodem641" # For the Mac
-#SERIALPORT = "COM5"
-BAUD = 115200
 
 # TODO List serial ports
 # python -c "import serial.tools.list_ports;print serial.tools.list_ports.comports()"
@@ -21,19 +14,20 @@ class Arduino(BaseHardware.BaseHardware):
 		super().__init__(settings, model)
 
 		self.adcValue = 0
-		global BAUD
-		global SERIALPORT
+		baud = settings['hardware']['arduino.baud']
+		serialport = settings['hardware']['arduino.serialport']
 
-		try:
-			self.serialPort = serial.Serial(SERIALPORT, BAUD, timeout=1)
-		except:
-			messagebox.showinfo("Serial Error", "Could not open serial Port «" + SERIALPORT + "»")
+		self.serialPort = None
+		self.serialPort = serial.Serial(serialport, baud, timeout=1)
 
 
 	# Read a single value, return True to continue, False to stop
 	def readValue(self):
+		if self.serialPort is None:
+			return
+
 		FTW = readings[self.n * 2].astype(int).astype(str) + '\n'
-		
+
 		# Send frequency command
 		self.serialPort.write(FTW.encode())
 

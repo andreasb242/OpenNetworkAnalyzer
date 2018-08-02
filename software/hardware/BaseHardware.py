@@ -11,6 +11,7 @@ class BaseHardware(object):
 		self.settings = settings
 		self.model = model
 		self.resetSweepFlag = False
+		self.running = True
 		
 		## Current reading index
 		self.n = 0
@@ -18,9 +19,9 @@ class BaseHardware(object):
 
 	def start(self, updateCallback):
 		self.updateCallback = updateCallback
-		thread = threading.Thread(target=self.run)
-		thread.daemon = True
-		thread.start()
+		self.thread = threading.Thread(target=self.run)
+		self.thread.daemon = True
+		self.thread.start()
 
 
 	def resetSweep(self):
@@ -31,16 +32,25 @@ class BaseHardware(object):
 	def readValue(self):
 		return False	
 
+
+	def stop(self):
+		self.running = False
+		
+
 	# Thread method
 	def run(self):
 		self.n = 0
 
-		while True:
+		while self.running:
 			if self.resetSweep == True:
 				self.resetSweep = False
 				self.n = 0
 
 			if self.readValue() == False:
+				return
+			
+			if self.running == False:
+				print('Hardware Thread stopped')
 				return
 			
 			self.updateCallback()
