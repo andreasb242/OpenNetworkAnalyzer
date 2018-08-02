@@ -54,6 +54,8 @@ class BaseHardware(object):
 				return
 			
 			self.updateCallback()
+			
+			self.model.lastUpdatedIndex = self.n
 
 			self.n = self.n + 1
 			if self.n >= self.model.numSamplesList[self.model.numSamplesIndex]:

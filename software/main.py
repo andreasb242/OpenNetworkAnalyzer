@@ -38,10 +38,12 @@ class Startup(object):
 			settingsDialog = SettingsDialog.SettingsDialog(self.settings)
 			settingsDialog.run()
 
+
 	def storeSettings(self):
 		print("Store settings")
 		with open('settings.ini', 'w') as settingsfile:
 			self.settings.write(settingsfile)
+
 
 	def initHardware(self):
 		self.hardware = None
@@ -60,6 +62,7 @@ class Startup(object):
 			return False
 		
 		return True
+
 
 	def startup(self):
 		# https://stackoverflow.com/questions/1406145/how-do-i-get-rid-of-python-tkinter-root-window#1407700
@@ -80,6 +83,7 @@ class Startup(object):
 			frame = AnalyzerFrame.AnalyzerFrame(self.settings, self.hardware, self.model, self.mainRoot)
 			frame.run()
 			return frame.restart;
+
 
 ## Main entry point
 if __name__ == '__main__':

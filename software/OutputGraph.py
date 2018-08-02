@@ -31,12 +31,14 @@ class OutputGraph(object):
 		self.graphColor = 'Green'
 		self.labelColor = 'White'
 		self.traceColor = 'Red'
+		self.scanColor = '#E1EC4F'
 		self.textLabelColor = 'Yellow'
 		self.titleColor = 'LightBlue'
 
 		self.traceWidth = 1
 
 		self.traceID = 0
+		self.traceMakerID = 0
 
 
 	def updateGraph(self):
@@ -142,5 +144,21 @@ class OutputGraph(object):
 
 			tracePlot = self.model.trace.astype(int).tolist()
 
+		# Marker for current scan
+		self.graph.delete(self.traceMakerID)
+		x = graphLeftBuffer + self.model.lastUpdatedIndex * graphWidth / len(tracePlot) * 2
+		Dline = [x, graphTopBuffer, x, graphTopBuffer + graphHeight]
+		self.traceMakerID = self.graph.create_line(Dline, fill=self.scanColor)
+
+		## Print Graph
 		self.graph.delete(self.traceID)
 		self.traceID = self.graph.create_line(tracePlot, fill=self.traceColor, width=self.traceWidth)
+
+
+
+
+
+
+
+
+

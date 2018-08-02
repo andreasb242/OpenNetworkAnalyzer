@@ -24,6 +24,9 @@ class DataModel(object):
 
 		self.startFreq = 1000000
 		self.stopFreq = 72000000
+		
+		## Last updated index by hardware
+		self.lastUpdatedIndex = 0
 
 		self.setupArrays()
 
