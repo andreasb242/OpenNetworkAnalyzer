@@ -31,15 +31,15 @@ Not yet ready.
 
 ## Installation / running
 ### Ubuntu
- git clone https://github.com/andreasb242/OpenNetworkAnalyzer.git
- sudo apt install python3-tk python3-numpy python3-serial python3-pil.imagetk
- cd software
- python3 main.py
+    git clone https://github.com/andreasb242/OpenNetworkAnalyzer.git
+    sudo apt install python3-tk python3-numpy python3-serial python3-pil.imagetk
+    cd software
+    python3 main.py
 
 ### Mac OS
- TODO
+    TODO
 
 ### Windows
- TODO
+    TODO
 
 
