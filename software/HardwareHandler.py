@@ -17,6 +17,7 @@ class HardwareHandler(object):
 
 
 	def start(self, listener):
+		self.listener = listener
 		self.hardware.start(listener)		
 		
 
@@ -31,6 +32,10 @@ class HardwareHandler(object):
 			self.settings['hardware']['type'] = 'arduino'
 		else:
 			self.settings['hardware']['type'] = 'none'
+
+		self.stop()
+		self.loadHardware()
+		self.hardware.start(self.listener)
 
 
 	def getSelectedHwImplementationIndex(self):
