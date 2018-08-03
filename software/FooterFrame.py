@@ -126,7 +126,7 @@ class FooterFrame(object):
 	def initComPortBaudSelection(self):
 		self.devSelectBaudVar = StringVar()
 		self.devSelectBaud = ttk.Combobox(self.frame, textvariable=self.devSelectBaudVar, width=7)
-		self.devSelectBaud['values'] = ('115200', '9600', '19200', '38400', '57600')
+		self.devSelectBaud['values'] = ('115200', '9600', '19200', '38400', '57600', '230400', '345600', '500000')
 		self.devSelectBaud.current(0)
 		self.devSelectBaud.pack(side=LEFT, padx=2, pady=2)
 

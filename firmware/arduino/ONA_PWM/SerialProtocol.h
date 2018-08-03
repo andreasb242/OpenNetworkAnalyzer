@@ -62,6 +62,8 @@ public:
    * Setup serical communication
    */
   void setup() {
+    // 500000 is working, if the UART-USB Chip supports it
+    // But there is no feelable speed improvements
     Serial.begin(115200);
   }
 
