@@ -1,61 +1,47 @@
-char incmd[10];
-int cindex = 0;
-long freq = 0;
-char ch;
-int AD8307 = A0;
-int WCLK = A4;
-int DATA = A5;
-int FQ_UD = 8;
-long FTW;
-int sum;
+/**
+ * Arduino Firmware for AD9851 OpenNetworkAnalyzer
+ * 
+ * License: GPLv3
+ * Author: Brett Killion, Andreas Butti
+ */
 
-void powerOff()
-{
-  long pointer = 1;
-  int pointer2 = 0b10000000;
-  int lastByte = 0b10100000;
+#include "SerialProtocol.h"
 
-  digitalWrite(DATA, LOW);
+/**
+ * AD9851 Pins
+ */
+const int WCLK = A4;
+const int DATA = A5;
+const int FQ_UD = 8;
 
-  for (int i=0; i<32; i++)
-  {
-    digitalWrite(WCLK, HIGH);
-    digitalWrite(WCLK, LOW);
-  }
-
-  for (int i=0; i<8; i++)
-  {
-    if ((lastByte & pointer2) > 0) digitalWrite(DATA, HIGH);
-    else digitalWrite(DATA, LOW);
-    digitalWrite(WCLK, HIGH);
-    digitalWrite(WCLK, LOW);
-    pointer2 = pointer2 >> 1;
-  }
-
-  digitalWrite(FQ_UD, HIGH);
-  digitalWrite(FQ_UD, LOW);
-}
-
-void SetFreq(long frequency)
-{
-  FTW = (frequency*pow(2,24))/(179999563/256);
+/**
+ * Set the frequency
+ */
+void setFreq(long frequency) {
+  long FTW = (frequency * pow(2, 24)) / (179999563 / 256);
   long pointer = 1;
   int pointer2 = 0b10000000;
   int lastByte = 0b10000000;
 
-  for (int i=0; i<32; i++)
-  {
-    if ((FTW & pointer) > 0) digitalWrite(DATA, HIGH);
-    else digitalWrite(DATA, LOW);
+  for (uint8_t i = 0; i < 32; i++) {
+    if ((FTW & pointer) > 0) {
+      digitalWrite(DATA, HIGH);
+    } else {
+      digitalWrite(DATA, LOW);
+    }
+
     digitalWrite(WCLK, HIGH);
     digitalWrite(WCLK, LOW);
     pointer = pointer << 1;
   }
 
-  for (int i=0; i<8; i++)
-  {
-    if ((lastByte & pointer2) > 0) digitalWrite(DATA, HIGH);
-    else digitalWrite(DATA, LOW);
+  for (uint8_t i = 0; i < 8; i++) {
+    if ((lastByte & pointer2) > 0) {
+      digitalWrite(DATA, HIGH);
+    } else {
+      digitalWrite(DATA, LOW);
+    }
+
     digitalWrite(WCLK, HIGH);
     digitalWrite(WCLK, LOW);
     pointer2 = pointer2 >> 1;
@@ -63,14 +49,72 @@ void SetFreq(long frequency)
 
   digitalWrite(FQ_UD, HIGH);
   digitalWrite(FQ_UD, LOW);
-
-  FTW = 0;
 }
 
-void setup()
-{
-  Serial.begin(9600);
-  pinMode(AD8307, INPUT);
+/**
+ * Command implementation
+ */
+class ONACommandImpl: public ONACommand {
+public:
+  /**
+   * Get info string to return to the application
+   */
+  const char* getInfoString() {
+    return "MINFREQ=1,MAXFREQ=72000000";
+  }
+
+  /**
+   * Set the frequency
+   * 
+   * @return true on success, false e.g. if out out of range
+   */
+  bool setFrequency(uint32_t freq) {
+    if (freq < 1) {
+      return false;
+    }
+    if (freq > 72000000) {
+      return false;
+    }
+
+
+    return true;
+  }
+
+  /**
+   * Read input value
+   * 
+   * @return Read value
+   */
+  uint32_t readInput() {
+    uint32_t sum = 0;
+    
+    for (int n = 0; n < 16; n++) {
+      sum += analogRead(A0);
+    }
+    sum = sum >> 2;
+
+    return sum;
+  }
+};
+
+/**
+ * Command implementation
+ */
+ONACommandImpl command;
+
+/**
+ * Communication interface
+ */
+ONACom com(command);
+
+
+/**
+ * Setup Hardware
+ */
+void setup() {
+  // Setup communication
+  com.setup();
+
   pinMode(WCLK, OUTPUT);
   pinMode(DATA, OUTPUT);
   pinMode(FQ_UD, OUTPUT);
@@ -81,40 +125,13 @@ void setup()
   digitalWrite(FQ_UD, HIGH);
   digitalWrite(FQ_UD, LOW);
 
-  SetFreq(10000000);
+  setFreq(10000000);
 }
 
-void loop()
-{
-  while(Serial.available())
-  {
-    ch = (char)Serial.read();
-    
-    if (((ch >= '0') && (ch <='9')) || (ch == 'p')) incmd[cindex++] = ch;
-    if (ch == '\n')
-    {
-      incmd[cindex] = '\n';
-      freq = atol(incmd);
-      cindex = 0;
-//      Serial.print("Input command: ");
-//      Serial.println(freq);
-
-      if ((freq > 0) && (freq <= 72000000)) SetFreq(freq);
-//      {
-//        if (freq == 1) powerOff();
-//        else SetFreq(freq);
-//      }
-      else //Serial.println(analogRead(AD8307));
-      {
-        sum = 0;
-        
-        for (int n = 0; n < 16; n++)
-        {
-          sum += analogRead(AD8307);
-        }
-        sum = sum >> 2;
-        Serial.println(sum);
-      }
-    }
-  }
+/**
+ * Main Loop
+ */
+void loop() {
+  com.executeCommand();
 }
+

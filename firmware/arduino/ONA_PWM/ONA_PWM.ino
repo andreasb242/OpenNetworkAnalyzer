@@ -56,7 +56,7 @@ public:
    * 
    * @return Read value
    */
-  virtual uint32_t readInput() {
+  uint32_t readInput() {
     uint32_t sum = 0;
     
     for (int n = 0; n < 16; n++) {
