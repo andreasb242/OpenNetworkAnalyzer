@@ -24,13 +24,25 @@ class Arduino(BaseHardware.BaseHardware):
 		for i in range(0, 10):
 			self.serialPort.write(b'i\n')
 			result = self.serialPort.readline().decode().strip()
-		
-			## TODO Parse min / Max frequency, and check for error!
-			print('Arduino Hardware Info: ' + result)
 			
 			if len(result) > 0:
-				print('Arduino connected')
-				break
+				if result[:2] != 'O:':
+					self.connectCallback('Connected, Error=' + result)
+					return False
+				else:
+					result = result[2:]
+					for s in result.split(","):
+						key, value = s.split('=')
+						
+						if key == 'MINFREQ':
+							self.minFrequence = int(value)
+						if key == 'MAXFREQ':
+							self.maxFrequence = int(value)
+
+					self.connectCallback('Connected, min frequency: ' + str(self.minFrequence) + 'Hz, max frequency: ' + str(self.maxFrequence) + 'Hz')
+					return True
+		
+		return False
 
 
 	# Read a single value, return True to continue, False to stop

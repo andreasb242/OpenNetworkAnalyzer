@@ -39,28 +39,9 @@ class OutputGraph(object):
 
 
 	def onResize(self, event):
-		if event.width == self.graph.winfo_width() and event.height == self.graph.winfo_height():
-			return
-	
-		print("Resize canvas!")
-		print(event)
-		print("new w: " + str(event.width))
-		print("new h: " + str(event.height))
-		print("old w: " + str(self.graph['width']))
-		print("old h: " + str(self.graph['height']))
-#		print("old w: " + str(self.graph.winfo_width()))
-#		print("old h: " + str(self.graph.winfo_height()))
-
-
-		# determine the ratio of old width/height to new width/height
-#		wscale = float(event.width)/self.width
-#		hscale = float(event.height)/self.height
-#		self.width = event.width
-#		self.height = event.height
-		# resize the canvas 
-#		self.config(width=self.width, height=self.height)
-		# rescale all the objects tagged with the "all" tag
-#		self.scale("all",0,0,wscale,hscale)
+		self.graphWidth = event.width - self.graphRightBuffer - self.graphLeftBuffer
+		self.graphHeight = event.height - self.graphTopBuffer - self.graphBottomBuffer
+		self.updateGraph()
 		
 
 	def updateGraph(self):

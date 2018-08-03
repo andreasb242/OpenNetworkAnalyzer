@@ -20,3 +20,10 @@ class Dummy(BaseHardware.BaseHardware):
 		self.model.readings[self.n * 2 + 1] = value
 
 
+	# Initialize connection
+	def initConnection(self):
+		self.connectCallback('Connected, Random Value Generator')
+		return True
+
+
+

@@ -17,10 +17,13 @@ class BaseHardware(object):
 		self.n = 0
 		
 		self.endListener = None
+		self.minFrequence = 1000000
+		self.maxFrequence = 2000000
 
 
-	def start(self, updateCallback):
+	def start(self, updateCallback, connectCallback):
 		self.updateCallback = updateCallback
+		self.connectCallback = connectCallback
 		self.thread = threading.Thread(target=self.run)
 		self.thread.daemon = True
 		self.thread.start()
@@ -47,12 +50,15 @@ class BaseHardware(object):
 
 	# Initialize connection
 	def initConnection(self):
-		pass
+		return False
 
 
 	# Thread method
 	def run(self):
-		self.initConnection()
+		self.connectCallback('Connecting...')
+		if self.initConnection() == False:
+			self.connectCallback('Connection failed!')
+			return
 	
 		self.n = 0
 

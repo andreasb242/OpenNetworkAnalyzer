@@ -25,12 +25,22 @@ class AnalyzerFrame(object):
 		self.restart = False
 		self.initUi()
 
-		self.hardware.start(lambda p=self: AnalyzerFrame.updateData(p))		
+		self.hardware.start(lambda p=self: AnalyzerFrame.updateData(p), lambda text, p=self: AnalyzerFrame.updateConnectionState(p, text))		
 
 
 	## Callback for data updates, this method can be called from any thread
 	def updateData(self):
 		self.root.after(0, lambda p=self: AnalyzerFrame.updateDataUiThread(p))
+
+
+	## Callback for connection, this method can be called from any thread
+	def updateConnectionState(self, text):
+		self.root.after(0, lambda text=text, p=self: AnalyzerFrame.updateConnectionStateUiThread(p, text))
+
+
+	## Update Connection State, this method should only be called in the UI Thread
+	def updateConnectionStateUiThread(self, text):
+		self.deviceStateLabel.config(text=text);
 
 
 	## Update the UI, this method should only be called in the UI Thread
@@ -94,7 +104,7 @@ class AnalyzerFrame(object):
 
 		# TODO Apply
 		button = Button(self.footer, image=icon, relief=FLAT, command=None)
-		label.pack(side=LEFT, padx=2, pady=2)
+		button.pack(side=LEFT, padx=2, pady=2)
 
 		label = Label(self.footer, text='State:')
 		label.pack(side=LEFT, padx=2, pady=2)
@@ -165,7 +175,6 @@ class AnalyzerFrame(object):
 
 		self.addToolbarSpacer()
 
-		self.addToolButton("settings.png", "Settings", lambda p=self: AnalyzerFrame.buttonShowSettings(p))
 		self.addToolButton("calibrate.png", "Calibrate", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
 		self.addToolbarSubPanel()
 		self.addToolButton("edit-clear.png", "Clear Calibration", lambda p=self: AnalyzerFrame.buttonClearReference(p), subpanel=True)
@@ -247,14 +256,6 @@ class AnalyzerFrame(object):
 
 	def buttonClearReference(self):
 		self.setModeAsolute()
-
-	def buttonShowSettings(self):
-		settingsDialog = SettingsDialog.SettingsDialog(self.settings, self.root)
-		settingsDialog.run()
-		if settingsDialog.stored == True:
-			print('Restart application to apply changes...')
-			self.restart = True
-			self.windowClose()
 
 
 	def buttonShowAbout(self):
@@ -351,7 +352,7 @@ class AnalyzerFrame(object):
 		minV, maxV = self.model.getMinMaxValues()
 		div = self.model.dBDivList[self.model.dBDivIndex]
 
-		#TODO Depending on size, needs to be calculated if resizeable!
+		## Currently fixed, on rescaling the div size, but not the count changes
 		divCount = 8
 		center = minV + (maxV - minV) / 2
 		
