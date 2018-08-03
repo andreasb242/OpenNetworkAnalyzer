@@ -8,7 +8,7 @@ from tkinter import simpledialog
 from PIL import Image, ImageTk
 
 import OutputGraph
-import DataModel;
+import DataModel
 import AboutDialog
 import FooterFrame
 from HardwareHandler import HardwareHandler
@@ -24,6 +24,14 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.hwhandler.loadHardware()
 		self.model = model
 		self.mainRoot = mainRoot
+
+		# Default values, will be overwritten by the hardware
+		self.minFreq = 1
+		self.maxFreq = 72000000
+
+		self.model.startFreq = int(self.settings['view']['startFreq'])
+		self.model.stopFreq = int(self.settings['view']['stopFreq'])
+
 		self.initUi()
 
 		# Connect the Hardware now
@@ -40,6 +48,55 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	## Callback for connection state, this method can be called from any thread
 	def hwUpdateConnectionState(self, text):
 		self.root.after(0, lambda text=text, p=self: AnalyzerFrame.updateConnectionStateUiThread(p, text))
+
+
+	## BaseHardware.HardwareListener
+	## Callback for HW Info, this method can be called from any thread
+	def hwUpdateInfo(self, key, value):
+		self.root.after(0, lambda key=key, value=value, p=self: AnalyzerFrame.updateInfoUiThread(p, key, value))
+
+
+	## Update additional infos, this method should only be called in the UI Thread
+	def updateInfoUiThread(self, key, value):
+		if 'minFrequence' == key:
+			self.labelMinFreqStart.config(text='min ' + str(float(value) / 1000000) + 'MHz')
+			self.minFreq = int(value)
+
+		if 'maxFrequence' == key:
+			self.labelMaxFreqEnd.config(text='max ' + str(float(value) / 1000000) + 'MHz')
+			self.maxFreq = int(value)
+
+		if self.validateFrequencies() == True:
+			self.applyFrequencies()
+
+		self.model.startFreq = int(float(self.txtStartFreq.get()) * 1000000)
+		self.model.stopFreq = int(float(self.txtEndFreq.get()) * 1000000)
+
+
+	## Validate frequencies, return True if changed
+	def validateFrequencies(self):
+		freqChanged = False
+
+		if self.model.startFreq < self.minFreq:
+			self.model.startFreq = self.minFreq
+			freqChanged = True
+
+		if self.model.startFreq > self.maxFreq:
+			self.model.startFreq = self.maxFreq
+			freqChanged = True
+
+		if self.model.stopFreq < self.minFreq:
+			self.model.stopFreq = self.minFreq
+			freqChanged = True
+
+		if self.model.stopFreq > self.maxFreq:
+			self.model.stopFreq = self.maxFreq
+			freqChanged = True
+
+		if freqChanged == True:
+			self.loadFrequencies()
+
+		return freqChanged
 
 
 	## Update Connection State, this method should only be called in the UI Thread
@@ -109,16 +166,21 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		label = Label(self.tbSubpanel, text='End sweep')
 		label.grid(column=0, row=1)
 
-		label = Label(self.tbSubpanel, text='MHz')
+		label = Label(self.tbSubpanel, text='MHz, ')
 		label.grid(column=2, row=0)
-		label = Label(self.tbSubpanel, text='MHz')
+		label = Label(self.tbSubpanel, text='MHz, ')
 		label.grid(column=2, row=1)
 
-		self.txtStartFreqText = StringVar();
+		self.labelMinFreqStart = Label(self.tbSubpanel, text='min ???MHz')
+		self.labelMinFreqStart.grid(column=3, row=0)
+		self.labelMaxFreqEnd = Label(self.tbSubpanel, text='max ???MHz')
+		self.labelMaxFreqEnd.grid(column=3, row=1)
+
+		self.txtStartFreqText = StringVar()
 		self.txtStartFreq = Entry(self.tbSubpanel, width=6, textvariable=self.txtStartFreqText)
 		self.txtStartFreq.grid(column=1, row=0)
 
-		self.txtEndFreqText = StringVar();
+		self.txtEndFreqText = StringVar()
 		self.txtEndFreq = Entry(self.tbSubpanel, width=6, textvariable=self.txtEndFreqText)
 		self.txtEndFreq.grid(column=1, row=1)
 		self.loadFrequencies()
@@ -128,7 +190,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.icons.append(icon)
 
 		button = Button(self.tbSubpanel, image=icon, relief=FLAT, command=lambda p=self: AnalyzerFrame.applyFrequencies(p))
-		button.grid(column=3, row=1)
+		button.grid(column=4, row=1)
 		CreateToolTip(button, "Apply sweep frequencies")
 
 		self.addToolbarSpacer()
@@ -187,10 +249,12 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	def applyFrequencies(self):
 		self.model.startFreq = int(float(self.txtStartFreq.get()) * 1000000)
 		self.model.stopFreq = int(float(self.txtEndFreq.get()) * 1000000)
+		self.validateFrequencies()
+
 		self.setModeAsolute()
-		
-		self.settings['view']['startFreq'] = str(self.model.startFreq);
-		self.settings['view']['stopFreq'] = str(self.model.stopFreq);
+
+		self.settings['view']['startFreq'] = str(self.model.startFreq)
+		self.settings['view']['stopFreq'] = str(self.model.stopFreq)
 
 		self.model.setupArrays()
 		self.graph.updateGraph()
@@ -259,10 +323,9 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 
 	def buttonIncSampSweep(self):
-		if self.model.numSamplesIndex >= 5:
-			self.model.numSamplesIndex = 5
-		else:
-			self.model.numSamplesIndex = self.model.numSamplesIndex + 1
+		self.model.numSamplesIndex = self.model.numSamplesIndex + 1
+		if self.model.numSamplesIndex >= len(self.model.numSamplesList):
+			self.model.numSamplesIndex = len(self.model.numSamplesList) - 1
 
 		self.setModeAsolute()
 

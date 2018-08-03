@@ -14,6 +14,10 @@ class HardwareListener(object):
 	def hwUpdateConnectionState(self, text):
 		pass
 
+	## Callback for HW Info, this method can be called from any thread
+	def hwUpdateInfo(self, key, value):
+		pass
+
 
 class BaseHardware(object):
 	def __init__(self, settings, model):
@@ -67,7 +71,11 @@ class BaseHardware(object):
 		if self.initConnection() == False:
 			self.listener.hwUpdateConnectionState('Connection failed!')
 			return
-	
+
+
+		self.listener.hwUpdateInfo('minFrequence', self.minFrequence)
+		self.listener.hwUpdateInfo('maxFrequence', self.maxFrequence)
+
 		self.n = 0
 
 		while self.running:

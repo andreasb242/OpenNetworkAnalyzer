@@ -14,7 +14,7 @@ class Dummy(BaseHardware.BaseHardware):
 
 	# Read a single value, return True to continue, False to stop
 	def readValue(self):
-		sleep(.3)
+		sleep(.1)
 		
 		value = random.randint(-40, 10)
 		self.model.readings[self.n * 2 + 1] = value
