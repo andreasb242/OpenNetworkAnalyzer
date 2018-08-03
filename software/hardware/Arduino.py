@@ -17,6 +17,7 @@ class Arduino(BaseHardware.BaseHardware):
 
 		self.serialPort = None
 		self.serialPort = serial.Serial(serialport, baud, timeout=1)
+		self.lastError = False
 
 
 	# Initialize connection
@@ -49,7 +50,7 @@ class Arduino(BaseHardware.BaseHardware):
 	def readValue(self):
 		if self.serialPort is None:
 			return
-
+		
 		# Send frequency command
 		freq = self.model.readings[self.n * 2].astype(int).astype(str)
 		command = 'f' + freq + '\n'
@@ -57,14 +58,16 @@ class Arduino(BaseHardware.BaseHardware):
 		result = self.serialPort.readline().decode().strip()
 		
 		if result[:2] != 'O:':
-			print('Error setting frequency to ' + freq + ', Error ' + result)
+			self.connectCallback('Error setting frequency to ' + freq + ', Error ' + result)
+			self.lastError = True
 			return
 
 		self.serialPort.write('r\n'.encode())
 		result = self.serialPort.readline().decode().strip()
 
 		if result[:2] != 'O:':
-			print('Error reading Value: ' + result)
+			self.connectCallback('Error reading Value: ' + result)
+			self.lastError = True
 			return
 		
 		self.adcValue = result[2:]
@@ -74,6 +77,9 @@ class Arduino(BaseHardware.BaseHardware):
 			self.model.readings[self.n * 2 + 1] = float(self.adcValue) * .5*0.0488 - 90.5
 
 
+		if self.lastError == True:
+			self.lastError = False
+			self.connectCallback('Connected, no error anymore')
 
 
 
