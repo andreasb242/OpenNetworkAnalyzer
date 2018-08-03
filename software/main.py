@@ -4,22 +4,17 @@
 
 
 import configparser
-import SettingsDialog
 import AnalyzerFrame
 import DataModel;
 
-from hardware import Arduino
-from hardware import Dummy
-
-from tkinter import messagebox
 from tkinter import *
 
 class Startup(object):
 	def __init__(self):
 		## Configuration
 		self.settings = configparser.ConfigParser()
-		self.settings['settings'] = { 'version': '0' };
-		self.settings['hardware'] = {};
+		self.settings['settings'] = {};
+		self.settings['hardware'] = { 'type': 'none' };
 		self.settings['view'] = { 'startFreq': '1000000', 'stopFreq': '72000000'};
 
 		self.model = DataModel.DataModel()
@@ -32,11 +27,6 @@ class Startup(object):
 		self.model.startFreq = int(self.settings['view']['startFreq']);
 		self.model.stopFreq = int(self.settings['view']['stopFreq']);
 		self.model.setupArrays()
-		
-		if self.settings['settings']['version'] != '1':
-			print("First start with this version, show settings")
-			settingsDialog = SettingsDialog.SettingsDialog(self.settings)
-			settingsDialog.run()
 
 
 	def storeSettings(self):
@@ -45,44 +35,14 @@ class Startup(object):
 			self.settings.write(settingsfile)
 
 
-	def initHardware(self):
-		self.hardware = None
-		hwType = self.settings['hardware']['type']
-		try:
-			if hwType == 'dummy':
-				self.hardware = Dummy.Dummy(self.settings, self.model)
-			elif hwType == 'arduino':
-				self.hardware = Arduino.Arduino(self.settings, self.model)
-			else:
-				return False
-
-		except BaseException as e:
-			s = str(e)
-			messagebox.showinfo("Hardware Init Error", "Could not init Hardware Instance «" + hwType + "»\n" + s)
-			return False
-		
-		return True
-
-
 	def startup(self):
 		# https://stackoverflow.com/questions/1406145/how-do-i-get-rid-of-python-tkinter-root-window#1407700
 		self.mainRoot = Tk()
 		self.mainRoot.overrideredirect(1)
 		self.mainRoot.withdraw()
 
-		while self.initHardware() == False:
-			settingsDialog = SettingsDialog.SettingsDialog(self.settings, None)
-			settingsDialog.run()
-			if settingsDialog.stored == False:
-				break
-			
-		if self.hardware is None:
-			messagebox.showerror("Error", "Configured hardware unknown")
-			return False
-		else:
-			frame = AnalyzerFrame.AnalyzerFrame(self.settings, self.hardware, self.model, self.mainRoot)
-			frame.run()
-			return frame.restart;
+		frame = AnalyzerFrame.AnalyzerFrame(self.settings, self.model, self.mainRoot)
+		frame.run()
 
 
 ## Main entry point
@@ -95,10 +55,7 @@ if __name__ == '__main__':
 
 	if startup.settings['settings']['version'] == '1':
 		print ("Startup application")
-		
-		# Restart to load new settings
-		while startup.startup() == True:
-			startup.storeSettings()
+		startup.startup()
 
 	else:
 		print ('Settings not confirmed, quit now')

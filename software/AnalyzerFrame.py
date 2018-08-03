@@ -6,23 +6,23 @@
 from tkinter import *
 from tkinter import simpledialog
 from PIL import Image, ImageTk
-import serial.tools.list_ports
 
 import OutputGraph
 import DataModel;
-import SettingsDialog
 import AboutDialog
+import FooterFrame
+from HardwareHandler import HardwareHandler
 
 from CreateToolTip import CreateToolTip
 
 
 class AnalyzerFrame(object):
-	def __init__(self, settings, hardware, model, mainRoot):
+	def __init__(self, settings, model, mainRoot):
 		self.settings = settings
-		self.hardware = hardware
+		self.hwhandler = HardwareHandler(settings, model)
+		self.hardware = self.hwhandler.loadHardware()
 		self.model = model
 		self.mainRoot = mainRoot
-		self.restart = False
 		self.initUi()
 
 		self.hardware.start(lambda p=self: AnalyzerFrame.updateData(p), lambda text, p=self: AnalyzerFrame.updateConnectionState(p, text))		
@@ -40,7 +40,7 @@ class AnalyzerFrame(object):
 
 	## Update Connection State, this method should only be called in the UI Thread
 	def updateConnectionStateUiThread(self, text):
-		self.deviceStateLabel.config(text=text);
+		self.footer.setDeviceState(text)
 
 
 	## Update the UI, this method should only be called in the UI Thread
@@ -63,63 +63,16 @@ class AnalyzerFrame(object):
 
 
 	def initFooter(self):
-		self.footer = Frame(self.root, bd=1)
-		self.footer.pack(fill=X)
-		
-		label = Label(self.footer, text='Device:')
-		label.pack(side=LEFT, padx=2, pady=2)
+		self.footer = FooterFrame.FooterFrame(self.root)
+		self.footer.frame.pack(fill=X)
 
-		self.devSelectDeviceVar = StringVar()
-		self.devSelectDevice = ttk.Combobox(self.footer, textvariable=self.devSelectDeviceVar, state='readonly')
-		self.devSelectDevice['values'] = ('None', 'Dummy (no hardware)', 'Arduino')
-		self.devSelectDevice.current(0)
-		self.devSelectDevice.pack(side=LEFT, padx=2, pady=2)
-
-		label = Label(self.footer, text='COM-Port:')
-		label.pack(side=LEFT, padx=2, pady=2)
-
-		self.devSelectPortVar = StringVar()
-		self.devSelectPort = ttk.Combobox(self.footer, textvariable=self.devSelectPortVar)
-		ports = []
-		for p in serial.tools.list_ports.comports():
-			ports.append(p.device + ': ' + p.description)
-
-		self.devSelectPort['values'] = ports
-
-		self.devSelectPort.pack(side=LEFT, padx=2, pady=2)
-
-
-		label = Label(self.footer, text='Baud:')
-		label.pack(side=LEFT, padx=2, pady=2)
-
-		self.devSelectBaudVar = StringVar()
-		self.devSelectBaud = ttk.Combobox(self.footer, textvariable=self.devSelectBaudVar)
-		self.devSelectBaud['values'] = ('115200', '9600', '19200', '38400', '57600')
-		self.devSelectBaud.current(0)
-		self.devSelectBaud.pack(side=LEFT, padx=2, pady=2)
-
-		image = Image.open("icon/apply-24.png")
-		icon = ImageTk.PhotoImage(image)
-		self.icons.append(icon)
-
-		# TODO Apply
-		button = Button(self.footer, image=icon, relief=FLAT, command=None)
-		button.pack(side=LEFT, padx=2, pady=2)
-
-		label = Label(self.footer, text='State:')
-		label.pack(side=LEFT, padx=2, pady=2)
-
-		self.deviceStateLabel = Label(self.footer, text='Not connected')
-		self.deviceStateLabel.pack(side=LEFT, padx=2, pady=2)
-
-		
 	## Init Toolbar Buttons
 	def initToolbar(self):
 		self.toolbar = Frame(self.root, bd=1)
 		self.toolbar.pack(fill=X)
 		self.tbid = 0
 		
-		# Icons need to be kept, else the garbage collactor deletes them
+		# Icons need to be kept, else the garbage collector deletes them
 		self.icons = []
 
 		image = Image.open("icon/separator.png")
