@@ -4,6 +4,8 @@
 
 
 import threading
+import traceback
+
 
 class HardwareListener(object):
 	## Callback for data updates, this method can be called from any thread
@@ -65,6 +67,16 @@ class BaseHardware(object):
 		return False
 
 
+	def incrementCount(self):
+		self.n = self.n + 1
+		if self.n >= self.model.numSamplesList[self.model.numSamplesIndex]:
+			self.n = 0
+	
+			if self.endListener is not None:
+				self.endListener()
+				self.endListener = None
+
+
 	# Thread method
 	def run(self):
 		self.listener.hwUpdateConnectionState('Connecting...')
@@ -83,25 +95,23 @@ class BaseHardware(object):
 				self.resetSweep = False
 				self.n = 0
 
-			if self.readValue() == False:
-				return
+			try:
+				if self.readValue() == False:
+					return
 			
-			if self.running == False:
-				print('Hardware Thread stopped')
-				return
+				if self.running == False:
+					print('Hardware Thread stopped')
+					return
 			
-			self.listener.hwDataRead()
+				self.listener.hwDataRead()
 			
-			self.model.lastUpdatedIndex = self.n
+				self.model.lastUpdatedIndex = self.n
 
-			self.n = self.n + 1
-			if self.n >= self.model.numSamplesList[self.model.numSamplesIndex]:
+				self.incrementCount()
+			except BaseException as e:
+				# Here should be a synchronisation, as the array size
+				# May be changed in the UI Thread, but this works also...
+				traceback.print_exc()
 				self.n = 0
-				
-				if self.endListener is not None:
-					self.endListener()
-					self.endListener = None
-
-
 
 
