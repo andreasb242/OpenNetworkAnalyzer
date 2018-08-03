@@ -67,7 +67,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 
 	def initFooter(self):
-		self.footer = FooterFrame.FooterFrame(self.root, self.hwhandler)
+		self.footer = FooterFrame.FooterFrame(self.root, self.settings, self.hwhandler)
 		self.footer.frame.pack(fill=X)
 
 

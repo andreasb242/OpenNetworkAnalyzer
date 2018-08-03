@@ -25,13 +25,24 @@ class HardwareHandler(object):
 		return ('None', 'Random values', 'Arduino')
 
 
-	def selectImplementationByIndex(self, index):
-		if index == 1:
-			self.settings['hardware']['type'] = 'dummy'
-		elif index == 2:
-			self.settings['hardware']['type'] = 'arduino'
+	def hasSerial(self, index):
+		if index == 2:
+			return True
 		else:
-			self.settings['hardware']['type'] = 'none'
+			return False
+
+
+	def getImplementationNameByIndex(self, index):
+		if index == 1:
+			return 'dummy'
+		elif index == 2:
+			return 'arduino'
+		else:
+			return 'none'
+
+
+	def selectImplementationByIndex(self, index):
+		self.settings['hardware']['type'] = self.getImplementationNameByIndex(index)
 
 		self.stop()
 		self.loadHardware()
@@ -46,6 +57,7 @@ class HardwareHandler(object):
 			return 2
 		else:
 			return 0
+
 
 	def loadHardware(self):
 		self.stop()

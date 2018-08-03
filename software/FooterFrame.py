@@ -9,8 +9,9 @@ from PIL import Image, ImageTk
 
 
 class FooterFrame(object):
-	def __init__(self, parent, hwhandler):
+	def __init__(self, parent, settings, hwhandler):
 		self.hwhandler = hwhandler
+		self.settings = settings
 		self.frame = Frame(parent, bd=1)
 		self.frame.pack(fill=X)
 
@@ -48,7 +49,17 @@ class FooterFrame(object):
 
 
 	def buttonApplyHardwareConfig(self):
-		self.hwhandler.selectImplementationByIndex(self.devSelectDevice.current())
+		index = self.devSelectDevice.current()
+		name = self.hwhandler.getImplementationNameByIndex(index)
+
+		if self.hwhandler.hasSerial(self.devSelectDevice.current()):
+			port = self.devSelectPort.get()
+			pos = port.find(':')
+			port = port[:pos]
+			self.settings['hardware'][name + '.baud'] = self.devSelectBaud.get()
+			self.settings['hardware'][name + 'serialport'] = port
+
+		self.hwhandler.selectImplementationByIndex(index)
 
 
 	def initDeviceSelection(self):
@@ -57,6 +68,16 @@ class FooterFrame(object):
 		self.devSelectDevice['values'] = self.hwhandler.getHwImplementationNames()
 		self.devSelectDevice.current(self.hwhandler.getSelectedHwImplementationIndex())
 		self.devSelectDevice.pack(side=LEFT, padx=2, pady=2)
+		self.devSelectDevice.bind("<<ComboboxSelected>>", self.deviceChangedCallback)
+
+
+	def deviceChangedCallback(self, event):
+		if self.hwhandler.hasSerial(self.devSelectDevice.current()):
+			self.devSelectPort.config(state='normal')
+			self.devSelectBaud.config(state='normal')
+		else:
+			self.devSelectPort.config(state='disabled')
+			self.devSelectBaud.config(state='disabled')
 
 
 	def initComPortSelection(self):
@@ -67,6 +88,9 @@ class FooterFrame(object):
 			ports.append(p.device + ': ' + p.description)
 
 		self.devSelectPort['values'] = ports
+		
+		if len(ports) > 0:
+			self.devSelectPort.current(0)
 
 		self.devSelectPort.pack(side=LEFT, padx=2, pady=2)
 
