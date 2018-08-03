@@ -22,7 +22,7 @@ class Dummy(BaseHardware.BaseHardware):
 
 	# Initialize connection
 	def initConnection(self):
-		self.connectCallback('Connected, Random Value Generator')
+		self.listener.hwUpdateConnectionState('Connected, Random Value Generator')
 		return True
 
 

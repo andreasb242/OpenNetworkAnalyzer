@@ -12,29 +12,33 @@ import DataModel;
 import AboutDialog
 import FooterFrame
 from HardwareHandler import HardwareHandler
+from hardware import BaseHardware
 
 from CreateToolTip import CreateToolTip
 
 
-class AnalyzerFrame(object):
+class AnalyzerFrame(BaseHardware.HardwareListener):
 	def __init__(self, settings, model, mainRoot):
 		self.settings = settings
 		self.hwhandler = HardwareHandler(settings, model)
-		self.hardware = self.hwhandler.loadHardware()
+		self.hwhandler.loadHardware()
 		self.model = model
 		self.mainRoot = mainRoot
 		self.initUi()
 
-		self.hardware.start(lambda p=self: AnalyzerFrame.updateData(p), lambda text, p=self: AnalyzerFrame.updateConnectionState(p, text))		
+		# Connect the Hardware now
+		self.hwhandler.start(self)
 
 
+	## BaseHardware.HardwareListener
 	## Callback for data updates, this method can be called from any thread
-	def updateData(self):
+	def hwDataRead(self):
 		self.root.after(0, lambda p=self: AnalyzerFrame.updateDataUiThread(p))
 
 
-	## Callback for connection, this method can be called from any thread
-	def updateConnectionState(self, text):
+	## BaseHardware.HardwareListener
+	## Callback for connection state, this method can be called from any thread
+	def hwUpdateConnectionState(self, text):
 		self.root.after(0, lambda text=text, p=self: AnalyzerFrame.updateConnectionStateUiThread(p, text))
 
 
@@ -63,8 +67,9 @@ class AnalyzerFrame(object):
 
 
 	def initFooter(self):
-		self.footer = FooterFrame.FooterFrame(self.root)
+		self.footer = FooterFrame.FooterFrame(self.root, self.hwhandler)
 		self.footer.frame.pack(fill=X)
+
 
 	## Init Toolbar Buttons
 	def initToolbar(self):
@@ -201,7 +206,7 @@ class AnalyzerFrame(object):
 
 
 	def windowClose(self):
-		self.hardware.stop()
+		self.hwhandler.stop()
 		self.root.destroy()
 		self.mainRoot.destroy()
 		print('Main window closed')
@@ -224,8 +229,8 @@ class AnalyzerFrame(object):
 		self.graph.addCenterInfoText('Calibration running...')
 		self.root.update()
 		
-		self.hardware.n = 0
-		self.hardware.registerEndListener(lambda p=self: AnalyzerFrame.calibrationEndListener(p))
+		
+		self.hwhandler.startCalibration(lambda p=self: AnalyzerFrame.calibrationEndListener(p))
 
 
 	# This can be called from any thread

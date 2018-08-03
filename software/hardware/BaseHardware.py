@@ -5,6 +5,15 @@
 
 import threading
 
+class HardwareListener(object):
+	## Callback for data updates, this method can be called from any thread
+	def hwDataRead(self):
+		pass
+
+	## Callback for connection state, this method can be called from any thread
+	def hwUpdateConnectionState(self, text):
+		pass
+
 
 class BaseHardware(object):
 	def __init__(self, settings, model):
@@ -21,9 +30,8 @@ class BaseHardware(object):
 		self.maxFrequence = 2000000
 
 
-	def start(self, updateCallback, connectCallback):
-		self.updateCallback = updateCallback
-		self.connectCallback = connectCallback
+	def start(self, listener):
+		self.listener = listener
 		self.thread = threading.Thread(target=self.run)
 		self.thread.daemon = True
 		self.thread.start()
@@ -55,9 +63,9 @@ class BaseHardware(object):
 
 	# Thread method
 	def run(self):
-		self.connectCallback('Connecting...')
+		self.listener.hwUpdateConnectionState('Connecting...')
 		if self.initConnection() == False:
-			self.connectCallback('Connection failed!')
+			self.listener.hwUpdateConnectionState('Connection failed!')
 			return
 	
 		self.n = 0
@@ -74,7 +82,7 @@ class BaseHardware(object):
 				print('Hardware Thread stopped')
 				return
 			
-			self.updateCallback()
+			self.listener.hwDataRead()
 			
 			self.model.lastUpdatedIndex = self.n
 

@@ -28,7 +28,7 @@ class Arduino(BaseHardware.BaseHardware):
 			
 			if len(result) > 0:
 				if result[:2] != 'O:':
-					self.connectCallback('Connected, Error=' + result)
+					self.listener.hwUpdateConnectionState('Connected, Error=' + result)
 					return False
 				else:
 					result = result[2:]
@@ -40,7 +40,7 @@ class Arduino(BaseHardware.BaseHardware):
 						if key == 'MAXFREQ':
 							self.maxFrequence = int(value)
 
-					self.connectCallback('Connected, min frequency: ' + str(self.minFrequence) + 'Hz, max frequency: ' + str(self.maxFrequence) + 'Hz')
+					self.listener.hwUpdateConnectionState('Connected, min frequency: ' + str(self.minFrequence) + 'Hz, max frequency: ' + str(self.maxFrequence) + 'Hz')
 					return True
 		
 		return False
@@ -58,7 +58,7 @@ class Arduino(BaseHardware.BaseHardware):
 		result = self.serialPort.readline().decode().strip()
 		
 		if result[:2] != 'O:':
-			self.connectCallback('Error setting frequency to ' + freq + ', Error ' + result)
+			self.listener.hwUpdateConnectionState('Error setting frequency to ' + freq + ', Error ' + result)
 			self.lastError = True
 			return
 
@@ -66,7 +66,7 @@ class Arduino(BaseHardware.BaseHardware):
 		result = self.serialPort.readline().decode().strip()
 
 		if result[:2] != 'O:':
-			self.connectCallback('Error reading Value: ' + result)
+			self.listener.hwUpdateConnectionState('Error reading Value: ' + result)
 			self.lastError = True
 			return
 		
@@ -79,7 +79,7 @@ class Arduino(BaseHardware.BaseHardware):
 
 		if self.lastError == True:
 			self.lastError = False
-			self.connectCallback('Connected, no error anymore')
+			self.listener.hwUpdateConnectionState('Connected, no error anymore')
 
 
 
