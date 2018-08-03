@@ -48,17 +48,13 @@ class DataModel(object):
 		minV = 1000000
 		maxV = -1000000
 
-		raw = True
-		
-		## TODO if self.measMode == 1:
-		##	use also self.reference!
+		for i in range(1, len(self.readings), 2):
+			v = self.readings[i]
 
-		for r in self.readings:
-			if raw == True:
-				raw = False
-				continue
+			if self.measMode == 1:
+				r = v - self.reference[i]
 			else:
-				raw = True
+				r = v
 
 			if minV > r:
 				minV = r

@@ -18,8 +18,6 @@
 
   (layers
     (0 F.Cu signal)
-    (1 In1.Cu power)
-    (2 In2.Cu power)
     (31 B.Cu signal)
     (32 B.Adhes user)
     (33 F.Adhes user)
@@ -49,7 +47,7 @@
     (trace_clearance 0.1524)
     (zone_clearance 0.2032)
     (zone_45_only no)
-    (trace_min 0.2032)
+    (trace_min 0.2)
     (via_size 0.5)
     (via_drill 0.3)
     (via_min_size 0.4)
