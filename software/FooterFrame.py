@@ -46,6 +46,9 @@ class FooterFrame(object):
 
 		self.deviceStateLabel = Label(self.frame, text='Not connected')
 		self.deviceStateLabel.pack(side=LEFT, padx=2, pady=2)
+		
+		# Load other values for the current device
+		self.deviceChangedCallback(None)
 
 
 	def buttonApplyHardwareConfig(self):
@@ -57,7 +60,7 @@ class FooterFrame(object):
 			pos = port.find(':')
 			port = port[:pos]
 			self.settings['hardware'][name + '.baud'] = self.devSelectBaud.get()
-			self.settings['hardware'][name + 'serialport'] = port
+			self.settings['hardware'][name + '.serialport'] = port
 
 		self.hwhandler.selectImplementationByIndex(index)
 
@@ -72,9 +75,34 @@ class FooterFrame(object):
 
 
 	def deviceChangedCallback(self, event):
-		if self.hwhandler.hasSerial(self.devSelectDevice.current()):
+		index = self.devSelectDevice.current()
+		name = self.hwhandler.getImplementationNameByIndex(index)
+
+		if self.hwhandler.hasSerial(index):
 			self.devSelectPort.config(state='normal')
+			portCount = len(self.devSelectPort["values"])
+
+			try:
+				searchForPort = self.settings['hardware'][name + '.serialport']
+			except BaseException:
+				searchForPort = ''
+			
+			# If the port is not found, do not change the settings
+			for i in range (0, portCount):
+				port = self.devSelectPort["values"][i]
+				pos = port.find(':')
+				port = port[:pos]
+
+				if port == searchForPort:
+					self.devSelectPort.current(i)
+
+
 			self.devSelectBaud.config(state='normal')
+			try:
+				self.devSelectBaudVar.set(self.settings['hardware'][name + '.baud'])
+			except BaseException:
+				self.devSelectBaud.current(0)
+
 		else:
 			self.devSelectPort.config(state='disabled')
 			self.devSelectBaud.config(state='disabled')
