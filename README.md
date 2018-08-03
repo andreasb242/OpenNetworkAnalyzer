@@ -27,7 +27,7 @@ Not yet ready
 Not yet ready.
 
 ## Screenshots
-TODO
+![Screenshot](/screenshot/main.png?raw=true "Application Window Screenshot")
 
 ## Installation / running
 ### Ubuntu
@@ -42,7 +42,4 @@ TODO
 ### Windows
  TODO
 
-## Setup / Usage
-### Hardware configuration
-At the first startup, the Settings dialog is displayed.
-TODO
+
