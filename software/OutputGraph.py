@@ -23,9 +23,8 @@ graphAreaHeight = graphHeight + graphTopBuffer + graphBottomBuffer
 
 
 class OutputGraph(object):
-	def __init__(self, graphArea, model):
-		self.graph = Canvas(graphArea, width=graphAreaWidth, height=graphAreaHeight, background='black')
-		self.graph.grid()
+	def __init__(self, parent, model):
+		self.graph = Canvas(parent, width=graphAreaWidth, height=graphAreaHeight, background='black')
 		self.model = model;
 
 		self.graphColor = 'Green'

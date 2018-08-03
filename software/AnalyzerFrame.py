@@ -40,25 +40,19 @@ class AnalyzerFrame(object):
 	def initUi(self):
 		self.root = Toplevel()
 		self.root.title('Scalar Network Analyzer')
-
 		self.root.protocol("WM_DELETE_WINDOW", lambda p=self: AnalyzerFrame.windowClose(p))
-
-		self.window = ttk.Frame(self.root, padding=5)
-		self.window.grid()
-		self.window.grid_columnconfigure(0, weight=1)
 
 		self.initToolbar()
 
-		graphArea = ttk.Frame(self.window)
-		graphArea.grid(column=0, row=2)
-
-		self.graph = OutputGraph.OutputGraph(graphArea, self.model)
+		self.graph = OutputGraph.OutputGraph(self.root, self.model)
+		self.graph.graph.pack(fill=BOTH, expand=1)
 		self.graph.updateGraph()
 
 
 	## Init Toolbar Buttons
 	def initToolbar(self):
-		self.toolbar = Frame(self.window, bd=1)
+		self.toolbar = Frame(self.root, bd=1)
+		self.toolbar.pack(fill=X)
 		self.tbid = 0
 		
 		# Icons need to be kept, else the garbage collactor deletes them
@@ -125,7 +119,6 @@ class AnalyzerFrame(object):
 		self.addToolButton("info-24.png", "About", lambda p=self: AnalyzerFrame.buttonShowAbout(p), subpanel=True)
 		self.addToolButton("exit-24.png", "Quit Application", lambda p=self: AnalyzerFrame.windowClose(p), subpanel=True)
 
-		self.toolbar.grid(column=0, row=0, sticky=(N, E, S, W))
 
 	def addToolbarSubPanel(self):
 		self.tbSubpanel = Frame(self.toolbar, bd=1)
