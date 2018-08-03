@@ -6,8 +6,6 @@
 from hardware import BaseHardware
 import serial
 
-# TODO List serial ports
-# python -c "import serial.tools.list_ports;print serial.tools.list_ports.comports()"
 
 class Arduino(BaseHardware.BaseHardware):
 	def __init__(self, settings, model):
@@ -24,7 +22,7 @@ class Arduino(BaseHardware.BaseHardware):
 	# Initialize connection
 	def initConnection(self):
 		for i in range(0, 10):
-			self.serialPort.write('i\n'.encode())
+			self.serialPort.write(b'i\n')
 			result = self.serialPort.readline().decode().strip()
 		
 			## TODO Parse min / Max frequency, and check for error!

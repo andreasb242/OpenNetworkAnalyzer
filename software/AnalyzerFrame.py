@@ -6,6 +6,7 @@
 from tkinter import *
 from tkinter import simpledialog
 from PIL import Image, ImageTk
+import serial.tools.list_ports
 
 import OutputGraph
 import DataModel;
@@ -48,7 +49,60 @@ class AnalyzerFrame(object):
 		self.graph.graph.pack(fill=BOTH, expand=1)
 		self.graph.updateGraph()
 
+		self.initFooter()
 
+
+	def initFooter(self):
+		self.footer = Frame(self.root, bd=1)
+		self.footer.pack(fill=X)
+		
+		label = Label(self.footer, text='Device:')
+		label.pack(side=LEFT, padx=2, pady=2)
+
+		self.devSelectDeviceVar = StringVar()
+		self.devSelectDevice = ttk.Combobox(self.footer, textvariable=self.devSelectDeviceVar, state='readonly')
+		self.devSelectDevice['values'] = ('None', 'Dummy (no hardware)', 'Arduino')
+		self.devSelectDevice.current(0)
+		self.devSelectDevice.pack(side=LEFT, padx=2, pady=2)
+
+		label = Label(self.footer, text='COM-Port:')
+		label.pack(side=LEFT, padx=2, pady=2)
+
+		self.devSelectPortVar = StringVar()
+		self.devSelectPort = ttk.Combobox(self.footer, textvariable=self.devSelectPortVar)
+		ports = []
+		for p in serial.tools.list_ports.comports():
+			ports.append(p.device + ': ' + p.description)
+
+		self.devSelectPort['values'] = ports
+
+		self.devSelectPort.pack(side=LEFT, padx=2, pady=2)
+
+
+		label = Label(self.footer, text='Baud:')
+		label.pack(side=LEFT, padx=2, pady=2)
+
+		self.devSelectBaudVar = StringVar()
+		self.devSelectBaud = ttk.Combobox(self.footer, textvariable=self.devSelectBaudVar)
+		self.devSelectBaud['values'] = ('115200', '9600', '19200', '38400', '57600')
+		self.devSelectBaud.current(0)
+		self.devSelectBaud.pack(side=LEFT, padx=2, pady=2)
+
+		image = Image.open("icon/apply-24.png")
+		icon = ImageTk.PhotoImage(image)
+		self.icons.append(icon)
+
+		# TODO Apply
+		button = Button(self.footer, image=icon, relief=FLAT, command=None)
+		label.pack(side=LEFT, padx=2, pady=2)
+
+		label = Label(self.footer, text='State:')
+		label.pack(side=LEFT, padx=2, pady=2)
+
+		self.deviceStateLabel = Label(self.footer, text='Not connected')
+		self.deviceStateLabel.pack(side=LEFT, padx=2, pady=2)
+
+		
 	## Init Toolbar Buttons
 	def initToolbar(self):
 		self.toolbar = Frame(self.root, bd=1)
@@ -122,8 +176,6 @@ class AnalyzerFrame(object):
 		image = Image.open("icon/calibrated.png")
 		self.calibrationCalibratedIcon = ImageTk.PhotoImage(image)
 
-
-		
 		self.addToolbarSpacer()
 
 		self.addToolbarSubPanel()
