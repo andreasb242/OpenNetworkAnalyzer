@@ -113,6 +113,17 @@ class AnalyzerFrame(object):
 
 		self.addToolButton("settings.png", "Settings", lambda p=self: AnalyzerFrame.buttonShowSettings(p))
 		self.addToolButton("calibrate.png", "Calibrate", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
+		self.addToolbarSubPanel()
+		self.addToolButton("edit-clear.png", "Clear Calibration", lambda p=self: AnalyzerFrame.buttonClearReference(p), subpanel=True)
+
+		self.calibrationStateButton = self.addToolButton("not-calibrated.png", "Calibration state", None, subpanel=True)
+		image = Image.open("icon/not-calibrated.png")
+		self.calibrationNotCalibratedIcon = ImageTk.PhotoImage(image)
+		image = Image.open("icon/calibrated.png")
+		self.calibrationCalibratedIcon = ImageTk.PhotoImage(image)
+
+
+		
 		self.addToolbarSpacer()
 
 		self.addToolbarSubPanel()
@@ -150,12 +161,14 @@ class AnalyzerFrame(object):
 			button.pack(side=LEFT, padx=2, pady=2)
 
 		CreateToolTip(button, tooltip)
+		
+		return button
 
 
 	def applyFrequencies(self):
 		self.model.startFreq = int(float(self.txtStartFreq.get()) * 1000000)
 		self.model.stopFreq = int(float(self.txtEndFreq.get()) * 1000000)
-		self.model.measMode = 0
+		self.setModeAsolute()
 		
 		self.settings['view']['startFreq'] = str(self.model.startFreq);
 		self.settings['view']['stopFreq'] = str(self.model.stopFreq);
@@ -180,6 +193,9 @@ class AnalyzerFrame(object):
 		print('Main window closed')
 
 
+	def buttonClearReference(self):
+		self.setModeAsolute()
+
 	def buttonShowSettings(self):
 		settingsDialog = SettingsDialog.SettingsDialog(self.settings, self.root)
 		settingsDialog.run()
@@ -195,7 +211,7 @@ class AnalyzerFrame(object):
 
 
 	def buttonCalibrate(self):
-		self.model.measMode = 2
+		self.setModeReferencing()
 		
 		self.model.setupArrays()
 	
@@ -215,7 +231,7 @@ class AnalyzerFrame(object):
 	def calibrationEndListenerUiThread(self):
 		self.model.reference[::] = self.model.readings[::]
 	
-		self.model.measMode = 1
+		self.setModeRelative()
 		self.graph.updateGraph()
 
 
@@ -225,7 +241,7 @@ class AnalyzerFrame(object):
 		else:
 			self.model.numSamplesIndex = self.model.numSamplesIndex - 1
 
-		self.model.measMode = 0
+		self.setModeAsolute()
 
 		self.model.setupArrays()
 		self.graph.updateGraph()
@@ -237,7 +253,7 @@ class AnalyzerFrame(object):
 		else:
 			self.model.numSamplesIndex = self.model.numSamplesIndex + 1
 
-		self.model.measMode = 0
+		self.setModeAsolute()
 
 		self.model.setupArrays()
 		self.graph.updateGraph()
@@ -314,5 +330,18 @@ class AnalyzerFrame(object):
 		print('self.model.refLevel=' + str(self.model.refLevel))
 
 
+	def setModeAsolute(self):
+		self.model.measMode = 0
+		self.calibrationStateButton.config(image=self.calibrationNotCalibratedIcon)
 
+
+	def setModeRelative(self):
+		self.model.measMode = 1
+		self.calibrationStateButton.config(image=self.calibrationCalibratedIcon)
+
+
+	def setModeReferencing(self):
+		self.model.measMode = 2
+		self.calibrationStateButton.config(image=self.calibrationNotCalibratedIcon)
+	
 
