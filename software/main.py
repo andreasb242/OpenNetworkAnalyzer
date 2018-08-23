@@ -53,12 +53,8 @@ if __name__ == '__main__':
 	startup.readSettings()
 
 
-	if startup.settings['settings']['version'] == '1':
-		print ("Startup application")
-		startup.startup()
-
-	else:
-		print ('Settings not confirmed, quit now')
+	print ("Startup application")
+	startup.startup()
 
 	startup.storeSettings()
 	print("Finsihed")

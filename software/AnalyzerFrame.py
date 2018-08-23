@@ -93,6 +93,11 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 			self.model.stopFreq = self.maxFreq
 			freqChanged = True
 
+		# Prevent division by zero in UI
+		if self.model.stopFreq == self.model.startFreq:
+			self.model.stopFreq = self.model.stopFreq + 0.001
+			freqChanged = True
+
 		if freqChanged == True:
 			self.loadFrequencies()
 

@@ -5,17 +5,20 @@
  * The Output Pin is D5, the input pin A0
  * 
  * License: GPLv3
- * Author: Brett Killion, Andreas Butti
+ * Author: Andreas Butti
  */
 
 #include "SerialProtocol.h"
 
-// http://forum.arduino.cc/index.php/topic,117425.0.html
-#include "PWM/PWM.h"
+#include "si5351.h"
+#include "Wire.h"
 
-// Hack... The Library is included directly...
-#include "PWM/utility/ATimerDefs.cpp"
-#include "PWM/utility/BTimerDefs.cpp"
+Si5351 si5351;
+
+/**
+ * Initialized flag
+ */
+bool g_hwInitialized = false;
 
 /**
  * Command implementation
@@ -29,7 +32,7 @@ public:
     // Connected LED
     digitalWrite(A2, HIGH);
 
-    return "MINFREQ=1,MAXFREQ=60000";
+    return "MINFREQ=4000,MAXFREQ=175000000";
   }
 
   /**
@@ -42,14 +45,22 @@ public:
       return false;
     }
 
-    // Not really accurate, but working some sort of...
-    if (!SetPinFrequency(5, freq)) {
-      return false;
+    if (!g_hwInitialized) {
+      bool i2c_found = si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
+      if (!i2c_found) {
+        Serial.print("E4: I2C Device not found!, ");
+        return false;
+      }
+      g_hwInitialized = true;
     }
+    
+    // Set CLK0 to output 14 MHz
+    si5351.set_freq(freq * 100ULL, SI5351_CLK0);
+    
+    // Query a status update and wait a bit to let the Si5351 populate the
+    // status flags correctly.
+    si5351.update_status();
 
-    // setting the duty to 50% with the highest possible resolution that 
-    // can be applied to the timer (up to 16 bit). 1/2 of 65536 is 32768.
-    pwmWriteHR(5, 32768);
 
     return true;
   }
@@ -97,9 +108,6 @@ void setup() {
   // State LEDs
   pinMode(A1, OUTPUT);
   pinMode(A2, OUTPUT);
-
-  // Initialize all timers except for 0, to save time keeping functions
-  InitTimersSafe();
 }
 
 /**

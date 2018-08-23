@@ -60,6 +60,9 @@ public:
    * Get info string to return to the application
    */
   const char* getInfoString() {
+    // Connected LED
+    digitalWrite(A2, HIGH);
+
     return "MINFREQ=1,MAXFREQ=72000000";
   }
 
@@ -86,12 +89,18 @@ public:
    * @return Read value
    */
   uint32_t readInput() {
+    // Active LED
+    digitalWrite(A1, HIGH);
+
     uint32_t sum = 0;
     
     for (int n = 0; n < 16; n++) {
       sum += analogRead(A0);
     }
     sum = sum >> 2;
+
+    // Active LED
+    digitalWrite(A1, LOW);
 
     return sum;
   }
@@ -118,6 +127,10 @@ void setup() {
   pinMode(WCLK, OUTPUT);
   pinMode(DATA, OUTPUT);
   pinMode(FQ_UD, OUTPUT);
+
+  // State LEDs
+  pinMode(A1, OUTPUT);
+  pinMode(A2, OUTPUT);
 
   // Enter serial mode
   digitalWrite(WCLK, HIGH);
