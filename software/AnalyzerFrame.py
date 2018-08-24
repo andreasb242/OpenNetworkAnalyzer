@@ -201,10 +201,10 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.addToolbarSubPanel()
 
-		label = Label(self.tbSubpanel, text='Start sweep')
-		label.grid(column=0, row=0)
-		label = Label(self.tbSubpanel, text='End sweep')
-		label.grid(column=0, row=1)
+		label = Label(self.tbSubpanel, text='Sweep from')
+		label.grid(column=0, row=0, sticky=E)
+		label = Label(self.tbSubpanel, text='to')
+		label.grid(column=0, row=1, sticky=E)
 
 		label = Label(self.tbSubpanel, text='MHz, ')
 		label.grid(column=2, row=0)
@@ -473,13 +473,15 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.graph.updateGraph()
 
 		if self.model.measMode == 0:
-			units = "dBm"
+			units = " dBm"
 		if self.model.measMode == 1:
-			units = "dB"
+			units = " dB"
 
+		# Top
 		txt = str(self.model.refLevel) + units
 		self.refPointLabel1.config(text=txt)
 		
+		# Bottom
 		db = self.model.dBDivList[self.model.dBDivIndex]
 		txt = str(self.model.refLevel - self.model.vDiv * db) + units
 		self.refPointLabel2.config(text=txt)

@@ -16,7 +16,7 @@ class OutputGraph(object):
 		self.graphRightBuffer = 20
 		self.graphLeftBuffer = 50
 		self.graphTopBuffer = 20
-		self.graphBottomBuffer = 50
+		self.graphBottomBuffer = 20
 
 		graphAreaWidth = self.graphWidth + self.graphLeftBuffer + self.graphRightBuffer
 		graphAreaHeight = self.graphHeight + self.graphTopBuffer + self.graphBottomBuffer
@@ -50,7 +50,6 @@ class OutputGraph(object):
 			self.graph.delete(n)
 
 		self.makeGraph()
-		self.addTextInfo()
 		self.makeTrace()
 
 
@@ -98,19 +97,6 @@ class OutputGraph(object):
 			self.graph.create_text(x, self.graphTopBuffer + 10 + self.graphHeight, text=txt, fill=self.labelColor)
 			freq = freq + freqStep
 			i = i + 1
-
-
-	def addTextInfo(self):
-		yInfo = self.graphTopBuffer + self.graphHeight + self.graphBottomBuffer - 15
-
-		if self.model.measMode == 0:
-			txt = "Mode: Absolute"
-		if self.model.measMode == 1:
-			txt = "Mode: Relative"
-		self.graph.create_text(700, yInfo, text = txt, fill=self.textLabelColor)
-
-		txt = "Center: " + str(((self.model.stopFreq - self.model.startFreq) / 2 + self.model.startFreq) / 1000000) + "MHz"
-		self.graph.create_text(self.graphWidth / 2 + self.graphLeftBuffer, yInfo, text = txt, fill=self.textLabelColor)
 
 
 	def makeTrace(self):
