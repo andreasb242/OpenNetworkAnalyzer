@@ -46,7 +46,8 @@ class FooterFrame(object):
 
 		self.deviceStateLabel = Label(self.frame, text='Not connected')
 		self.deviceStateLabel.pack(side=LEFT, padx=2, pady=2)
-		
+		self.defaultBackground = self.deviceStateLabel["background"]
+
 		# Load other values for the current device
 		self.deviceChangedCallback(None)
 
@@ -131,8 +132,13 @@ class FooterFrame(object):
 		self.devSelectBaud.pack(side=LEFT, padx=2, pady=2)
 
 
-	def setDeviceState(self, text):
+	def setDeviceState(self, text, error):
 		self.deviceStateLabel.config(text=text)
+		if error:
+			self.deviceStateLabel.configure(background='red')
+		else:
+			self.deviceStateLabel.configure(background=self.defaultBackground)
+			
 
 
 

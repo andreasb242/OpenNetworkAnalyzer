@@ -46,8 +46,8 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 	## BaseHardware.HardwareListener
 	## Callback for connection state, this method can be called from any thread
-	def hwUpdateConnectionState(self, text):
-		self.root.after(0, lambda text=text, p=self: AnalyzerFrame.updateConnectionStateUiThread(p, text))
+	def hwUpdateConnectionState(self, text, error=False):
+		self.root.after(0, lambda text=text, p=self: AnalyzerFrame.updateConnectionStateUiThread(p, text, error))
 
 
 	## BaseHardware.HardwareListener
@@ -105,8 +105,8 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 
 	## Update Connection State, this method should only be called in the UI Thread
-	def updateConnectionStateUiThread(self, text):
-		self.footer.setDeviceState(text)
+	def updateConnectionStateUiThread(self, text, error):
+		self.footer.setDeviceState(text, error)
 
 
 	## Update the UI, this method should only be called in the UI Thread

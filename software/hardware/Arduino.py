@@ -29,7 +29,7 @@ class Arduino(BaseHardware.BaseHardware):
 			
 			if len(result) > 0:
 				if result[:2] != 'O:':
-					self.listener.hwUpdateConnectionState('Connected, Error=' + result)
+					self.listener.hwUpdateConnectionState('Connected, Error=' + result, True)
 					return False
 				else:
 					result = result[2:]
@@ -41,10 +41,20 @@ class Arduino(BaseHardware.BaseHardware):
 						if key == 'MAXFREQ':
 							self.maxFrequence = int(value)
 
-					self.listener.hwUpdateConnectionState('Connected, min frequency: ' + str(self.minFrequence) + 'Hz, max frequency: ' + str(self.maxFrequence) + 'Hz')
+					self.listener.hwUpdateConnectionState('Connected, min frequency: ' + self.formatFrequence(self.minFrequence) + ', max frequency: ' + self.formatFrequence(self.maxFrequence))
 					return True
 		
 		return False
+
+	def formatFrequence(self, hz):
+		if hz < 1000:
+			return str(hz) + 'Hz'
+
+		if hz < 1000000:
+			return str(hz / 1000.0) + 'kHz'
+
+		if hz < 1000000000:
+			return str(hz / 1000000.0) + 'MHz'
 
 
 	# Read a single value, return True to continue, False to stop
@@ -60,19 +70,19 @@ class Arduino(BaseHardware.BaseHardware):
 			result = self.serialPort.readline().decode().strip()
 		
 			if result[:2] != 'O:':
-				self.listener.hwUpdateConnectionState('Error setting frequency to ' + freq + ', Error ' + result)
+				self.listener.hwUpdateConnectionState('Error setting frequency to ' + freq + ', Error ' + result, True)
 				self.lastError = True
 				return False
 
 			self.serialPort.write('r\n'.encode())
 			result = self.serialPort.readline().decode().strip()
 		except BaseException as e:
-			self.listener.hwUpdateConnectionState('Connection lost: ' + str(e))
+			self.listener.hwUpdateConnectionState('Connection lost: ' + str(e), True)
 			traceback.print_exc()
 			return False
 
 		if result[:2] != 'O:':
-			self.listener.hwUpdateConnectionState('Error reading Value: ' + result)
+			self.listener.hwUpdateConnectionState('Error reading Value: ' + result, True)
 			self.lastError = True
 			return False
 		
@@ -80,7 +90,7 @@ class Arduino(BaseHardware.BaseHardware):
 
 		if len(self.adcValue) != 0:
 			#0.0488 or 0.1953 - 83.998
-			self.model.readings[self.n * 2 + 1] = float(self.adcValue) * .5*0.0488 - 90.5
+			self.model.readings[self.n * 2 + 1] = float(self.adcValue) * .5 * 0.0488 - 90.5
 
 
 		if self.lastError == True:

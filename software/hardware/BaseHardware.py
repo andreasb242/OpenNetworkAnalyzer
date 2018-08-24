@@ -13,7 +13,7 @@ class HardwareListener(object):
 		pass
 
 	## Callback for connection state, this method can be called from any thread
-	def hwUpdateConnectionState(self, text):
+	def hwUpdateConnectionState(self, text, error=False):
 		pass
 
 	## Callback for HW Info, this method can be called from any thread
@@ -81,7 +81,7 @@ class BaseHardware(object):
 	def run(self):
 		self.listener.hwUpdateConnectionState('Connecting...')
 		if self.initConnection() == False:
-			self.listener.hwUpdateConnectionState('Connection failed!')
+			self.listener.hwUpdateConnectionState('Connection failed!', True)
 			return
 
 
