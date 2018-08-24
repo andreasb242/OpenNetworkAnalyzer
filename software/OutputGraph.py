@@ -103,17 +103,6 @@ class OutputGraph(object):
 	def addTextInfo(self):
 		yInfo = self.graphTopBuffer + self.graphHeight + self.graphBottomBuffer - 15
 
-		txt = str(np.round(self.model.startFreq / 1000000, 3)) + "MHz to " + str(np.round(self.model.stopFreq / 1000000, 3)) + "MHz"
-		self.graph.create_text(80, yInfo, text=txt, fill=self.textLabelColor)
-
-		if self.model.measMode == 0:
-			units = "dBm"
-		if self.model.measMode == 1:
-			units = "dB"
-
-		txt = "Ref Level: " + str(self.model.refLevel) + units
-		self.graph.create_text(250, yInfo, text = txt, fill=self.textLabelColor)
-
 		if self.model.measMode == 0:
 			txt = "Mode: Absolute"
 		if self.model.measMode == 1:

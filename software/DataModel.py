@@ -19,7 +19,10 @@ class DataModel(object):
 		## 0 for absolute, 1 for relative, 2 for create reference
 		self.measMode = 0
 		
+		# Horizontal Div Count
 		self.hDiv = 10
+		
+		# Vertical Div Count
 		self.vDiv = 8
 
 		self.startFreq = 1000000

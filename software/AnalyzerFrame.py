@@ -128,6 +128,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		# Update initial values
 		self.sampleSweepChanged()
 		self.updateDbDiv()
+		self.updateRefPoint()
 
 		self.initFooter()
 
@@ -172,6 +173,14 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.addToolButton("go-down-24.png", "Ref Level +1", lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p), subpanel=True)
 
 		self.addToolButton("auto-vertical.png", "Auto Ref Level", lambda p=self: AnalyzerFrame.buttonRefLevelAuto(p))
+
+		self.addToolbarSubPanel()
+
+		self.refPointLabel1 = Label(self.tbSubpanel, text='XXX unit')
+		self.refPointLabel1.grid(column=0, row=0)
+		self.refPointLabel2 = Label(self.tbSubpanel, text='XXX unit')
+		self.refPointLabel2.grid(column=0, row=1)
+
 
 		self.addToolbarSpacer()
 
@@ -414,7 +423,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		if self.model.refLevel >= 20:
 			self.model.refLevel = 20
 
-		self.graph.updateGraph()
+		self.updateRefPoint()
 
 
 	def buttonRefLevelIncOne(self):
@@ -423,7 +432,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		if self.model.refLevel >= 20:
 			self.model.refLevel = 20
 
-		self.graph.updateGraph()
+		self.updateRefPoint()
 
 
 	def buttonRefLevelAuto(self):
@@ -439,7 +448,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.model.refLevel = pos + (divCount / 2 * div)
 
-		self.graph.updateGraph()
+		self.updateRefPoint()
 
 
 	def buttonRefLevelDecTen(self):
@@ -448,7 +457,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		if self.model.refLevel <= -60:
 			self.model.refLevel = -60
 
-		self.graph.updateGraph()
+		self.updateRefPoint()
 
 
 	def buttonRefLevelDecOne(self):
@@ -457,7 +466,23 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		if self.model.refLevel <= -60:
 			self.model.refLevel = -60
 
+		self.updateRefPoint()
+
+
+	def updateRefPoint(self):
 		self.graph.updateGraph()
+
+		if self.model.measMode == 0:
+			units = "dBm"
+		if self.model.measMode == 1:
+			units = "dB"
+
+		txt = str(self.model.refLevel) + units
+		self.refPointLabel1.config(text=txt)
+		
+		db = self.model.dBDivList[self.model.dBDivIndex]
+		txt = str(self.model.refLevel - self.model.vDiv * db) + units
+		self.refPointLabel2.config(text=txt)
 
 
 	def setModeAsolute(self):
@@ -473,3 +498,4 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	def setModeReferencing(self):
 		self.model.measMode = 2
 		self.calibrationStateButton.config(image=self.calibrationNotCalibratedIcon)
+
