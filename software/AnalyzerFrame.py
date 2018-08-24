@@ -124,6 +124,9 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.graph = OutputGraph.OutputGraph(self.root, self.model)
 		self.graph.graph.pack(fill=BOTH, expand=1)
 		self.graph.updateGraph()
+		
+		# Update initial values
+		self.sampleSweepChanged()
 
 		self.initFooter()
 
@@ -162,6 +165,17 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.addToolButton("sample-inc.png", "+ Samples", lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
 		self.addToolButton("sample-dec.png", "- Samples", lambda p=self: AnalyzerFrame.buttonDecSampSweep(p))
+
+		self.addToolbarSubPanel()
+
+		self.sweepCountLabel = Label(self.tbSubpanel, text='XXX samples')
+		self.sweepCountLabel.grid(column=0, row=0)
+		line = Frame(self.tbSubpanel, bd=1)
+		line.configure(background='black')
+		line.grid(column=0, row=1, sticky=E+W)
+		label = Label(self.tbSubpanel, text='sweep')
+		label.grid(column=0, row=2)
+		
 		self.addToolbarSpacer()
 
 		self.addToolbarSubPanel()
@@ -200,7 +214,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.addToolbarSpacer()
 
-		self.addToolButton("calibrate.png", "Calibrate", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
+		self.addToolButton("calibrate.png", "Calibrate (e.g. connect output to input)", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
 		self.addToolbarSubPanel()
 		self.addToolButton("edit-clear.png", "Clear Calibration", lambda p=self: AnalyzerFrame.buttonClearReference(p), subpanel=True)
 
@@ -316,6 +330,10 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 
 	def buttonDecSampSweep(self):
+		if self.model.numSamplesIndex == 0:
+			# Nothing to do
+			return
+
 		if self.model.numSamplesIndex <= 0:
 			self.model.numSamplesIndex = 0
 		else:
@@ -325,9 +343,14 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.model.setupArrays()
 		self.graph.updateGraph()
+		self.sampleSweepChanged()
 
 
 	def buttonIncSampSweep(self):
+		if self.model.numSamplesIndex == len(self.model.numSamplesList) - 1:
+			# Nothing to do
+			return
+
 		self.model.numSamplesIndex = self.model.numSamplesIndex + 1
 		if self.model.numSamplesIndex >= len(self.model.numSamplesList):
 			self.model.numSamplesIndex = len(self.model.numSamplesList) - 1
@@ -336,7 +359,12 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.model.setupArrays()
 		self.graph.updateGraph()
+		self.sampleSweepChanged()
 
+
+	def sampleSweepChanged(self):
+		count = self.model.numSamplesList[self.model.numSamplesIndex]
+		self.sweepCountLabel.config(text=str(count - 1) + ' samples')
 
 	def buttonDBDivInc(self):
 		if self.model.dBDivIndex >= 4:

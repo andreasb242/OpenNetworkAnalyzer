@@ -13,7 +13,7 @@ class DataModel(object):
 		self.dBDivList = [1, 2, 3, 5, 10]
 		self.dBDivIndex = 4
 
-		self.numSamplesList = [51, 101, 501, 1001]
+		self.numSamplesList = [51, 101, 251, 501, 1001, 1501, 2001]
 		self.numSamplesIndex = 0
 
 		## 0 for absolute, 1 for relative, 2 for create reference

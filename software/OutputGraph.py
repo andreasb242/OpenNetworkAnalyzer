@@ -15,7 +15,7 @@ class OutputGraph(object):
 		
 		self.graphRightBuffer = 20
 		self.graphLeftBuffer = 50
-		self.graphTopBuffer = 50
+		self.graphTopBuffer = 20
 		self.graphBottomBuffer = 50
 
 		graphAreaWidth = self.graphWidth + self.graphLeftBuffer + self.graphRightBuffer
@@ -125,12 +125,6 @@ class OutputGraph(object):
 
 		txt = "Center: " + str(((self.model.stopFreq - self.model.startFreq) / 2 + self.model.startFreq) / 1000000) + "MHz"
 		self.graph.create_text(self.graphWidth / 2 + self.graphLeftBuffer, yInfo, text = txt, fill=self.textLabelColor)
-
-		txt = str(self.model.numSamplesList[self.model.numSamplesIndex] - 1) + " samples/sweep"
-		self.graph.create_text(850, yInfo, text=txt, fill=self.textLabelColor)
-
-		txt = "Scalar Network Analyzer"
-		self.graph.create_text(self.graphWidth / 2 + self.graphLeftBuffer, self.graphTopBuffer / 2, text=txt, font=tkFont.Font(size=18), fill=self.titleColor)
 
 
 	def makeTrace(self):
