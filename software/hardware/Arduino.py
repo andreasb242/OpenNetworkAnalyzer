@@ -5,6 +5,7 @@
 
 from hardware import BaseHardware
 import serial
+import traceback
 
 
 class Arduino(BaseHardware.BaseHardware):
@@ -49,26 +50,31 @@ class Arduino(BaseHardware.BaseHardware):
 	# Read a single value, return True to continue, False to stop
 	def readValue(self):
 		if self.serialPort is None:
-			return
+			return False
 		
-		# Send frequency command
-		freq = self.model.readings[self.n * 2].astype(int).astype(str)
-		command = 'f' + freq + '\n'
-		self.serialPort.write(command.encode())
-		result = self.serialPort.readline().decode().strip()
+		try:
+			# Send frequency command
+			freq = self.model.readings[self.n * 2].astype(int).astype(str)
+			command = 'f' + freq + '\n'
+			self.serialPort.write(command.encode())
+			result = self.serialPort.readline().decode().strip()
 		
-		if result[:2] != 'O:':
-			self.listener.hwUpdateConnectionState('Error setting frequency to ' + freq + ', Error ' + result)
-			self.lastError = True
-			return
+			if result[:2] != 'O:':
+				self.listener.hwUpdateConnectionState('Error setting frequency to ' + freq + ', Error ' + result)
+				self.lastError = True
+				return False
 
-		self.serialPort.write('r\n'.encode())
-		result = self.serialPort.readline().decode().strip()
+			self.serialPort.write('r\n'.encode())
+			result = self.serialPort.readline().decode().strip()
+		except BaseException as e:
+			self.listener.hwUpdateConnectionState('Connection lost: ' + str(e))
+			traceback.print_exc()
+			return False
 
 		if result[:2] != 'O:':
 			self.listener.hwUpdateConnectionState('Error reading Value: ' + result)
 			self.lastError = True
-			return
+			return False
 		
 		self.adcValue = result[2:]
 
@@ -81,6 +87,7 @@ class Arduino(BaseHardware.BaseHardware):
 			self.lastError = False
 			self.listener.hwUpdateConnectionState('Connected, no error anymore')
 
+		return True
 
 
 
