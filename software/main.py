@@ -37,7 +37,7 @@ class Startup(object):
 
 	def startup(self):
 		# https://stackoverflow.com/questions/1406145/how-do-i-get-rid-of-python-tkinter-root-window#1407700
-		self.mainRoot = Tk()
+		self.mainRoot = Tk(className='OpenNetworkAnalyzer')
 		self.mainRoot.overrideredirect(1)
 		self.mainRoot.withdraw()
 

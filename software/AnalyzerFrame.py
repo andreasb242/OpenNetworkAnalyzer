@@ -138,7 +138,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.toolbar = Frame(self.root, bd=1)
 		self.toolbar.pack(fill=X)
 		self.tbid = 0
-		
+
 		# Icons need to be kept, else the garbage collector deletes them
 		self.icons = []
 
@@ -155,9 +155,9 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.addToolButton("go-bottom-24.png", "Ref Level +10", lambda p=self: AnalyzerFrame.buttonRefLevelIncTen(p), subpanel=True)
 		self.addToolButton("go-up-24.png", "Ref Level -1", lambda p=self: AnalyzerFrame.buttonRefLevelDecOne(p), subpanel=True)
 		self.addToolButton("go-down-24.png", "Ref Level +1", lambda p=self: AnalyzerFrame.buttonRefLevelIncOne(p), subpanel=True)
-		
+
 		self.addToolButton("auto-vertical.png", "Auto Ref Level", lambda p=self: AnalyzerFrame.buttonRefLevelAuto(p))
-		
+
 		self.addToolbarSpacer()
 
 		self.addToolButton("sample-inc.png", "+ Samples", lambda p=self: AnalyzerFrame.buttonIncSampSweep(p))
@@ -220,7 +220,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	def addToolbarSubPanel(self):
 		self.tbSubpanel = Frame(self.toolbar, bd=1)
 		self.tbSubpanel.pack(side=LEFT, padx=2, pady=2)
-		
+
 		self.tbSubX = 0
 		self.tbSubY = 0
 
@@ -247,7 +247,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 			button.pack(side=LEFT, padx=2, pady=2)
 
 		CreateToolTip(button, tooltip)
-		
+
 		return button
 
 
@@ -292,13 +292,13 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 	def buttonCalibrate(self):
 		self.setModeReferencing()
-		
+
 		self.model.setupArrays()
-	
+
 		self.graph.addCenterInfoText('Calibration running...')
 		self.root.update()
-		
-		
+
+
 		self.hwhandler.startCalibration(lambda p=self: AnalyzerFrame.calibrationEndListener(p))
 
 
@@ -310,7 +310,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	# Call only from UI Thread!
 	def calibrationEndListenerUiThread(self):
 		self.model.reference[::] = self.model.readings[::]
-	
+
 		self.setModeRelative()
 		self.graph.updateGraph()
 
@@ -369,7 +369,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.model.refLevel = self.model.refLevel + 1
 
 		if self.model.refLevel >= 20:
-			self.model.refLevel = 20	
+			self.model.refLevel = 20
 
 		self.graph.updateGraph()
 
@@ -381,12 +381,12 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		## Currently fixed, on rescaling the div size, but not the count changes
 		divCount = 8
 		center = minV + (maxV - minV) / 2
-		
+
 		# Round to div position
 		pos = center // div * div
 
 		self.model.refLevel = pos + (divCount / 2 * div)
-	
+
 		self.graph.updateGraph()
 
 
@@ -406,7 +406,6 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 			self.model.refLevel = -60
 
 		self.graph.updateGraph()
-		print('self.model.refLevel=' + str(self.model.refLevel))
 
 
 	def setModeAsolute(self):
@@ -422,5 +421,3 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	def setModeReferencing(self):
 		self.model.measMode = 2
 		self.calibrationStateButton.config(image=self.calibrationNotCalibratedIcon)
-	
-

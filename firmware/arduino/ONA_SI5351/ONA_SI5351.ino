@@ -32,7 +32,7 @@ public:
     // Connected LED
     digitalWrite(A2, HIGH);
 
-    return "MINFREQ=4000,MAXFREQ=175000000";
+    return "MINFREQ=4000,MAXFREQ=175000000,FW=1.0,BOARD=Arduino-SI5351";
   }
 
   /**
@@ -41,13 +41,17 @@ public:
    * @return true on success, false e.g. if out out of range
    */
   bool setFrequency(uint32_t freq) {
-    if (freq < 1) {
+    if (freq < 4000) {
+      // Less than 4kHz are not working with this IC / Lib
       return false;
     }
 
     if (!g_hwInitialized) {
       bool i2c_found = si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
       if (!i2c_found) {
+        // Error LED
+        digitalWrite(13, HIGH);
+
         Serial.print("E4: I2C Device not found!, ");
         return false;
       }
@@ -108,6 +112,7 @@ void setup() {
   // State LEDs
   pinMode(A1, OUTPUT);
   pinMode(A2, OUTPUT);
+  pinMode(13, OUTPUT);
 }
 
 /**

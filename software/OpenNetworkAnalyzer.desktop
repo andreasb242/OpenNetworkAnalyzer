@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Terminal=false
+Name=OpenNetworkAnalyzer
+Exec=*UPDATE with OneNetworkAnalyzer-update-launcher.sh*
+Icon=*UPDATE with OneNetworkAnalyzer-update-launcher.sh*
+StartupWMClass=OpenNetworkAnalyzer
+
