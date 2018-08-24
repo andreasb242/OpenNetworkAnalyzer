@@ -114,9 +114,6 @@ class OutputGraph(object):
 		txt = "Ref Level: " + str(self.model.refLevel) + units
 		self.graph.create_text(250, yInfo, text = txt, fill=self.textLabelColor)
 
-		txt = str(self.model.dBDivList[self.model.dBDivIndex]) + "dB/div"
-		self.graph.create_text(400, yInfo, text = txt, fill=self.textLabelColor)
-
 		if self.model.measMode == 0:
 			txt = "Mode: Absolute"
 		if self.model.measMode == 1:

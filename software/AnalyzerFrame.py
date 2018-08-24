@@ -127,6 +127,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		
 		# Update initial values
 		self.sampleSweepChanged()
+		self.updateDbDiv()
 
 		self.initFooter()
 
@@ -151,6 +152,17 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.addToolButton("zoom-out.png", "dB/div +", lambda p=self: AnalyzerFrame.buttonDBDivInc(p))
 		self.addToolButton("zoom-in.png", "dB/div -", lambda p=self: AnalyzerFrame.buttonDBDivDec(p))
+
+		self.addToolbarSubPanel()
+
+		self.dbPerDivLabel = Label(self.tbSubpanel, text='XXX db')
+		self.dbPerDivLabel.grid(column=0, row=0)
+		line = Frame(self.tbSubpanel, bd=1)
+		line.configure(background='black')
+		line.grid(column=0, row=1, sticky=E+W)
+		label = Label(self.tbSubpanel, text='div')
+		label.grid(column=0, row=2)
+
 		self.addToolbarSpacer()
 
 		self.addToolbarSubPanel()
@@ -367,21 +379,33 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.sweepCountLabel.config(text=str(count - 1) + ' samples')
 
 	def buttonDBDivInc(self):
-		if self.model.dBDivIndex >= 4:
-			self.model.dBDivIndex = 4
-		else:
-			self.model.dBDivIndex = self.model.dBDivIndex + 1
+		if self.model.dBDivIndex == len(self.model.dBDivList) - 1:
+			# Nothing to do
+			return
 
-		self.graph.updateGraph()
+		self.model.dBDivIndex = self.model.dBDivIndex + 1
+		if self.model.dBDivIndex >= len(self.model.dBDivList):
+			self.model.dBDivIndex = len(self.model.dBDivList) - 1
+
+		self.updateDbDiv()
 
 
 	def buttonDBDivDec(self):
+		if self.model.dBDivIndex == 0:
+			# Nothing to do
+			return
+
 		if self.model.dBDivIndex <= 0:
 			self.model.dBDivIndex = 0
 		else:
 			self.model.dBDivIndex = self.model.dBDivIndex - 1
 
+		self.updateDbDiv()
+
+	def updateDbDiv(self):
 		self.graph.updateGraph()
+		db = self.model.dBDivList[self.model.dBDivIndex]
+		self.dbPerDivLabel.config(text=str(db) + ' db')
 
 
 	def buttonRefLevelIncTen(self):
