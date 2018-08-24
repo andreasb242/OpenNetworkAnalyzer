@@ -2,7 +2,11 @@
 Type=Application
 Terminal=false
 Name=OpenNetworkAnalyzer
-Exec=*UPDATE with OneNetworkAnalyzer-update-launcher.sh*
-Icon=*UPDATE with OneNetworkAnalyzer-update-launcher.sh*
-StartupWMClass=OpenNetworkAnalyzer
 
+## Update with a call to OpenNetworkAnalyzer-update-launcher.sh!
+Exec=/home/andreas/dev/OpenNetworkAnalyzer/software/main.py
+Icon=/home/andreas/dev/OpenNetworkAnalyzer/software/icon/icon.png
+Path=/home/andreas/dev/OpenNetworkAnalyzer/software
+
+## Does not work! Needs further testing... The class name is only applied to the about dialog
+StartupWMClass=openNetworkAnalyzer

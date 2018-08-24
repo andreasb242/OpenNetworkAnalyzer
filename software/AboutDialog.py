@@ -9,7 +9,7 @@ from WinUtil import *
 
 class AboutDialog(object):
 	def __init__(self, parent):
-		self.root = Tk()
+		self.root = Tk(className='OpenNetworkAnalyzer')
 		# Show the window after it is centered
 		hideWindow(self.root)
 		self.root.resizable(False, False)
@@ -31,7 +31,7 @@ class AboutDialog(object):
 		label = Label(self.window, text='Brett Killion © 2016 - Now\nAndreas Butti © 2018 - Now', font="Sans 10")
 		label.grid(column=0, row=21)
 
-		
+
 		label = Label(self.window, text='Website', font="Sans 12 bold")
 		label.grid(column=0, row=100)
 
@@ -43,5 +43,3 @@ class AboutDialog(object):
 
 	def run(self):
 		self.root.wait_window(self.window)
-
-
