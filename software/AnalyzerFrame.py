@@ -319,6 +319,10 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	def buttonClearReference(self):
 		self.setModeAsolute()
 
+		## Unit changed
+		self.updateDbDiv()
+		self.updateRefPoint()
+
 
 	def buttonShowAbout(self):
 		about = AboutDialog.AboutDialog(self.root)
@@ -347,7 +351,10 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.model.reference[::] = self.model.readings[::]
 
 		self.setModeRelative()
-		self.graph.updateGraph()
+		
+		## Unit changed
+		self.updateDbDiv()
+		self.updateRefPoint()
 
 
 	def buttonDecSampSweep(self):
@@ -413,8 +420,15 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 	def updateDbDiv(self):
 		self.graph.updateGraph()
+
+
+		if self.model.measMode == 0:
+			units = " dBm"
+		if self.model.measMode == 1:
+			units = " dB"
+
 		db = self.model.dBDivList[self.model.dBDivIndex]
-		self.dbPerDivLabel.config(text=str(db) + ' db')
+		self.dbPerDivLabel.config(text=str(db) + units)
 
 
 	def buttonRefLevelIncTen(self):
