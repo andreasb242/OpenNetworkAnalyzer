@@ -55,11 +55,11 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	## Update additional infos, this method should only be called in the UI Thread
 	def updateInfoUiThread(self, key, value):
 		if 'minFrequence' == key:
-			self.labelMinFreqStart.config(text='min ' + str(float(value) / 1000000) + 'MHz')
+			self.labelMinFreqStart.config(text='min ' + str(float(value) / 1000000))
 			self.minFreq = int(value)
 
 		if 'maxFrequence' == key:
-			self.labelMaxFreqEnd.config(text='max ' + str(float(value) / 1000000) + 'MHz')
+			self.labelMaxFreqEnd.config(text='max ' + str(float(value) / 1000000))
 			self.maxFreq = int(value)
 
 		if self.validateFrequencies() == True:
@@ -210,9 +210,9 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		label = Label(self.tbSubpanel, text='MHz, ')
 		label.grid(column=2, row=1)
 
-		self.labelMinFreqStart = Label(self.tbSubpanel, text='min ???MHz')
+		self.labelMinFreqStart = Label(self.tbSubpanel, text='min ???.?')
 		self.labelMinFreqStart.grid(column=3, row=0)
-		self.labelMaxFreqEnd = Label(self.tbSubpanel, text='max ???MHz')
+		self.labelMaxFreqEnd = Label(self.tbSubpanel, text='max ???.?')
 		self.labelMaxFreqEnd.grid(column=3, row=1)
 
 		self.txtStartFreqText = StringVar()
@@ -243,6 +243,10 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.calibrationNotCalibratedIcon = ImageTk.PhotoImage(image)
 		image = Image.open("icon/calibrated.png")
 		self.calibrationCalibratedIcon = ImageTk.PhotoImage(image)
+
+		self.addToolbarSpacer()
+		self.addToolbarSubPanel()
+		self.addToolButton("refresh-line.png", "Show / Hide refresh line", lambda p=self: AnalyzerFrame.buttonShowHideRefreshLine(p), subpanel=True)
 
 		self.addToolbarSpacer()
 
@@ -284,6 +288,11 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		return button
 
+
+	def buttonShowHideRefreshLine(self):
+		self.model.showMarkerLine = not self.model.showMarkerLine
+		self.settings['view']['showMarker'] = str(self.model.showMarkerLine)
+		
 
 	def applyFrequencies(self):
 		self.model.startFreq = int(float(self.txtStartFreq.get()) * 1000000)

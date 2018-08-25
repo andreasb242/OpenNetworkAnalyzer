@@ -24,6 +24,8 @@ class DataModel(object):
 		
 		# Vertical Div Count
 		self.vDiv = 8
+		
+		self.showMarkerLine = True
 
 		self.startFreq = 1000000
 		self.stopFreq = 72000000

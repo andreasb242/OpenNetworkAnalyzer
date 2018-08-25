@@ -122,9 +122,10 @@ class OutputGraph(object):
 
 		# Marker for current scan
 		self.graph.delete(self.traceMakerID)
-		x = self.graphLeftBuffer + self.model.lastUpdatedIndex * self.graphWidth / len(tracePlot) * 2
-		Dline = [x, self.graphTopBuffer, x, self.graphTopBuffer + self.graphHeight]
-		self.traceMakerID = self.graph.create_line(Dline, fill=self.scanColor)
+		if self.model.showMarkerLine:
+			x = self.graphLeftBuffer + self.model.lastUpdatedIndex * self.graphWidth / len(tracePlot) * 2
+			Dline = [x, self.graphTopBuffer, x, self.graphTopBuffer + self.graphHeight]
+			self.traceMakerID = self.graph.create_line(Dline, fill=self.scanColor)
 
 		## Print Graph
 		self.graph.delete(self.traceID)
