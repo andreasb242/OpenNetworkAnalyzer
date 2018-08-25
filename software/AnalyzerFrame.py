@@ -18,22 +18,18 @@ from CreateToolTip import CreateToolTip
 
 
 class AnalyzerFrame(BaseHardware.HardwareListener):
-	def __init__(self, settings, model, mainRoot):
+	def __init__(self, settings, model):
 		self.settings = settings
 		self.hwhandler = HardwareHandler(settings, model)
-		self.hwhandler.loadHardware()
 		self.model = model
-		self.mainRoot = mainRoot
 
 		# Default values, will be overwritten by the hardware
 		self.minFreq = 1
 		self.maxFreq = 72000000
 
-		self.model.startFreq = int(self.settings['view']['startFreq'])
-		self.model.stopFreq = int(self.settings['view']['stopFreq'])
-
 		self.initUi()
 
+		self.hwhandler.loadHardware()
 		# Connect the Hardware now
 		self.hwhandler.start(self)
 
@@ -115,9 +111,12 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 
 	def initUi(self):
-		self.root = Toplevel()
+		self.root = Tk(className='OpenNetworkAnalyzer')
 		self.root.title('Scalar Network Analyzer')
 		self.root.protocol("WM_DELETE_WINDOW", lambda p=self: AnalyzerFrame.windowClose(p))
+
+		icon = ImageTk.PhotoImage(Image.open("icon/icon.png"))
+		self.root.tk.call('wm', 'iconphoto', self.root._w, icon)  
 
 		self.initToolbar()
 
@@ -312,7 +311,6 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	def windowClose(self):
 		self.hwhandler.stop()
 		self.root.destroy()
-		self.mainRoot.destroy()
 		print('Main window closed')
 
 

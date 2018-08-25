@@ -9,7 +9,7 @@ from WinUtil import *
 
 class AboutDialog(object):
 	def __init__(self, parent):
-		self.root = Tk(className='OpenNetworkAnalyzer')
+		self.root = Tk(className='OpenNetworkAnalyzer_INFO')
 		# Show the window after it is centered
 		hideWindow(self.root)
 		self.root.resizable(False, False)

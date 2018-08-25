@@ -5,8 +5,12 @@ Name=OpenNetworkAnalyzer
 
 ## Update with a call to OpenNetworkAnalyzer-update-launcher.sh!
 Exec=/home/andreas/dev/OpenNetworkAnalyzer/software/main.py
-Icon=/home/andreas/dev/OpenNetworkAnalyzer/software/icon/icon.png
+Icon=/home/andreas/dev/OpenNetworkAnalyzer/software/icon/icon.svg
 Path=/home/andreas/dev/OpenNetworkAnalyzer/software
 
-## Does not work! Needs further testing... The class name is only applied to the about dialog
-StartupWMClass=openNetworkAnalyzer
+## Not working: There are two icons in the launcher...
+StartupWMClass="Opennetworkanalyzer"
+
+## Therefore: No notification...
+StartupNotify=false
+

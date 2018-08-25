@@ -24,8 +24,8 @@ class Startup(object):
 		print("Read settings")
 		self.settings.read('settings.ini')
 
-		self.model.startFreq = int(self.settings['view']['startFreq']);
-		self.model.stopFreq = int(self.settings['view']['stopFreq']);
+		self.model.startFreq = float(self.settings['view']['startFreq']);
+		self.model.stopFreq = float(self.settings['view']['stopFreq']);
 		self.model.setupArrays()
 
 
@@ -36,12 +36,7 @@ class Startup(object):
 
 
 	def startup(self):
-		# https://stackoverflow.com/questions/1406145/how-do-i-get-rid-of-python-tkinter-root-window#1407700
-		self.mainRoot = Tk(className='OpenNetworkAnalyzer')
-		self.mainRoot.overrideredirect(1)
-		self.mainRoot.withdraw()
-
-		frame = AnalyzerFrame.AnalyzerFrame(self.settings, self.model, self.mainRoot)
+		frame = AnalyzerFrame.AnalyzerFrame(self.settings, self.model)
 		frame.run()
 
 
