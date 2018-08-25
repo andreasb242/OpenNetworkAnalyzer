@@ -13,9 +13,9 @@ class Startup(object):
 	def __init__(self):
 		## Configuration
 		self.settings = configparser.ConfigParser()
-		self.settings['settings'] = {};
-		self.settings['hardware'] = { 'type': 'none' };
-		self.settings['view'] = { 'startFreq': '1000000', 'stopFreq': '72000000', 'showMarker': 'True'};
+		self.settings['settings'] = {}
+		self.settings['hardware'] = { 'type': 'none' }
+		self.settings['view'] = { 'startFreq': '1000000', 'stopFreq': '72000000', 'showMarker': 'True', 'colorScheme': '0'}
 
 		self.model = DataModel.DataModel()
 

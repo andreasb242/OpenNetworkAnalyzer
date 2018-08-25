@@ -120,7 +120,8 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.initToolbar()
 
-		self.graph = OutputGraph.OutputGraph(self.root, self.model)
+		colorIndex = int(self.settings['view']['colorScheme'])
+		self.graph = OutputGraph.OutputGraph(self.root, self.model, colorIndex)
 		self.graph.graph.pack(fill=BOTH, expand=1)
 		self.graph.updateGraph()
 		
@@ -247,6 +248,8 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.addToolbarSpacer()
 		self.addToolbarSubPanel()
 		self.addToolButton("refresh-line.png", "Show / Hide refresh line", lambda p=self: AnalyzerFrame.buttonShowHideRefreshLine(p), subpanel=True)
+		self.styleButton = self.addToolButton("style.png", "Switch style", None, subpanel=True)
+		self.initStyleMenu()
 
 		self.addToolbarSpacer()
 
@@ -292,7 +295,31 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 	def buttonShowHideRefreshLine(self):
 		self.model.showMarkerLine = not self.model.showMarkerLine
 		self.settings['view']['showMarker'] = str(self.model.showMarkerLine)
-		
+
+
+	def initStyleMenu(self):
+		self.styleButton.bind("<Button-1>", lambda event, p=self: AnalyzerFrame.buttonSwitchStyle(p, event))
+
+
+	def buttonSwitchStyle(self, event):
+		popup = Menu(self.styleButton, tearoff=0, borderwidth=0)
+		for i in range(0, len(self.graph.colorlist)):
+			colors = self.graph.colorlist[i]
+			popup.add_command(label=colors['_name'], command=lambda index=i, p=self: AnalyzerFrame.buttonSwitchStyleApply(p, index))
+
+		# display the popup menu
+		try:
+			popup.tk_popup(event.x_root, event.y_root, 0)
+		finally:
+			# make sure to release the grab (Tk 8.0a1 only)
+			popup.grab_release()
+
+
+	def buttonSwitchStyleApply(self, index):
+		self.graph.applyColorset(index)
+		self.graph.updateGraph()
+		self.settings['view']['colorScheme'] = str(self.graph.selectedColorSet)
+
 
 	def applyFrequencies(self):
 		self.model.startFreq = int(float(self.txtStartFreq.get()) * 1000000)

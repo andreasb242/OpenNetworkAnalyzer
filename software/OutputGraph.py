@@ -9,7 +9,7 @@ from tkinter import font as tkFont
 
 
 class OutputGraph(object):
-	def __init__(self, parent, model):
+	def __init__(self, parent, model, colorIndex):
 		self.graphHeight = 500
 		self.graphWidth = 1000
 		
@@ -25,17 +25,54 @@ class OutputGraph(object):
 		self.model = model;
 		self.graph.bind("<Configure>", self.onResize)
 
-		self.graphColor = 'Green'
-		self.labelColor = 'White'
-		self.traceColor = 'Red'
-		self.scanColor = '#E1EC4F'
-		self.textLabelColor = 'Yellow'
-		self.titleColor = 'LightBlue'
-		
+
+		self.colorlist = []
+		self.colorlist.append({ '_name': 'dark',
+								'_background': 'black',
+								'graphColor': 'Green',
+								'labelColor': 'White',
+								'traceColor': 'Red',
+								'scanColor': '#E1EC4F' })
+
+		self.colorlist.append({ '_name': 'bright',
+								'_background': 'white',
+								'graphColor': '#9E9E9E',
+								'labelColor': 'black',
+								'traceColor': 'black',
+								'scanColor': '#B43232' })
+
+		self.colorlist.append({ '_name': 'green',
+								'_background': 'white',
+								'graphColor': '#90FFA9',
+								'labelColor': '#00731A',
+								'traceColor': '#009E21',
+								'scanColor': '#3F7A4C' })
+
+		self.applyColorset(colorIndex)
+
 		self.traceWidth = 1
 
 		self.traceID = 0
 		self.traceMakerID = 0
+
+
+	def applyColorset(self, index):
+		if index < 0:
+			index = 0
+		if index >= len(self.colorlist):
+			index = len(self.colorlist) - 1
+
+
+		colors = self.colorlist[index]
+		self.selectedColorSet = index
+		for color in colors:
+			if color[:1] == '_':
+				if color == '_background':
+					self.graph.configure(background=colors[color])
+
+				continue
+
+			setattr(self, color, colors[color])
 
 
 	def onResize(self, event):
