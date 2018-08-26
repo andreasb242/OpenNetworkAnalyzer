@@ -25,7 +25,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		# Default values, will be overwritten by the hardware
 		self.minFreq = 1
-		self.maxFreq = 72000000
+		self.maxFreq = 10000000
 
 		self.initUi()
 
@@ -233,6 +233,19 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		button.grid(column=4, row=1)
 		CreateToolTip(button, "Apply sweep frequencies")
 
+
+		image = Image.open("icon/pause.png")
+		self.pauseImage = ImageTk.PhotoImage(image)
+		self.icons.append(self.pauseImage)
+		image = Image.open("icon/play.png")
+		self.playImage = ImageTk.PhotoImage(image)
+		self.icons.append(self.pauseImage)
+
+		self.buttonPlayPause = Button(self.tbSubpanel, image=self.pauseImage, relief=FLAT, command=lambda p=self: AnalyzerFrame.buttonPlayPause(p))
+		self.buttonPlayPause.grid(column=4, row=0)
+		CreateToolTip(self.buttonPlayPause, "Pause / Start running")
+
+
 		self.addToolbarSpacer()
 
 		self.addToolButton("calibrate.png", "Calibrate (e.g. connect output to input)", lambda p=self: AnalyzerFrame.buttonCalibrate(p))
@@ -321,6 +334,16 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.settings['view']['colorScheme'] = str(self.graph.selectedColorSet)
 
 
+	def buttonPlayPause(self):
+		if self.model.pause:
+			self.buttonPlayPause.config(image=self.playImage)
+			self.model.pause = False
+		else:
+			self.buttonPlayPause.config(image=self.pauseImage)
+			self.model.pause = True
+			
+
+
 	def applyFrequencies(self):
 		self.model.startFreq = int(float(self.txtStartFreq.get()) * 1000000)
 		self.model.stopFreq = int(float(self.txtEndFreq.get()) * 1000000)
@@ -401,11 +424,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		else:
 			self.model.numSamplesIndex = self.model.numSamplesIndex - 1
 
-		self.setModeAsolute()
-
-		self.model.setupArrays()
-		self.graph.updateGraph()
-		self.sampleSweepChanged()
+		self.sweepSampleChanged()
 
 
 	def buttonIncSampSweep(self):
@@ -417,11 +436,16 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		if self.model.numSamplesIndex >= len(self.model.numSamplesList):
 			self.model.numSamplesIndex = len(self.model.numSamplesList) - 1
 
-		self.setModeAsolute()
+		self.sweepSampleChanged()
 
+
+	def sweepSampleChanged(self):
+		self.setModeAsolute()
 		self.model.setupArrays()
 		self.graph.updateGraph()
-		self.sampleSweepChanged()
+
+		if self.hwhandler.hardware != None:
+			self.hwhandler.hardware.resetSweep = True
 
 
 	def sampleSweepChanged(self):

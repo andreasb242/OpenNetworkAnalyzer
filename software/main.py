@@ -38,7 +38,7 @@ class Startup(object):
 		self.model.showMarkerLine = bool(self.settings['view']['showMarker'])
 		self.model.dBDivIndex = int(self.settings['view']['dBDivIndex'])
 		self.model.numSamplesIndex = int(self.settings['view']['numSamplesIndex'])
-		self.model.refLevel = int(self.settings['view']['refLevel'])
+		self.model.refLevel = float(self.settings['view']['refLevel'])
 		
 		self.model.setupArrays()
 

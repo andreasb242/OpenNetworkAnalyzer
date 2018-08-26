@@ -5,6 +5,7 @@
 
 import threading
 import traceback
+import time
 
 
 class HardwareListener(object):
@@ -95,6 +96,10 @@ class BaseHardware(object):
 		self.n = 0
 
 		while self.running:
+			if self.model.pause:
+				time.sleep(0.1)
+				continue
+
 			if self.resetSweep == True:
 				self.resetSweep = False
 				self.n = 0

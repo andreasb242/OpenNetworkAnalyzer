@@ -32,6 +32,9 @@ class DataModel(object):
 		
 		# Last updated index by hardware
 		self.lastUpdatedIndex = 0
+		
+		# Pause reading (e.g. to view at the graph)
+		self.pause = False
 
 
 	def setupArrays(self):
