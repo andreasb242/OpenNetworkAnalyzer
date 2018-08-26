@@ -357,6 +357,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.model.setupArrays()
 		self.graph.updateGraph()
 		self.loadFrequencies()
+		self.restartSweep()
 
 
 	def loadFrequencies(self):
@@ -438,14 +439,16 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 		self.sweepSampleChanged()
 
+	def restartSweep(self):
+		if self.hwhandler.hardware != None:
+			self.hwhandler.hardware.resetSweep = True
+		
 
 	def sweepSampleChanged(self):
 		self.setModeAsolute()
 		self.model.setupArrays()
 		self.graph.updateGraph()
-
-		if self.hwhandler.hardware != None:
-			self.hwhandler.hardware.resetSweep = True
+		self.restartSweep()
 
 
 	def sampleSweepChanged(self):
