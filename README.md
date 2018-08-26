@@ -18,10 +18,12 @@ Therefore this is only for testing purpose.
 There is the Arduino Uno Shield, layout located at *layout/hackaday.io-V2.0*.
 
 And there is an Arduino Nano Version, located at *layout/arduino-nano-AD9851*
-
+This board is not tested.
 
 *firmware/arduino/ONA_SI5351*
-Not yet ready
+This implementation is fully working from 4kHz to 175MHz, recommend range is about 1MHz to 100MHz, out of this range there are some issues: at 4kHz the Sinus looks more than a Square wave.
+At > 100MHz the signal gets lower.
+
 
 ### STM32 USB
 Not yet ready.
