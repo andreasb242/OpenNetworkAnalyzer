@@ -17,7 +17,7 @@ class Arduino(BaseHardware.BaseHardware):
 		serialport = settings['hardware']['arduino.serialport']
 
 		self.serialPort = None
-		self.serialPort = serial.Serial(serialport, baud, timeout=1)
+		self.serialPort = serial.Serial(serialport, baud, timeout=0.1)
 		self.lastError = False
 
 
@@ -25,6 +25,7 @@ class Arduino(BaseHardware.BaseHardware):
 	def readInformation(self, cmd):
 		try:
 			self.serialPort.write(cmd)
+			self.serialPort.flush()
 			result = self.serialPort.readline().decode().strip()
 			if len(result) > 0:
 				if result[:2] != 'O:':
@@ -49,9 +50,9 @@ class Arduino(BaseHardware.BaseHardware):
 
 	## Initialize connection
 	def initConnection(self):
-		for i in range(0, 10):
-			values = self.readInformation(b'i\n')
-			
+		for i in range(0, 20):
+			values = self.readInformation(b'i;')
+
 			if values == False:
 				continue
 			
@@ -59,7 +60,7 @@ class Arduino(BaseHardware.BaseHardware):
 			self.maxFrequence = int(values['MAXFREQ'])
 			self.listener.hwUpdateConnectionState('Board connected')
 
-			values = self.readInformation(b'v\n')
+			values = self.readInformation(b'v;')
 			if values != False:
 				self.boardType = values['BOARD']
 				self.boardVersion = values['FW']

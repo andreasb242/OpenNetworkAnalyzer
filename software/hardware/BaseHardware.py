@@ -83,6 +83,7 @@ class BaseHardware(object):
 	# Thread method
 	def run(self):
 		self.listener.hwUpdateConnectionState('Connecting...')
+
 		if self.initConnection() == False:
 			self.listener.hwUpdateConnectionState('Connection failed!', True)
 			return

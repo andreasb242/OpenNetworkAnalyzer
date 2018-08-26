@@ -52,7 +52,7 @@ public:
         // Error LED
         digitalWrite(13, HIGH);
 
-        Serial.print("E4: I2C Device not found!, ");
+        Serial.print("E10: I2C Device not found!, ");
         return false;
       }
       g_hwInitialized = true;

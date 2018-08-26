@@ -76,7 +76,7 @@ public:
 
     while (Serial.available()) {
       char ch = (char)Serial.read();
-      if (ch == '\n') {
+      if (ch == '\n' || ch == '\r' || ch == ';') {
         completed = true;
         break;
       }
