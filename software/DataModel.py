@@ -14,9 +14,9 @@ class DataModel(object):
 		self.dBDivIndex = 4
 
 		self.numSamplesList = [51, 101, 251, 501, 1001, 1501, 2001]
-		self.numSamplesIndex = 0
+		self.numSamplesIndex = 2
 
-		## 0 for absolute, 1 for relative, 2 for create reference
+		# 0 for absolute, 1 for relative, 2 for create reference
 		self.measMode = 0
 		
 		# Horizontal Div Count
@@ -28,9 +28,9 @@ class DataModel(object):
 		self.showMarkerLine = True
 
 		self.startFreq = 1000000
-		self.stopFreq = 72000000
+		self.stopFreq = 10000000
 		
-		## Last updated index by hardware
+		# Last updated index by hardware
 		self.lastUpdatedIndex = 0
 
 
@@ -67,9 +67,6 @@ class DataModel(object):
 				maxV = r
 
 		return minV, maxV
-
-
-
 
 
 

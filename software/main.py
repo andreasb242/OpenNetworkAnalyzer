@@ -22,7 +22,8 @@ class Startup(object):
 									'colorScheme': '1',
 									'colorScheme': '1',
 									'dBDivIndex': '4',
-									'numSamplesIndex': '2'
+									'numSamplesIndex': '2',
+									'refLevel': '10'
 								}
 
 		self.model = DataModel.DataModel()
@@ -37,6 +38,7 @@ class Startup(object):
 		self.model.showMarkerLine = bool(self.settings['view']['showMarker'])
 		self.model.dBDivIndex = int(self.settings['view']['dBDivIndex'])
 		self.model.numSamplesIndex = int(self.settings['view']['numSamplesIndex'])
+		self.model.refLevel = int(self.settings['view']['refLevel'])
 		
 		self.model.setupArrays()
 
@@ -46,6 +48,7 @@ class Startup(object):
 
 		self.settings['view']['dBDivIndex'] = str(self.model.dBDivIndex)
 		self.settings['view']['numSamplesIndex'] = str(self.model.numSamplesIndex)
+		self.settings['view']['refLevel'] = str(self.model.refLevel)
 
 		with open('settings.ini', 'w') as settingsfile:
 			self.settings.write(settingsfile)
