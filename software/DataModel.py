@@ -33,7 +33,6 @@ class DataModel(object):
 		## Last updated index by hardware
 		self.lastUpdatedIndex = 0
 
-		self.setupArrays()
 
 	def setupArrays(self):
 		fStep = (self.stopFreq - self.startFreq) / (self.numSamplesList[self.numSamplesIndex] - 1)

@@ -15,7 +15,15 @@ class Startup(object):
 		self.settings = configparser.ConfigParser()
 		self.settings['settings'] = {}
 		self.settings['hardware'] = { 'type': 'none' }
-		self.settings['view'] = { 'startFreq': '1000000', 'stopFreq': '72000000', 'showMarker': 'True', 'colorScheme': '0'}
+		self.settings['view'] = {
+									'startFreq': '1000000',
+									'stopFreq': '10000000',
+									'showMarker': 'True',
+									'colorScheme': '1',
+									'colorScheme': '1',
+									'dBDivIndex': '4',
+									'numSamplesIndex': '2'
+								}
 
 		self.model = DataModel.DataModel()
 
@@ -27,11 +35,18 @@ class Startup(object):
 		self.model.startFreq = float(self.settings['view']['startFreq']);
 		self.model.stopFreq = float(self.settings['view']['stopFreq']);
 		self.model.showMarkerLine = bool(self.settings['view']['showMarker'])
+		self.model.dBDivIndex = int(self.settings['view']['dBDivIndex'])
+		self.model.numSamplesIndex = int(self.settings['view']['numSamplesIndex'])
+		
 		self.model.setupArrays()
 
 
 	def storeSettings(self):
 		print("Store settings")
+
+		self.settings['view']['dBDivIndex'] = str(self.model.dBDivIndex)
+		self.settings['view']['numSamplesIndex'] = str(self.model.numSamplesIndex)
+
 		with open('settings.ini', 'w') as settingsfile:
 			self.settings.write(settingsfile)
 
