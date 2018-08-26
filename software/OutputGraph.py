@@ -14,7 +14,7 @@ class OutputGraph(object):
 		self.graphWidth = 1000
 		
 		self.graphRightBuffer = 20
-		self.graphLeftBuffer = 50
+		self.graphLeftBuffer = 70
 		self.graphTopBuffer = 20
 		self.graphBottomBuffer = 20
 

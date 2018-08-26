@@ -126,7 +126,7 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.graph.updateGraph()
 		
 		# Update initial values
-		self.sampleSweepChanged()
+		self.updateSweepLabel()
 		self.updateDbDiv()
 		self.updateRefPoint()
 
@@ -449,9 +449,10 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 		self.model.setupArrays()
 		self.graph.updateGraph()
 		self.restartSweep()
+		self.updateSweepLabel()
 
 
-	def sampleSweepChanged(self):
+	def updateSweepLabel(self):
 		count = self.model.numSamplesList[self.model.numSamplesIndex]
 		self.sweepCountLabel.config(text=str(count - 1) + ' samples')
 
