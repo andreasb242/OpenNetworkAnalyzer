@@ -13,6 +13,7 @@
 */
 
 #include <Arduino.h>
+#include "version.h"
 
 /**
    Lenght of the command buffer
@@ -62,6 +63,8 @@ public:
    * Setup serical communication
    */
   void setup() {
+    // 500000 is working, if the UART-USB Chip supports it
+    // But there is no feelable speed improvements
     Serial.begin(115200);
   }
 
@@ -110,6 +113,12 @@ private:
     if (buffer[0] == 'i') {
       Serial.print("O:");
       Serial.println(command.getInfoString());
+
+    
+    // Get Version information
+    } else if (buffer[0] == 'v') {
+      Serial.print("O:");
+      Serial.println("BOARD=" BOARD_TYPE ",FW=" SOFTWARE_VERSION ",BUILD=" __DATE__ "-" __TIME__);
 
     
     // Set Frequency

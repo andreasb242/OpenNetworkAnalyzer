@@ -32,7 +32,7 @@ public:
     // Connected LED
     digitalWrite(A2, HIGH);
 
-    return "MINFREQ=4000,MAXFREQ=175000000,FW=1.0,BOARD=Arduino-SI5351";
+    return "MINFREQ=4000,MAXFREQ=175000000";
   }
 
   /**
@@ -110,8 +110,12 @@ void setup() {
   com.setup();
 
   // State LEDs
+
+  // Active LED
   pinMode(A1, OUTPUT);
+  // Connected LED
   pinMode(A2, OUTPUT);
+  // Error LED
   pinMode(13, OUTPUT);
 }
 

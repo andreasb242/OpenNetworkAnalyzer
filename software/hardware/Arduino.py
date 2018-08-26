@@ -21,28 +21,50 @@ class Arduino(BaseHardware.BaseHardware):
 		self.lastError = False
 
 
-	# Initialize connection
-	def initConnection(self):
-		for i in range(0, 10):
-			self.serialPort.write(b'i\n')
+	## Read Information from Board
+	def readInformation(self, cmd):
+		try:
+			self.serialPort.write(cmd)
 			result = self.serialPort.readline().decode().strip()
-			
 			if len(result) > 0:
 				if result[:2] != 'O:':
 					self.listener.hwUpdateConnectionState('Connected, Error=' + result, True)
 					return False
 				else:
 					result = result[2:]
+					data = {}
 					for s in result.split(","):
 						key, value = s.split('=')
-						
-						if key == 'MINFREQ':
-							self.minFrequence = int(value)
-						if key == 'MAXFREQ':
-							self.maxFrequence = int(value)
+						data[key] = value
 
-					self.listener.hwUpdateConnectionState('Connected, min frequency: ' + self.formatFrequence(self.minFrequence) + ', max frequency: ' + self.formatFrequence(self.maxFrequence))
-					return True
+					return data
+			else:
+				return False
+					
+		except BaseException as e:
+			self.listener.hwUpdateConnectionState('Connection lost: ' + str(e), True)
+			traceback.print_exc()
+			return False
+
+
+	## Initialize connection
+	def initConnection(self):
+		for i in range(0, 10):
+			values = self.readInformation(b'i\n')
+			
+			if values == False:
+				continue
+			
+			self.minFrequence = int(values['MINFREQ'])
+			self.maxFrequence = int(values['MAXFREQ'])
+			self.listener.hwUpdateConnectionState('Board connected')
+
+			values = self.readInformation(b'v\n')
+			if values != False:
+				self.boardType = values['BOARD']
+				self.boardVersion = values['FW']
+
+			return True
 		
 		return False
 
@@ -57,7 +79,7 @@ class Arduino(BaseHardware.BaseHardware):
 			return str(hz / 1000000.0) + 'MHz'
 
 
-	# Read a single value, return True to continue, False to stop
+	## Read a single value, return True to continue, False to stop
 	def readValue(self):
 		if self.serialPort is None:
 			return False

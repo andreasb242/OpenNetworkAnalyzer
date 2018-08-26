@@ -35,6 +35,9 @@ class BaseHardware(object):
 		self.minFrequence = 1000000
 		self.maxFrequence = 2000000
 
+		## Hardware Information
+		self.boardType = 'Unknown'
+		self.boardVersion = 'Unknown'
 
 	def start(self, listener):
 		self.listener = listener
