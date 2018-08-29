@@ -336,10 +336,10 @@ class AnalyzerFrame(BaseHardware.HardwareListener):
 
 	def buttonPlayPause(self):
 		if self.model.pause:
-			self.buttonPlayPause.config(image=self.playImage)
+			self.buttonPlayPause.config(image=self.pauseImage)
 			self.model.pause = False
 		else:
-			self.buttonPlayPause.config(image=self.pauseImage)
+			self.buttonPlayPause.config(image=self.playImage)
 			self.model.pause = True
 			
 
